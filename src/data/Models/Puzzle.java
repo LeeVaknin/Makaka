@@ -1,6 +1,8 @@
 package data.Models;
 
-public class Puzzle {
+import java.util.ArrayList;
+
+public class Puzzle implements Searchable{
 
     PuzzlePiece puzzlePiece;
 
@@ -16,4 +18,23 @@ public class Puzzle {
         this.puzzlePiece = puzzlePiece;
     }
 
+    @Override
+    public void initState() {
+
+    }
+
+    @Override
+    public void isGoal() {
+
+    }
+
+    @Override
+    public void getState() {
+
+    }
+
+    @Override
+    public ArrayList<Level> getAllStates(Level level) {
+        return null;
+    }
 }
