@@ -1,4 +1,3 @@
 package data.Models;
 
-public enum PuzzleState {INITIAL, CURRENT, SOLUTION
-}
+public enum PuzzleState { INITIAL, CURRENT, SOLUTION }
