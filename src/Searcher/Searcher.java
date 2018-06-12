@@ -1,6 +1,6 @@
 package Searcher;
 
-import Models.Searchable.Searchable;
+import Searchable.Searchable;
 import Models.Solution;
 
 public interface Searcher<T, S> {

@@ -1,8 +1,7 @@
 package Solver;
 
-import Models.Searchable.Searchable;
+import Searchable.Searchable;
 import Models.Solution;
-import Models.State;
 
 public interface Solver<T, S> {
 

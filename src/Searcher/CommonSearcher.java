@@ -1,22 +1,24 @@
 package Searcher;
 
-import Models.Searchable.Searchable;
+import Models.MatrixBoard;
+import Models.Step;
+import Searchable.Searchable;
 import Models.Solution;
 import Models.State;
 
 import java.util.PriorityQueue;
 
-public class CommonSearcher<T, S> implements Searcher<T, S> {
+public class CommonSearcher implements Searcher<MatrixBoard, Step> {
 
     // Variables
 
-    protected PriorityQueue<State<T>> openList;
+    protected PriorityQueue<State<MatrixBoard>> openList;
     private int evaluatedNodes;
 
     // C-TOR
 
     public CommonSearcher() {
-        openList = new PriorityQueue<State<T>>();
+        openList = new PriorityQueue<State<MatrixBoard>>();
         evaluatedNodes = 0;
     }
 
@@ -28,7 +30,7 @@ public class CommonSearcher<T, S> implements Searcher<T, S> {
     }
 
     @Override
-    public Solution<S> search(Searchable<T> s) {
+    public Solution<Step> search(Searchable<MatrixBoard> s) {
 
         return null;
     }
