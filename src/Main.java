@@ -1,6 +1,6 @@
 
 import ClientHandler.MyCHandler;
-import server.MyServer;
+import Server.MyServer;
 
 import java.io.IOException;
 
