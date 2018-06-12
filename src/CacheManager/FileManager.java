@@ -2,7 +2,7 @@ package CacheManager;
 
 import java.io.*;
 
-public class File implements CacheManager {
+public class FileManager implements CacheManager {
 
 
     @Override

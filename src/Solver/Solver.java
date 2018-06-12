@@ -1,14 +1,16 @@
 package Solver;
 
-import data.Models.Puzzle;
+import Models.Searchable.Searchable;
+import Models.Solution;
+import Models.State;
 
-public interface Solver {
+public interface Solver<T, S> {
 
     /////////
     //Methods
     /////////
 
-    public void solve(Puzzle puzzle);
+    public Solution<S> solve(Searchable<T> searchable);
     public void createProblem();
 
 
