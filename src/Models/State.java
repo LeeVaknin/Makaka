@@ -19,7 +19,6 @@ public class State<T> {
         this.cameFrom = cameFrom;
     }
 
-
     // Methods
     public void setState(T state) {
         this.state = state;
