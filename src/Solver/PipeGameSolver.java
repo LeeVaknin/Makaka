@@ -8,14 +8,14 @@ import Searcher.Searcher;
 
 
 // common solver for the pipe game
-public class CommonSolver implements Solver<MatrixBoard, Step>{
+public class PipeGameSolver implements Solver<MatrixBoard, Step>{
 
     // This searcher is injected into the common solver and solves the given problem
     private Searcher<MatrixBoard, Step>  searcher;
 
     // C-TOR
 
-    public CommonSolver(Searcher<MatrixBoard, Step> searcher) {
+    public PipeGameSolver(Searcher<MatrixBoard, Step> searcher) {
         this.searcher = searcher;
     }
 

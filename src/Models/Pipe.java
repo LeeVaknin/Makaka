@@ -1,11 +1,12 @@
 package Models;
+import java.util.HashMap;
 
-// TODO: ask igor about the pipeVal - use char or pipeVal in the board structure?
+
 public class Pipe {
 
     // variables
     private char pipeVal;
-
+    private HashMap<String, String> mapping;
     // setters and getters
 
     public char getPipeVal() {
@@ -19,11 +20,29 @@ public class Pipe {
     // C-TOR
 
     public Pipe(char pipe) {
+        this.mapping =  new HashMap<String, String>() {{
+            put("F", "7");
+            put("7", "J");
+            put("J", "L");
+            put("L", "F");
+            put("-", "|");
+            put("|", "-");
+        }};
+
         this.setPipeVal(pipe);
     }
 
     public char rotate() {
-        // TODO: Add switch case for the rotation cases
+        switch (pipeVal) {
+            case 's':
+            case 'g':
+            case ' ':
+                break;
+            default:
+                final String strRotate = mapping.get(Character.toString(pipeVal));
+                setPipeVal(strRotate.charAt(0));
+
+        }
         return pipeVal;
     }
 }
