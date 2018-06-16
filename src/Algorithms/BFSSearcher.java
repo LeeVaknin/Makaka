@@ -1,14 +1,12 @@
 package Algorithms;
 
 import Models.State;
-import Models.Pipe
 import Models.Solution;
 import Searchable.Searchable;
 import Searcher.Searcher;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Queue;
 
 public class BFSSearcher<T,S> implements Searcher<T,S> {
 
@@ -25,7 +23,8 @@ public class BFSSearcher<T,S> implements Searcher<T,S> {
             currentState = queue.poll();
             if (currentState.getState() == s.getGoalState().getState())
             {
-              //  return currentState;    //need to change when Solution is finalize
+                //TODO:need to change when Solution is finalize
+                //  return currentState;
                 return null;
             }
             ArrayList<State<T>> possibleStates = s.getAllPossibleStates(currentState);

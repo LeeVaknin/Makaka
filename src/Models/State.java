@@ -7,7 +7,6 @@ public class State<T> {
     private double cost; // cost to reach this state
     private State<T> cameFrom;
 
-    //TODO: I changed the cameFrom to be State<T< and not T cause the solution should be linkedList-Inbal
     // C-TOR
     public State(T state) {
         this.state = state;
