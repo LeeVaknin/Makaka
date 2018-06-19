@@ -37,8 +37,12 @@ public class MyServer implements Server {
                     aClient.getInputStream().close();
                     aClient.getOutputStream().close();
                     aClient.close();
-                } catch (IOException e) {/*...*/}
-            } catch (SocketTimeoutException e) {/*...*/}
+                } catch (IOException e) {
+                    System.out.println(e.toString());
+                }
+            } catch (SocketTimeoutException e) {
+                System.out.println(e.toString());
+            }
         }
         server.close();
     }

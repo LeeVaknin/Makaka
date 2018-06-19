@@ -10,7 +10,5 @@ public interface Solver<T, S> {
     /////////
 
     public Solution<S> solve(Searchable<T> searchable);
-    public void createProblem();
-
 
 }

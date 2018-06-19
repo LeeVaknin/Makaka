@@ -4,6 +4,7 @@ import Server.MyServer;
 
 import java.io.IOException;
 
+// TODO: add logger to the project
 public class Main {
     public static void main(String[] args) {
 

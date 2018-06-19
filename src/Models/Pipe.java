@@ -4,45 +4,52 @@ import java.util.HashMap;
 
 public class Pipe {
 
-    // variables
-    private char pipeVal;
-    private HashMap<String, String> mapping;
-    // setters and getters
+    //TODO: add iterator
 
-    public char getPipeVal() {
+    // variables
+    private Character pipeVal;
+    private HashMap<Character, Character> rotationMapping;
+
+    // Setters and Getters
+    public Character getPipeVal() {
         return pipeVal;
     }
 
-    public void setPipeVal(char value) {
+    public void setPipeVal(Character value) {
         this.pipeVal = value;
     }
 
     // C-TOR
 
-    public Pipe(char pipe) {
-        this.mapping =  new HashMap<String, String>() {{
-            put("F", "7");
-            put("7", "J");
-            put("J", "L");
-            put("L", "F");
-            put("-", "|");
-            put("|", "-");
+    public Pipe(Character pipe) {
+        this.rotationMapping =  new HashMap<Character, Character>() {{
+            put('F', '7');
+            put('7', 'J');
+            put('J', 'L');
+            put('L', 'F');
+            put('-', '|');
+            put('|', '-');
         }};
 
         this.setPipeVal(pipe);
     }
 
-    public char rotate() {
+    // Methods
+
+    public Character rotate() {
         switch (pipeVal) {
             case 's':
             case 'g':
             case ' ':
                 break;
             default:
-                final String strRotate = mapping.get(Character.toString(pipeVal));
-                setPipeVal(strRotate.charAt(0));
-
+                try {
+                    setPipeVal(this.rotationMapping.get(pipeVal));
+                }
+                catch (NullPointerException exception) {
+                    System.out.println( "Null pipe value, can't rotate.");
+                }
         }
-        return pipeVal;
+        return getPipeVal();
     }
 }

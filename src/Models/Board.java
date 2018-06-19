@@ -1,10 +1,20 @@
 package Models;
 
-import Models.State;
-
-import java.util.ArrayList;
 
 public abstract class Board<T> {
+
+    public Board(Integer id, T board) {
+        setBoard(board);
+        setId(id);
+    }
+
+    public Board(Integer id, String board) {
+        setBoard((toBoard(board)));
+        setId(id);
+    }
+
+    protected Integer id;
+    protected T board;
 
     public T getBoard() {
         return board;
@@ -14,6 +24,14 @@ public abstract class Board<T> {
         this.board = board;
     }
 
-    protected T board;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    protected abstract T toBoard(String strBoard);
 
 }
