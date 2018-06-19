@@ -24,9 +24,4 @@ public class PipeGameSolver implements Solver<MatrixBoard, Step>{
         return this.searcher.search(searchable);
     }
 
-    @Override
-    // TODO: Ask Igor!!!!
-    public void createProblem() {
-
-    }
 }

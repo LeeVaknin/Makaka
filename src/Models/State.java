@@ -5,15 +5,14 @@ public class State<T> {
     // Variables
     private T state;
     private double cost; // cost to reach this state
-    private T cameFrom; // the state we came from to this state
-
+    private State<T> cameFrom;
 
     // C-TOR
     public State(T state) {
         this.state = state;
     }
 
-    public State(T state, double cost, T cameFrom) {
+    public State(T state, double cost, State<T> cameFrom) {
         this.state = state;
         this.cost = cost;
         this.cameFrom = cameFrom;
@@ -28,7 +27,7 @@ public class State<T> {
         this.cost = cost;
     }
 
-    public void setCameFrom(T cameFrom) {
+    public void setCameFrom(State<T> cameFrom) {
         this.cameFrom = cameFrom;
     }
 
@@ -40,7 +39,7 @@ public class State<T> {
         return cost;
     }
 
-    public T getCameFrom() {
+    public State<T> getCameFrom() {
         return cameFrom;
     }
 
