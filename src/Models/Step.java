@@ -5,12 +5,16 @@ package Models;
 public class Step {
 
     // variables
-
-    private int rotations;
+    private Integer rotations;
     private Position position;
 
-    // Setters and getters
+    // C-TOR
+    public Step(Position position, int rotations) {
+        this.position = position;
+        this.rotations = rotations;
+    }
 
+    // Setters and getters
     public int getRotations() {
         return rotations;
     }
@@ -27,11 +31,11 @@ public class Step {
         this.position = position;
     }
 
-    // C-TOR
-
-    Step(Position position, int rotations) {
-        this.position = position;
-        this.rotations = rotations;
+    @Override
+    public String toString() {
+        return String.join(" ",
+                this.rotations.toString(),
+                this.position.getCol().toString(),
+                this.position.getRow().toString());
     }
-
 }

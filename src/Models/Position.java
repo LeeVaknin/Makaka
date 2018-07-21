@@ -1,33 +1,35 @@
 package Models;
 
+//TODO : Consider of having interface for this class
+
 public class Position {
 
     // Variables
 
-    private int row;
-    private int col;
+    private Integer row;
+    private Integer col;
 
     // Setters and Getters
 
-    public int getRow() {
+    public Integer getRow() {
         return row;
     }
 
-    public void setRow(int row) {
+    public void setRow(Integer row) {
         this.row = row;
     }
 
-    public int getCol() {
+    public Integer getCol() {
         return col;
     }
 
-    public void setCol(int col) {
+    public void setCol(Integer col) {
         this.col = col;
     }
 
     // C-TOR
 
-    Position(int col, int row) {
+    public Position(Integer col, Integer row) {
         this.row = row;
         this.col = col;
     }

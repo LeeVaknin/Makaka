@@ -1,5 +1,7 @@
 package Models;
 
+import jdk.nashorn.internal.objects.annotations.Property;
+
 public class State<T> {
 
     // Variables
@@ -17,6 +19,7 @@ public class State<T> {
         this.cost = cost;
         this.cameFrom = cameFrom;
     }
+
 
     // Methods
     public void setState(T state) {
@@ -43,9 +46,7 @@ public class State<T> {
         return cameFrom;
     }
 
-
-    public boolean equals(State<T> state){
+    public boolean equals(State<T> state) {
          return this.state.equals(state.state);
     }
-
 }
