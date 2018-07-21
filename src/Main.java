@@ -12,6 +12,7 @@ public class Main {
         MyCHandler myClientHandler = new MyCHandler();
         MyServer server = new MyServer(port, myClientHandler);
 
+
         Thread serverThread = new Thread(()-> {
             try {
                 server.start();

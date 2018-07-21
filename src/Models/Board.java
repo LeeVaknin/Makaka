@@ -1,37 +1,51 @@
 package Models;
 
 
+import java.security.MessageDigest;
+
 public abstract class Board<T> {
 
-    public Board(Integer id, T board) {
+    public Board() {
+        this.id = null;
+        this.board = null;
+    }
+
+    public Board(T board) {
         setBoard(board);
-        setId(id);
+        setId(board.toString());
     }
 
-    public Board(Integer id, String board) {
+    public Board(String board) {
         setBoard((toBoard(board)));
-        setId(id);
+        setId(board);
     }
 
-    protected Integer id;
+    protected String id;
     protected T board;
 
     public T getBoard() {
         return board;
     }
 
-    public void setBoard(T board) {
-        this.board = board;
-    }
+    public abstract void setBoard(T board);
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(String board) {
+        try {
+        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+        messageDigest.update(board.getBytes());
+        this.id = new String(messageDigest.digest());
+        } catch (Exception ex) {
+            System.out.println("Board.setId(): Error details: " + ex.getMessage());
+        }
     }
 
-    protected abstract T toBoard(String strBoard);
+    public void setId(Board<T> board) {
+        this.id = board.getId();
 
+    }
+    protected abstract T toBoard(String strBoard);
 }

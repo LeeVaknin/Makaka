@@ -14,7 +14,6 @@ public class PipeGameSolver implements Solver<MatrixBoard, Step>{
     private Searcher<MatrixBoard, Step>  searcher;
 
     // C-TOR
-
     public PipeGameSolver(Searcher<MatrixBoard, Step> searcher) {
         this.searcher = searcher;
     }
