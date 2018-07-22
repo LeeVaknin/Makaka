@@ -1,7 +1,5 @@
 package Models;
-
-
-import java.security.MessageDigest;
+import Utils.HashManager;
 
 public abstract class Board<T> {
 
@@ -34,18 +32,11 @@ public abstract class Board<T> {
     }
 
     public void setId(String board) {
-        try {
-        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-        messageDigest.update(board.getBytes());
-        this.id = new String(messageDigest.digest());
-        } catch (Exception ex) {
-            System.out.println("Board.setId(): Error details: " + ex.getMessage());
-        }
+        this.id = HashManager.getId(board);
     }
 
     public void setId(Board<T> board) {
         this.id = board.getId();
-
     }
     protected abstract T toBoard(String strBoard);
 }

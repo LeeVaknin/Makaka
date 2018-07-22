@@ -6,14 +6,14 @@ import Models.Step;
 
 import java.io.IOException;
 
-public interface CacheManager<T> {
+public interface CacheManager<S> {
 
 
     /////////
     //Methods
     /////////
 
-    String saveSolution(Board<T> board, Solution<Step> solution) throws IOException;
-    Solution<Step> loadSolution(String id) throws IOException;
+    String saveSolution(String id, Solution<S> solution) throws IOException;
+    String loadSolution(String id) throws IOException;
 
 }

@@ -5,6 +5,7 @@ import Models.*;
 import Searchable.PipeSearchable;
 import Searchable.Searchable;
 import Solver.Solver;
+import Utils.HashManager;
 import org.jetbrains.annotations.Nullable;
 import sun.nio.ch.IOUtil;
 
@@ -13,10 +14,10 @@ import java.util.ArrayList;
 
 public class MyCHandler<T> implements ClientHandler{
 
-    Solver<Board<T>, Step> solver;
-    CacheManager<T> cacheManager;
+    private Solver<Board<T>, Step> solver;
+    private CacheManager<Step> cacheManager;
 
-    public MyCHandler(Solver<Board<T>, Step> solver, CacheManager<T> cacheManager) {
+    public MyCHandler(Solver<Board<T>, Step> solver, CacheManager<Step> cacheManager) {
         this.solver = solver;
         this.cacheManager = cacheManager;
     }
@@ -24,15 +25,14 @@ public class MyCHandler<T> implements ClientHandler{
     @Override
     public void handle(InputStream inFromClient, OutputStream outToClient) {
         try {
-            OutputStreamWriter writer = null;
-            Solution<Step> response;
+            String response;
             String request = this.readRequest(inFromClient);
-            MatrixBoard tmpBoard = new MatrixBoard(request);
-
-            response = cacheManager.loadSolution(tmpBoard.getId());
+            String problemId = HashManager.getId(request);
+            response = cacheManager.loadSolution(problemId);
             // Check if we have saved solution to our problem
-            if(response == null) {
-               response = solve(tmpBoard);
+            if (response == null) {
+                Solution<Step> solution  = this.solver.solve(request);
+                response = this.cacheManager.saveSolution(problemId, solution);
             }
             this.writeResponse(response, outToClient);
 
@@ -41,34 +41,20 @@ public class MyCHandler<T> implements ClientHandler{
         }
     }
 
-    private Solution<Step> solve(MatrixBoard gameBoard) {
-        State<MatrixBoard> state = new State<>(gameBoard);
-        Searchable<MatrixBoard> searchable = new PipeSearchable(state);
-        Solution<Step> solution = this.solver.solve(searchable);
-        this.cacheManager.saveSolution(gameBoard, solution);
-        return solution;
-    }
-
     @Nullable
-    private String readRequest(InputStream inFromClient) throws IOException {
+    private String readRequest(InputStream inFromClient) {
 
-        BufferedReader reader = null;
         String request = "";
-        String tmpLine = "";
+        String tmpLine;
 
-        try {
-            reader = new BufferedReader (new InputStreamReader(inFromClient));
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inFromClient))) {
 
-           while (!(tmpLine =  reader.readLine()).equals("done")) {
-               request = request.concat(tmpLine);
-           }
+            while (!(tmpLine = reader.readLine()).equals("done")) {
+                request = request.concat(tmpLine);
+            }
             return request;
         } catch (IOException exception) {
             System.out.println(exception.toString());
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
         }
 
         System.out.println("ERROR: Failed to read client request.");
@@ -76,19 +62,12 @@ public class MyCHandler<T> implements ClientHandler{
 
     }
 
-    @Nullable
-    private void writeResponse(String response, OutputStream outFromClient) throws IOException {
+    private void writeResponse(String response, OutputStream outFromClient) {
 
-        OutputStreamWriter writer = null;
-        try {
-            writer = new OutputStreamWriter(outFromClient);
+        try (OutputStreamWriter writer = new OutputStreamWriter(outFromClient)) {
             writer.write(response);
         } catch (IOException exception) {
             System.out.println(String.join("; ", "Failed to write response to client", exception.toString()));
-        } finally {
-            if (writer != null) {
-                writer.close();
-            }
         }
     }
 }
