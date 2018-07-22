@@ -9,8 +9,8 @@ public interface Server <T> {
     //Methods
     /////////
 
-    public void start() throws IOException;
-    public void stop();
+    void start() throws IOException;
+    void stop();
 
 
 }

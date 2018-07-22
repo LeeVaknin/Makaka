@@ -9,6 +9,7 @@ public interface Solver<T, S> {
     //Methods
     /////////
 
-    public Solution<S> solve(Searchable<T> searchable);
+    Solution<S> solve(Searchable<T> searchable);
 
+    Solution<S> solve(String searchable);
 }

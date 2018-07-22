@@ -1,9 +1,7 @@
 package Solver;
-import Models.MatrixBoard;
-import Models.Pipe;
-import Models.Step;
+import Models.*;
 import Searchable.Searchable;
-import Models.Solution;
+import Searchable.PipeSearchable;
 import Searcher.Searcher;
 
 
@@ -21,6 +19,14 @@ public class PipeGameSolver implements Solver<MatrixBoard, Step>{
     @Override
     public Solution<Step> solve(Searchable<MatrixBoard> searchable) {
         return this.searcher.search(searchable);
+    }
+
+    @Override
+    public Solution<Step> solve(String problem) {
+        MatrixBoard board = new MatrixBoard(problem);
+        State<MatrixBoard> state = new State<>(board);
+        PipeSearchable searchable = new PipeSearchable(state);
+        return this.solve(searchable);
     }
 
 }

@@ -12,43 +12,33 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FileManager<T> implements CacheManager<T> {
+public class FileManager implements CacheManager<Step> {
 
-    String idDelimiter = ", ";
-    String stepsDelimiter = ";";
-    final String solutionsFileName = "solutions.txt";
+    private String idDelimiter = ", ";
+    private String stepsDelimiter = ";";
+    private final String solutionsFileName = "solutions.txt";
 
     /**
      * Gets the board that we would like to saveSolution, generates it's id and saves it to the relevant file.
      *
-     * @param board - the board we would like to saveSolution
-     * @return the id of the saved board
-     * @throws IOException - thrown only if something went wrong during closing the connection
+     * @param id - the id of the problem we would like to save
+     * @return the saved solution of the saved board
      */
     @Override
-    public String saveSolution(Board<T> board, Solution<Step> solution) throws IOException {
+    public String saveSolution(String id, Solution<Step> solution)  {
 
-        String levelSolution;
-        FileWriter fileWriter = null;
-        BufferedWriter writer = null;
-        try {
-            fileWriter = new FileWriter(solutionsFileName);
-            writer = new BufferedWriter(fileWriter);
+        try (FileWriter fileWriter = new FileWriter(solutionsFileName); BufferedWriter writer = new BufferedWriter(fileWriter)) {
             // saves rotations, col and row as string.
-            levelSolution = solutionToString(solution);
-            writer.write(levelSolution);
+            String levelSolution = solutionToString(solution);
+            String strToSave = String.join(this.idDelimiter, id, levelSolution);
+            System.out.println(String.join(" ", "Saving the following solution:\n", strToSave));
+            writer.write(strToSave);
+            return levelSolution;
 
         } catch (IOException exception) {
             System.out.println(String.join(": ", "Couldn't saveSolution file error", exception.toString()));
-        } finally {
-            if (writer != null) {
-                writer.close();
-            }
-            if (fileWriter != null) {
-                fileWriter.close();
-            }
+            return null;
         }
-        return board.getId();
     }
 
     /**
@@ -58,7 +48,7 @@ public class FileManager<T> implements CacheManager<T> {
      * @return - The requested board or NULL if id doesn't exist.
      * @throws IOException Thrown only if something is going wrong during closing the file reader and buffer reader.
      */
-    public Solution<Step> loadSolution(String id) throws IOException {
+    public String loadSolution(String id) throws IOException {
         try {
             String[] requestedLine = Files.lines(Paths.get(solutionsFileName))
                     .filter(line -> line.startsWith(id))
@@ -66,7 +56,8 @@ public class FileManager<T> implements CacheManager<T> {
                     .split(this.idDelimiter);
             // After the split of the result - array of id and solution
             if (requestedLine.length == 2) {
-                return this.extractSolution(requestedLine[1]);
+                return requestedLine[1];
+//                return this.extractSolution(requestedLine[1]);
             }
 
         } catch (IOException exception) {

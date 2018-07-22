@@ -8,6 +8,11 @@ import java.util.ArrayList;
 
 public class PipeSearchable implements Searchable<MatrixBoard> {
 
+    // variables
+    private State<MatrixBoard> currentState;
+    private State<MatrixBoard> initialState;
+    private State<MatrixBoard> goalState;
+
     // C-TOR
     public PipeSearchable(State<MatrixBoard> currentState, State<MatrixBoard> initialState, State<MatrixBoard> goalState) {
         this.currentState = currentState;
@@ -23,11 +28,6 @@ public class PipeSearchable implements Searchable<MatrixBoard> {
         this.initialState = initialState;
         this.goalState = goalState;
     }
-
-    // variables
-    private State<MatrixBoard> currentState;
-    private State<MatrixBoard> initialState;
-    private State<MatrixBoard> goalState;
 
     @Override
     public boolean isGoal() {
