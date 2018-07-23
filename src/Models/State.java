@@ -2,6 +2,10 @@ package Models;
 
 import jdk.nashorn.internal.objects.annotations.Property;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Stack;
+
 public class State<T> {
 
     // Variables
@@ -48,5 +52,18 @@ public class State<T> {
 
     public boolean equals(State<T> state) {
          return this.state.equals(state.state);
+    }
+
+   /*
+   Returns a backTrace of the states for the algorithms
+    */
+    public ArrayList<State> backTrace() {
+        ArrayList<State> returnBackTrace = new ArrayList<>();
+        State temp = this;
+        while (temp != null){
+            returnBackTrace.add(temp);
+        }
+        Collections.reverse(returnBackTrace);
+        return returnBackTrace;
     }
 }
