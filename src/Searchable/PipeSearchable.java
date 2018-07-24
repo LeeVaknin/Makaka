@@ -52,11 +52,13 @@ public class PipeSearchable implements Searchable<MatrixBoard> {
     @Override
     public ArrayList<State<MatrixBoard>> getAllPossibleStates() {
         ArrayList<State<MatrixBoard>> stateArrayList = null;
-        int length = this.currentState.getState().length();
+        int row = this.currentState.getState().getBoard().length;
+        int col = this.currentState.getState().getBoard()[0].length;
+//        int length = this.currentState.getState().length();
         try {
             stateArrayList = new ArrayList<>();
-            for (int i = 0; i < length; i++) {
-                for (int j = 0; j < length; j++) {
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
                     MatrixBoard tmpBoard = new MatrixBoard(this.currentState.getState());
                     tmpBoard.getBoard()[i][j].rotate();
                     double tmpCost = this.currentState.getCost() + 1;
