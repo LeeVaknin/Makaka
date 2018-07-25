@@ -5,12 +5,16 @@ package Models;
 public class Position {
 
     // Variables
-
     private Integer row;
     private Integer col;
 
-    // Setters and Getters
+    // C-TOR
+    public Position(Integer col, Integer row) {
+        this.row = row;
+        this.col = col;
+    }
 
+    // Setters and Getters
     public Integer getRow() {
         return row;
     }
@@ -27,12 +31,6 @@ public class Position {
         this.col = col;
     }
 
-    // C-TOR
-
-    public Position(Integer col, Integer row) {
-        this.row = row;
-        this.col = col;
-    }
 
 
 }
