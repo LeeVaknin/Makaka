@@ -27,10 +27,11 @@ public class MatrixBoard extends Board<Pipe[][]> {
     @Override
     public void setBoard(Pipe[][] tmpBoard) {
         try {
-            int length = tmpBoard.length;
-            board = new Pipe[length][length];
-            for (int i = 0; i < length; i++) {
-                for (int j = 0; j < length; j++) {
+           int row = tmpBoard.length;
+           int col = tmpBoard[0].length;
+            board = new Pipe[row][col];
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
                     board[i][j] = new Pipe(tmpBoard[i][j]);
                 }
             }
@@ -80,12 +81,13 @@ public class MatrixBoard extends Board<Pipe[][]> {
 
     public boolean equals(Pipe[][] pipes) {
         boolean isEqual = false;
-        int length = pipes.length;
+        int row = pipes.length;
+        int col = pipes[0].length;
         try {
             compare:
             {
-                for (int i = 0; i < length; i++) {
-                    for (int j = 0; j < length; j++) {
+                for (int i = 0; i < row; i++) {
+                    for (int j = 0; j < col; j++) {
                         isEqual = this.board[i][j].equals(pipes[i][j]);
                         if (!isEqual) break compare;
                     }
