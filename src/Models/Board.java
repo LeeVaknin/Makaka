@@ -1,65 +1,69 @@
 package Models;
 import Utils.HashManager;
 
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class Board<T> {
 
     protected String id;
     protected T board;
-    protected Pipe from = new Pipe(new Position(0,0));
-    protected Pipe to = new Pipe(new Position(0,0));
-
+    protected HashMap<String, HashMap<Character, String>> permittedSteps;
 
     // C-TOR
-    public Board() {
+    Board() {
         this.id = null;
         this.board = null;
+        this.setPermitted();
     }
 
-    public Board(T board) {
+    Board(T board) {
+        this.setPermitted();
         setBoard(board);
         setId(board.toString());
     }
 
-    public Board(String board) {
+    Board(String board) {
+        this.setPermitted();
         setBoard((toBoard(board)));
         setId(board);
     }
 
-
     // Setters and Getters
+
+    abstract void setPermitted();
+
     public T getBoard() {
         return board;
     }
 
     public abstract void setBoard(T board);
 
-    public String getId() {
+    String getId() {
         return id;
     }
 
-    public void setId(String board) {
+    void setId(String board) {
         this.id = HashManager.getId(board);
     }
 
-    public void setId(Board<T> board) {
+    void setId(Board<T> board) {
         this.id = board.getId();
     }
 
-    public Pipe getFrom() {
-        return from;
-    }
+    // Returns whether a move can be done from position x, to position y
+    abstract boolean isValidMove(Board<T> board, Position from, Position to);
 
-    public Pipe getTo() {
-        return to;
-    }
 
-    public void setFrom(Pipe from) {
-        this.from = from;
-    }
 
-    public void setTo(Pipe to) {
-        this.to = to;
-    }
+    // Converts string to board
+    abstract T toBoard(String strBoard);
 
-    protected abstract T toBoard(String strBoard);
+    // Validators
+    // Checks if the board is valid
+    abstract boolean isValidBoard();
+    // Checks if the position relative to the board is valid
+    abstract boolean isValidPosition(Position position);
 }
