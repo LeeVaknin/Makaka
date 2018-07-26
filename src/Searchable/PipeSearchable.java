@@ -34,6 +34,10 @@ public class PipeSearchable implements Searchable<MatrixBoard> {
         return this.currentState.equals(goalState);
     }
 
+    public boolean isGoal(State state) {
+        return state.equals(goalState);
+    }
+
     @Override
     public State<MatrixBoard> getState() {
         return this.currentState;

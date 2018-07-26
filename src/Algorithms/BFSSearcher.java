@@ -22,6 +22,9 @@ public class BFSSearcher<T,S> implements Searcher<T,S> {
             State<T> currentState;
             currentState = queue.poll();
             s.setCurrentState(currentState);
+
+            //********************** == is not good here !!! **********************
+
             if (currentState.getState() == s.getGoalState().getState())
             {
                 //TODO:need to change when Solution is finalize
