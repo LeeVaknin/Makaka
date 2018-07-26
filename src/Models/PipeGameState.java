@@ -1,25 +1,37 @@
 package Models;
 
-import jdk.nashorn.internal.objects.annotations.Property;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Stack;
 
-public abstract class State<T> {
+public class PipeGameState<T> {
 
     // Variables
     private T state;
     private double cost; // cost to reach this state
-    private State<T> cameFrom;
+    private PipeGameState<T> cameFrom;
+
+    // C-TOR
+    public PipeGameState(T state) {
+        this.state = state;
+    }
+
+    public PipeGameState(T state, double cost, PipeGameState<T> cameFrom) {
+        this.state = state;
+        this.cost = cost;
+        this.cameFrom = cameFrom;
+    }
+
 
     // Methods
+    public void setState(T state) {
+        this.state = state;
+    }
 
     public void setCost(double cost) {
         this.cost = cost;
     }
 
-    public void setCameFrom(State<T> cameFrom) {
+    public void setCameFrom(PipeGameState<T> cameFrom) {
         this.cameFrom = cameFrom;
     }
 
@@ -31,20 +43,20 @@ public abstract class State<T> {
         return cost;
     }
 
-    public State<T> getCameFrom() {
+    public PipeGameState<T> getCameFrom() {
         return cameFrom;
     }
 
-    public boolean equals(State<T> state) {
+    public boolean equals(PipeGameState<T> state) {
          return this.state.equals(state.state);
     }
 
    /*
    Returns a backTrace of the states for the algorithms
     */
-    public ArrayList<State> backTrace() {
-        ArrayList<State> returnBackTrace = new ArrayList<>();
-        State temp = this;
+    public ArrayList<PipeGameState> backTrace() {
+        ArrayList<PipeGameState> returnBackTrace = new ArrayList<>();
+        PipeGameState temp = this;
         while (temp != null){
             returnBackTrace.add(temp);
         }

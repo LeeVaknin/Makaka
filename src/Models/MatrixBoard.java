@@ -1,15 +1,11 @@
 package Models;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import Models.Board;
-import Models.State;
-import com.oracle.webservices.internal.api.message.PropertySet;
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Property;
-import jdk.nashorn.internal.objects.annotations.Setter;
-
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MatrixBoard extends Board<Pipe[][]> {
+
 
     public MatrixBoard(Pipe[][] board) {
         super(board);
@@ -22,6 +18,54 @@ public class MatrixBoard extends Board<Pipe[][]> {
 
     public MatrixBoard(String board) {
         super(board);
+    }
+
+    // Returns the value of the pipe in the given position
+    public Character getPipe(Position position) {
+        int col = position.getCol();
+        int row = position.getRow();
+        return this.board[row][col].getPipeVal();
+    }
+
+    @Override
+    void setPermitted() {
+        HashMap<Character, String> top = new HashMap<>();
+        HashMap<Character, String> bottom = new HashMap<>();
+        HashMap<Character, String> right = new HashMap<>();
+        HashMap<Character, String> left = new HashMap<>();
+
+        // Map the from - to allowed steps
+        top.put('|', "|");
+        top.put('L', "JF");
+        top.put('F', "7");
+        top.put('J', "FL");
+        top.put('7', "F");
+
+        left.put('-', "-");
+        left.put('L', "F");
+        left.put('F', "L");
+        left.put('J', "FL");
+        left.put('7', "JF");
+
+        right.put('-', "-");
+        right.put('L', "JF");
+        right.put('F', "7L");
+        right.put('J', "7");
+        right.put('7', "J");
+
+        bottom.put('|', "|");
+        bottom.put('L', "J");
+        bottom.put('F', "7L");
+        bottom.put('J', "L");
+        bottom.put('7', "FJ");
+
+        this.permittedSteps = new HashMap<>();
+
+        // Save the allowed steps by direction
+        this.permittedSteps.put("top", top);
+        this.permittedSteps.put("bottom", bottom);
+        this.permittedSteps.put("left", left);
+        this.permittedSteps.put("right", right);
     }
 
     @Override
@@ -40,10 +84,47 @@ public class MatrixBoard extends Board<Pipe[][]> {
         }
     }
 
-    public int length() {
+    @Override
+    public boolean isValidMove(Board<Pipe[][]> board, Position from, Position to) {
+
+        // First verify all the parameters are valid
+        if (board.isValidBoard() || this.isValidPosition(from) || this.isValidPosition(to)) {
+            // Check what is the direction of the given move, verify it's legal and return result.
+            String direction = this.classifyMoveDirection(from, to);
+            if (direction != null) {
+                // Get the permitted steps in the taken direction
+                String permittedStep = this.permittedSteps.get(direction).get(getPipe(from));
+                if (permittedStep != null) {
+                    // Validate that the 'to' position is allowed by the mapping
+                    return permittedStep.contains(getPipe(to).toString());
+                }
+            }
+        }
+
+        return false;
+    }
+
+    @Nullable
+    private String classifyMoveDirection(@NotNull Position from, @NotNull Position to) {
+        // In case we move up or down
+        if (from.getCol().equals(to.getCol())) {
+            if (from.getRow() + 1 == to.getRow()) { return "bottom" ;}
+            if (from.getRow() - 1 == to.getRow()) { return "top" ;}
+            // In case we move right or left
+        } else if (from.getRow().equals(to.getRow())) {
+            if (from.getCol() + 1 == to.getCol()) { return "right" ;}
+            if (from.getCol() - 1 == to.getCol()) { return "left" ;}
+        }
+        return null;
+    }
+
+    public int rows() {
         return board.length;
     }
 
+    public int columns() {
+        return board[0].length;
+    }
     @Override
     public String toString() {
         String result = null;
@@ -77,6 +158,16 @@ public class MatrixBoard extends Board<Pipe[][]> {
             System.out.println("MatrixBoard.toBoard(): Error details: " + ex.getMessage());
         }
         return tmpBoard;
+    }
+
+    @Override
+    boolean isValidBoard() {
+        return (this.board != null && this.rows() > 0 && this.columns() > 0);
+    }
+
+    @Override
+    boolean isValidPosition(Position position) {
+        return (position != null && position.getRow() < this.rows() && position.getCol() < this.columns());
     }
 
     public boolean equals(Pipe[][] pipes) {

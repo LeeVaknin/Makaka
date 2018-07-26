@@ -15,6 +15,7 @@ public class Pipe {
     private Character right;
     private Character up;
     private Character down;
+    private Position position;
 
 
     // Setters and Getters
@@ -24,6 +25,14 @@ public class Pipe {
 
     public void setPipeVal(Character value) {
         this.pipeVal = value;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     // C-TOR
@@ -46,6 +55,10 @@ public class Pipe {
 
     public Pipe(@NotNull Pipe pipe) {
         this.setPipeVal(pipe.getPipeVal());
+    }
+
+    public Pipe(Position position) {
+        this.position = position;
     }
 
     // Methods

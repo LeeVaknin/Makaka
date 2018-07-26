@@ -1,25 +1,39 @@
 package Models;
 import Utils.HashManager;
 
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class Board<T> {
 
-    public Board() {
+    protected String id;
+    protected T board;
+    protected HashMap<String, HashMap<Character, String>> permittedSteps;
+
+    // C-TOR
+    Board() {
         this.id = null;
         this.board = null;
+        this.setPermitted();
     }
 
-    public Board(T board) {
+    Board(T board) {
+        this.setPermitted();
         setBoard(board);
         setId(board.toString());
     }
 
-    public Board(String board) {
+    Board(String board) {
+        this.setPermitted();
         setBoard((toBoard(board)));
         setId(board);
     }
 
-    protected String id;
-    protected T board;
+    // Setters and Getters
+
+    abstract void setPermitted();
 
     public T getBoard() {
         return board;
@@ -27,16 +41,29 @@ public abstract class Board<T> {
 
     public abstract void setBoard(T board);
 
-    public String getId() {
+    String getId() {
         return id;
     }
 
-    public void setId(String board) {
+    void setId(String board) {
         this.id = HashManager.getId(board);
     }
 
-    public void setId(Board<T> board) {
+    void setId(Board<T> board) {
         this.id = board.getId();
     }
-    protected abstract T toBoard(String strBoard);
+
+    // Returns whether a move can be done from position x, to position y
+    abstract boolean isValidMove(Board<T> board, Position from, Position to);
+
+
+
+    // Converts string to board
+    abstract T toBoard(String strBoard);
+
+    // Validators
+    // Checks if the board is valid
+    abstract boolean isValidBoard();
+    // Checks if the position relative to the board is valid
+    abstract boolean isValidPosition(Position position);
 }

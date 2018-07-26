@@ -5,9 +5,10 @@ import Models.State;
 import Searchable.Searchable;
 import Searcher.Searcher;
 
-import java.util.ArrayList;
+
 import java.util.HashSet;
 import java.util.Stack;
+
 
 public class HillClimbingSearcher<T, S> implements Searcher<T, S> {
 
@@ -88,7 +89,7 @@ public class HillClimbingSearcher<T, S> implements Searcher<T, S> {
        // resultPath.add(rootSolution);
 
 
-        State currentState = searchable.getState();
+        State currentState = searchable.getCurrentState();
         boolean noStateFound = false;
 
         // Run until we find the goal or there is no more states

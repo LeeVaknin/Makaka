@@ -1,7 +1,6 @@
 package Searchable;
 
 import Models.MatrixBoard;
-import Models.Pipe;
 import Models.State;
 
 import java.util.ArrayList;
@@ -24,12 +23,11 @@ public class PipeSearchable implements Searchable<MatrixBoard> {
         this.initialState = initialState;
     }
 
-    public PipeSearchable(State<MatrixBoard> initialState, State<MatrixBoard> goalState) {
+    public PipeSearchable(State<MatrixBoard> initialState, State<MatrixBoard> currentState) {
         this.initialState = initialState;
-        this.goalState = goalState;
+        this.currentState = currentState;
     }
 
-    @Override
     public boolean isGoal() {
         return this.currentState.equals(goalState);
     }
@@ -39,7 +37,7 @@ public class PipeSearchable implements Searchable<MatrixBoard> {
     }
 
     @Override
-    public State<MatrixBoard> getState() {
+    public State<MatrixBoard> getCurrentState() {
         return this.currentState;
     }
 
@@ -56,15 +54,17 @@ public class PipeSearchable implements Searchable<MatrixBoard> {
     @Override
     public ArrayList<State<MatrixBoard>> getAllPossibleStates() {
         ArrayList<State<MatrixBoard>> stateArrayList = null;
-        int length = this.currentState.getState().length();
+        int row = this.currentState.getState().rows();
+        int col = this.currentState.getState().columns();
+//        int rows = this.currentState.getCurrentState().rows();
         try {
             stateArrayList = new ArrayList<>();
-            for (int i = 0; i < length; i++) {
-                for (int j = 0; j < length; j++) {
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
                     MatrixBoard tmpBoard = new MatrixBoard(this.currentState.getState());
                     tmpBoard.getBoard()[i][j].rotate();
                     double tmpCost = this.currentState.getCost() + 1;
-                    State<MatrixBoard> tmpState = new State<>(tmpBoard, tmpCost, this.getState());
+                    State<MatrixBoard> tmpState = new State<>(tmpBoard, tmpCost, this.getCurrentState());
 
                     stateArrayList.add(tmpState);
                 }
@@ -77,7 +77,7 @@ public class PipeSearchable implements Searchable<MatrixBoard> {
 
     @Override
     public void setCurrentState(State<MatrixBoard> currentState) {
-        this.currentState = currentState;
+//        this.currentState = new State<MatrixBoard>(currentState);
     }
 
     @Override
