@@ -5,9 +5,79 @@ import Models.State;
 import Searchable.Searchable;
 import Searcher.Searcher;
 
-import java.util.ArrayList;
+
+import java.util.HashSet;
+import java.util.Stack;
+
 
 public class HillClimbingSearcher<T, S> implements Searcher<T, S> {
+
+
+
+    Stack<State> open;
+    HashSet<String> visitedStates; // states that already evaluated
+
+    @Override
+    public Solution<S> search(Searchable<T> searchable) {
+
+        visitedStates = new HashSet<String>();
+        open = new Stack<State>();
+        open.push(searchable.getInitialState());
+
+        while(!open.isEmpty())
+        {
+            State tmpState = open.pop();
+            //visitedStates.add(v.toString());
+            //System.out.println("adding to Visited list: " + v.toString());
+
+            //System.out.println("This is V that we poped");
+
+            // Validate we haven't handle this state already
+            if(!visitedStates.contains(tmpState))
+            {
+                if(searchable.isGoal(tmpState))
+                {
+                    //System.out.println("done! goal");
+                    return searchable.backTrack(tmpState);
+                }
+                ArrayList<State> list = new ArrayList<>();
+                list = tmpState.getNeighbors();
+                //System.out.println("Printing list before reorer");
+                printList(list);
+                //System.out.println("Printing list After reorer");
+                list.sort(searchable.getComp());//diffrence between dfs to
+                printList(list);
+                //System.out.println("This is v's neighbors");
+
+                for(State s:list)
+                {
+                    if(!visitedStates.contains(s.toString())){
+                        s.setCameFrom(tmpState);
+                        //System.out.println("p: " + v.getLocation().toString());
+                        open.push(s);
+                        //System.out.println("me:" + s.getLocation().toString());
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+
+
 
     @Override
     public Solution<S> search(Searchable<T> searchable) {
@@ -80,7 +150,7 @@ public class HillClimbingSearcher<T, S> implements Searcher<T, S> {
         }
         return statekHeuristics;
     }
-
+*/
     @Override
     public int getNumberOfNodesEvaluated() {
         return 0;

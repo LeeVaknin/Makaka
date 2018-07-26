@@ -29,7 +29,13 @@ public class BFSSearcher<T,S> implements Searcher<T,S> {
             //get the first one in queue
             currentState = queue.poll();
             s.setCurrentState(currentState);
+
+
+            //********************** == is not good here !!! **********************
+
+
             //chekce if the current state is the goal
+
             if (currentState.getState() == s.getGoalState().getState())
             {
                 //the return - need to add it!!!
