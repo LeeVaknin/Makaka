@@ -14,6 +14,11 @@ public class Position {
         this.col = col;
     }
 
+    public Position(Position position) {
+        this.row = position.getRow();
+        this.col = position.getCol();
+    }
+
     // Setters and Getters
     public Integer getRow() {
         return row;
@@ -30,7 +35,5 @@ public class Position {
     public void setCol(Integer col) {
         this.col = col;
     }
-
-
 
 }

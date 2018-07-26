@@ -1,4 +1,5 @@
 package Models;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -6,7 +7,10 @@ import java.util.HashMap;
 
 public class MatrixBoard extends Board<Pipe[][]> {
 
+    private Position end;
+    private Position start;
 
+    // C-TOR
     public MatrixBoard(Pipe[][] board) {
         super(board);
     }
@@ -17,8 +21,11 @@ public class MatrixBoard extends Board<Pipe[][]> {
     }
 
     public MatrixBoard(String board) {
-        super(board);
+        // super(board);
+        this.toBoard(board);
     }
+
+    // Methods
 
     // Returns the value of the pipe in the given position
     public Character getPipe(Position position) {
@@ -68,17 +75,36 @@ public class MatrixBoard extends Board<Pipe[][]> {
         this.permittedSteps.put("right", right);
     }
 
+    public Position getStart() {
+        return start;
+    }
+
+    public void setStart(Position start) {
+        this.start = start;
+    }
+
+    public Position getEnd() {
+        return end;
+    }
+
+    public void setEnd(Position end) {
+        this.end = end;
+    }
+
     @Override
     public void setBoard(Pipe[][] tmpBoard) {
         try {
-           int row = tmpBoard.length;
-           int col = tmpBoard[0].length;
+            int row = tmpBoard.length;
+            int col = tmpBoard[0].length;
             board = new Pipe[row][col];
             for (int i = 0; i < row; i++) {
                 for (int j = 0; j < col; j++) {
                     board[i][j] = new Pipe(tmpBoard[i][j]);
                 }
             }
+            setStart(findStartPosition(tmpBoard));
+            setEnd(findEndPosition(tmpBoard));
+
         } catch (Exception ex) {
             System.out.println("MatrixBoard.toBoard(): Error details: " + ex.getMessage());
         }
@@ -108,12 +134,20 @@ public class MatrixBoard extends Board<Pipe[][]> {
     private String classifyMoveDirection(@NotNull Position from, @NotNull Position to) {
         // In case we move up or down
         if (from.getCol().equals(to.getCol())) {
-            if (from.getRow() + 1 == to.getRow()) { return "bottom" ;}
-            if (from.getRow() - 1 == to.getRow()) { return "top" ;}
+            if (from.getRow() + 1 == to.getRow()) {
+                return "bottom";
+            }
+            if (from.getRow() - 1 == to.getRow()) {
+                return "top";
+            }
             // In case we move right or left
         } else if (from.getRow().equals(to.getRow())) {
-            if (from.getCol() + 1 == to.getCol()) { return "right" ;}
-            if (from.getCol() - 1 == to.getCol()) { return "left" ;}
+            if (from.getCol() + 1 == to.getCol()) {
+                return "right";
+            }
+            if (from.getCol() - 1 == to.getCol()) {
+                return "left";
+            }
         }
         return null;
     }
@@ -125,6 +159,7 @@ public class MatrixBoard extends Board<Pipe[][]> {
     public int columns() {
         return board[0].length;
     }
+
     @Override
     public String toString() {
         String result = null;
@@ -134,6 +169,7 @@ public class MatrixBoard extends Board<Pipe[][]> {
                 for (Pipe pipe : pipes) {
                     result.concat(pipe.getPipeVal().toString());
                 }
+                result.concat(System.lineSeparator());
             }
         } catch (Exception ex) {
             System.out.println("MatrixBoard.toBoard(): Error details: " + ex.getMessage());
@@ -145,15 +181,31 @@ public class MatrixBoard extends Board<Pipe[][]> {
     protected Pipe[][] toBoard(String strBoard) {
         Pipe[][] tmpBoard = null;
         try {
-            int length = (int) Math.sqrt(strBoard.length());
-            tmpBoard = new Pipe[length][length];
-            int strLocation = 0;
-            for (int i = 0; i < length; i++) {
-                for (int j = 0; j < length; j++) {
-                    tmpBoard[i][j] = new Pipe(strBoard.charAt(strLocation));
-                    strLocation++;
+            if (strBoard == null)
+                throw new Exception("Bord string is empty");
+
+            // Get values for col and row according to the given string
+            String[] splitterBord = strBoard.split(System.lineSeparator());
+            int row = splitterBord.length;
+            int col = splitterBord[0].length();
+
+            if (row <= 0 || col <= 0)
+                throw new Exception("Invalid length for building matrix bord ");
+
+            // Initial bord with all strBoard values
+            tmpBoard = new Pipe[row][col];
+            for (Integer i = 0; i < row; i++) {
+                String tmpLine = splitterBord[i];
+                if (tmpLine == null)
+                    throw new Exception(String.join(": ", "The following line is null at the matrix board", i.toString()));
+                for (int j = 0; j < col; j++) {
+                    tmpBoard[i][j] = new Pipe(tmpLine.charAt(j));
                 }
             }
+
+            setStart(findStartPosition(tmpBoard));
+            setEnd(findEndPosition(tmpBoard));
+
         } catch (Exception ex) {
             System.out.println("MatrixBoard.toBoard(): Error details: " + ex.getMessage());
         }
@@ -169,6 +221,41 @@ public class MatrixBoard extends Board<Pipe[][]> {
     boolean isValidPosition(Position position) {
         return (position != null && position.getRow() < this.rows() && position.getCol() < this.columns());
     }
+
+    public Position findStartPosition(Pipe[][] board) {
+        try {
+            if(board == null)
+                throw new Exception("Board is NULL");
+            // Look for the pipe with the end sign
+            for (Pipe[] pipes : board) {
+                for (Pipe pipe : pipes) {
+                    if(pipe.equals("s"))
+                        return new Position(pipe.getPosition());
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println(String.join(": ", "Position.findStartPosition(): Error details" , ex.getMessage()));
+        }
+        return null;
+    }
+
+    public Position findEndPosition(Pipe[][] board) {
+        try {
+            if(board == null)
+                throw new Exception("Board is NULL");
+            // Look for the pipe with the end sign
+            for (Pipe[] pipes : board) {
+                for (Pipe pipe : pipes) {
+                    if(pipe.equals("g"))
+                        return new Position(pipe.getPosition());
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println(String.join(": ", "Position.findEndPosition(): Error details" , ex.getMessage()));
+        }
+        return null;
+    }
+
 
     public boolean equals(Pipe[][] pipes) {
         boolean isEqual = false;
