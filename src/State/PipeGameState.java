@@ -58,16 +58,42 @@ public class PipeGameState extends State<MatrixBoard, PipeGameState> {
     }
 
     /*
-       Returns a backTrace of the states for the algorithms
+    Returns a backTrace of the states for the algorithms
      */
-   @Override
     public ArrayList<PipeGameState> backTrace() {
         ArrayList<PipeGameState> returnBackTrace = new ArrayList<>();
-        PipeGameState temp = this;
-        while (temp != null){
+        PipeGameState temp = this.getCameFrom();
+        while (temp != null) {
             returnBackTrace.add(temp);
+            temp = temp.getCameFrom();
         }
         Collections.reverse(returnBackTrace);
         return returnBackTrace;
+    }
+
+    public ArrayList<PipeGameState> getAllNeighbors() {
+        ArrayList<PipeGameState> allNeighbors = null;
+
+        try {
+            allNeighbors = new ArrayList<>();
+            PipeGameState myState = this.getCameFrom();
+        } catch (Exception ex) {
+            System.out.println(String.join(": ", "PipeGameState.getAllNeighbors(): Error details" , ex.getMessage()));
+        }
+
+        return null;
+    }
+    @Override
+    public int generateCost() {
+        int cost = 0;
+        try {
+            Position endPosition = ((MatrixBoard) this.getState()).findEndPosition();
+            Position currentPosition = this.getFrom();
+            // Calculate the absolute value of the way from current position to the goal
+            cost = Math.abs(currentPosition.getRow() - endPosition.getRow()) + Math.abs(endPosition.getCol() - endPosition.getCol());
+        } catch (Exception ex) {
+            System.out.println(String.join(": ", "PipeGameState.generateCost(): Error details" , ex.getMessage()));
+        }
+        return cost;
     }
 }

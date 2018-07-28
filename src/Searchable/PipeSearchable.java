@@ -3,8 +3,6 @@ package Searchable;
 import Models.MatrixBoard;
 import State.PipeGameState;
 import Models.Position;
-import Models.State;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -66,7 +64,7 @@ public class PipeSearchable implements Searchable<PipeGameState> {
         int col = this.currentState.getState().columns();
 
         MatrixBoard tmpBoard2 = new MatrixBoard(this.currentState.getState());
-        startPosition = tmpBoard2.findStartPosition(tmpBoard2.getBoard());
+        startPosition = tmpBoard2.findStartPosition();
 
 
         try {

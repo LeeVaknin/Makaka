@@ -33,6 +33,8 @@ public abstract class State<T, S> {
         return cameFrom;
     }
 
+    public abstract int generateCost();
+
    /*
    Returns a backTrace of the states for the algorithms
     */
