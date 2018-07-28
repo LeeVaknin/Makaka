@@ -29,20 +29,14 @@ public class PipeGameState extends State<MatrixBoard> {
     // C-TOR
 
     public PipeGameState(MatrixBoard state) {
-        this.state = state;
-    }
-
-    public PipeGameState(MatrixBoard state, double cost, State<MatrixBoard> cameFrom) {
         this.setState(state);
-        this.setCost(cost);
-        this.setCameFrom(cameFrom);
     }
 
-    public PipeGameState(State<MatrixBoard> pipeGameState) {
+    public PipeGameState(PipeGameState pipeGameState) {
         if (pipeGameState != null) {
             this.setState(pipeGameState.getState());
-//            this.setFrom(pipeGameState.getFrom());
-//            this.setTo(pipeGameState.getTo());
+            this.setFrom(pipeGameState.getFrom());
+            this.setTo(pipeGameState.getTo());
             this.setCameFrom(pipeGameState.getCameFrom());
             this.setCost(pipeGameState.getCost());
         }
@@ -73,10 +67,9 @@ public class PipeGameState extends State<MatrixBoard> {
 
     public ArrayList<State<MatrixBoard>> getAllNeighbors() {
         ArrayList<State<MatrixBoard>> allNeighbors = null;
-
         try {
             allNeighbors = new ArrayList<>();
-            State<MatrixBoard> myState = this.getCameFrom();
+
         } catch (Exception ex) {
             System.out.println(String.join(": ", "PipeGameState.getAllNeighbors(): Error details" , ex.getMessage()));
         }

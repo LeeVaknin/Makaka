@@ -46,29 +46,33 @@ public class MatrixBoard extends Board<Pipe[][]> {
         HashMap<Character, String> left = new HashMap<>();
 
         // Map the from - to allowed steps
-        top.put('|', "|");
-        top.put('L', "JF");
+        top.put('|', "|g");
+        top.put('L', "JFg");
         top.put('F', "7");
-        top.put('J', "FL");
+        top.put('J', "FgL");
         top.put('7', "F");
+        top.put('s', "7F|g");
 
-        left.put('-', "-");
+        left.put('-', "-g");
         left.put('L', "F");
         left.put('F', "L");
-        left.put('J', "FL");
-        left.put('7', "JF");
+        left.put('J', "FLg");
+        left.put('7', "JFg");
+        left.put('s', "7F|g");
 
-        right.put('-', "-");
-        right.put('L', "JF");
-        right.put('F', "7L");
+        right.put('-', "-g");
+        right.put('L', "JFg");
+        right.put('F', "7Lg");
         right.put('J', "7");
         right.put('7', "J");
+        right.put('s', "7J-g");
 
-        bottom.put('|', "|");
+        bottom.put('|', "|g");
         bottom.put('L', "J");
-        bottom.put('F', "7L");
+        bottom.put('F', "7gL");
         bottom.put('J', "L");
-        bottom.put('7', "FJ");
+        bottom.put('7', "FJg");
+        bottom.put('s', "LJ|g");
 
         this.permittedSteps = new HashMap<>();
 
@@ -114,9 +118,8 @@ public class MatrixBoard extends Board<Pipe[][]> {
     @Override
     public boolean isValidMove(Board<Pipe[][]> board, Position from, Position to) {
 
-        // TODO : first if should be and
         // First verify all the parameters are valid
-        if (board.isValidBoard() || this.isValidPosition(from) || this.isValidPosition(to)) {
+        if (board.isValidBoard() && this.isValidPosition(from) && this.isValidPosition(to)) {
             // Check what is the direction of the given move, verify it's legal and return result.
             String direction = this.classifyMoveDirection(from, to);
             if (direction != null) {
