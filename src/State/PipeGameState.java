@@ -122,7 +122,7 @@ public class PipeGameState extends State<MatrixBoard, Step> {
     public double generateCost() {
         double cost = 0;
         try {
-            Position endPosition = ((MatrixBoard) this.getState()).findEndPosition();
+            Position endPosition = this.getState().findEndPosition();
             Position currentPosition = this.getFrom();
             // Calculate the absolute value of the way from current position to the goal
 //            cost = Math.abs(currentPosition.getRow() - endPosition.getRow()) + Math.abs(currentPosition.getCol() - endPosition.getCol());
