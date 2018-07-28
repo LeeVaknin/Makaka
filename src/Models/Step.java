@@ -6,15 +6,18 @@ public class Step {
 
     // variables
     private Integer numOfRotations;
-    private Position position;
+    private Position from;
+    private Position to;
 
     // C-TOR
-    public Step(Position position, int numOfRotations) {
-        this.position = position;
+    public Step(Position from, Position to, int numOfRotations) {
+        this.from = new Position(from);
+        this.to = new Position(to);
         this.numOfRotations = numOfRotations;
     }
 
     // Setters and getters
+    // The number of rotations is the number of rotations in the to position
     public int getNumOfRotations() {
         return numOfRotations;
     }
@@ -23,12 +26,12 @@ public class Step {
         this.numOfRotations = numOfRotations;
     }
 
-    public Position getPosition() {
-        return position;
+    public Position getFrom() {
+        return from;
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
+    public void setFrom(Position position) {
+        this.from = position;
     }
 
 
@@ -36,7 +39,9 @@ public class Step {
     public String toString() {
         return String.join(" ",
                 this.numOfRotations.toString(),
-                this.position.getCol().toString(),
-                this.position.getRow().toString());
+                this.from.getCol().toString(),
+                this.from.getRow().toString(),
+                this.to.getCol().toString(),
+                this.to.getRow().toString());
     }
 }

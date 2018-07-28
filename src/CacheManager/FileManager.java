@@ -75,6 +75,8 @@ public class FileManager implements CacheManager<Step> {
                 solution.add(new Step(
                         new Position(Integer.valueOf(splitStep[1]),
                                 Integer.valueOf(splitStep[2])),
+                        new Position(Integer.valueOf(splitStep[3]),
+                                Integer.valueOf(splitStep[4])),
                         Integer.valueOf(splitStep[0])));
             }
         } catch (Exception ex) {
