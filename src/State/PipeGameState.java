@@ -1,11 +1,13 @@
 package State;
 import Board.MatrixBoard;
 import Models.Position;
+import Models.Step;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class PipeGameState extends State<MatrixBoard> {
+public class PipeGameState extends State<MatrixBoard, Step> {
 
     // C-TOR
 
@@ -14,7 +16,7 @@ public class PipeGameState extends State<MatrixBoard> {
         this.setFrom(null);
     }
 
-    public PipeGameState(State<MatrixBoard> pipeGameState) {
+    public PipeGameState(State<MatrixBoard, Step> pipeGameState) {
         if (pipeGameState != null) {
             this.setState(pipeGameState.getState());
             this.setFrom(pipeGameState.getFrom());
@@ -40,7 +42,7 @@ public class PipeGameState extends State<MatrixBoard> {
         }
     }
 
-    public boolean equals(State<MatrixBoard> state) {
+    public boolean equals(State<MatrixBoard, Step> state) {
         if (state == null) { return false; }
         return this.state.equals(state.state);
     }
@@ -48,9 +50,9 @@ public class PipeGameState extends State<MatrixBoard> {
     /*
     Returns a backTrace of the states for the algorithms
      */
-    public ArrayList<State<MatrixBoard>> backTrace() {
-        ArrayList<State<MatrixBoard>> returnBackTrace = new ArrayList<>();
-        State<MatrixBoard> temp = this.getCameFrom();
+    public ArrayList<State<MatrixBoard, Step>> backTrace() {
+        ArrayList<State<MatrixBoard, Step>> returnBackTrace = new ArrayList<>();
+        State<MatrixBoard, Step> temp = this.getCameFrom();
         while (temp != null) {
             returnBackTrace.add(temp);
             temp = temp.getCameFrom();
@@ -59,8 +61,8 @@ public class PipeGameState extends State<MatrixBoard> {
         return returnBackTrace;
     }
 
-    public ArrayList<State<MatrixBoard>> getAllNeighbors() {
-        ArrayList<State<MatrixBoard>> allNeighbors = null;
+    public ArrayList<Step> getAllNeighbors() {
+        ArrayList<Step> allNeighbors = null;
         try {
             allNeighbors = new ArrayList<>();
             // Check what are my options of moves up, down, left and right
@@ -70,6 +72,8 @@ public class PipeGameState extends State<MatrixBoard> {
             Position down = new Position(currentLocation.getPositionDown());
             Position left = new Position(currentLocation.getPositionLeft());
             Position right = new Position(currentLocation.getPositionRight());
+
+
 
         } catch (Exception ex) {
             System.out.println(String.join(": ", "PipeGameState.getAllNeighbors(): Error details" , ex.getMessage()));

@@ -10,23 +10,23 @@ import java.util.PriorityQueue;
 public class PipeGameSearcher implements Searcher<MatrixBoard, Step> {
 
     // Variables
-    protected PriorityQueue<State<MatrixBoard>> openList;
+    protected PriorityQueue<State<MatrixBoard, Step>> openList;
     private int evaluatedNodes;
 
     // C-TOR
     public PipeGameSearcher() {
-        openList = new PriorityQueue<State<MatrixBoard>>();
+        openList = new PriorityQueue<State<MatrixBoard, Step>>();
         evaluatedNodes = 0;
     }
 
     // Methods
-    protected State<MatrixBoard> popOpenList() {
+    protected State<MatrixBoard, Step> popOpenList() {
         evaluatedNodes++;
         return openList.poll();
     }
 
     @Override
-    public Solution<Step> search(Searchable<MatrixBoard> searchable) {
+    public Solution<Step> search(Searchable<MatrixBoard, Step> searchable) {
         return null;
     }
 

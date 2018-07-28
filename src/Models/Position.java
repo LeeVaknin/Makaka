@@ -10,17 +10,17 @@ public class Position {
 
     // C-TOR
     public Position(Integer col, Integer row) {
-        this.row = row;
-        this.col = col;
+        this.setCol(col);
+        this.setRow(row);
     }
 
     public Position(Position position) {
         if (position != null) {
-            this.row = position.getRow();
-            this.col = position.getCol();
+            this.setCol(position.getCol());
+            this.setRow(position.getRow());
         }
-        this.row = 0;
-        this.col = 0;
+        this.setCol(0);
+        this.setRow(0);
     }
 
     // Setters and Getters
