@@ -15,8 +15,6 @@ public abstract class State<T> {
 
     // Methods
 
-
-
     public void setCost(double cost) {
         this.cost = cost;
     }
@@ -36,6 +34,8 @@ public abstract class State<T> {
     public State<T> getCameFrom() {
         return cameFrom;
     }
+
+    public abstract int generateCost();
 
     public boolean equals(State<T> state) {
          return this.state.equals(state.state);
