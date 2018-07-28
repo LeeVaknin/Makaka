@@ -38,6 +38,12 @@ public class MatrixBoard extends Board<Pipe[][]> {
         return this.board[row][col];
     }
 
+    public void setPipe(Position position, Character pipe) {
+        int col = position.getCol();
+        int row = position.getRow();
+        this.board[row][col].setPipeVal(pipe);
+    }
+
     @Override
     void setPermitted() {
 
