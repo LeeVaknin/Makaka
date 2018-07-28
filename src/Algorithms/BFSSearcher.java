@@ -1,6 +1,6 @@
 package Algorithms;
 
-import Models.State;
+import State.State;
 import Models.Solution;
 import Searchable.Searchable;
 import Searcher.Searcher;

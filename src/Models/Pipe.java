@@ -65,18 +65,18 @@ public class Pipe {
 
     public Character rotate() {
         try {
-        switch (pipeVal) {
-            case 's':
-            case 'g':
-            case ' ':
-                break;
-            default:
-                try {
-                    setPipeVal(this.rotationMapping.get(pipeVal));
-                }
-                catch (NullPointerException exception) {
-                    System.out.println( "Null pipe value, can't rotate.");
-                }
+            switch (pipeVal) {
+                case 's':
+                case 'g':
+                case ' ':
+                    break;
+                default:
+                    try {
+                        setPipeVal(this.rotationMapping.get(pipeVal));
+                    }
+                    catch (NullPointerException exception) {
+                        System.out.println( "Null pipe value, can't rotate.");
+                    }
         }  } catch (Exception ex) {
             System.out.println("Pipe.rotate(): Error details: " + ex.getMessage());
         }

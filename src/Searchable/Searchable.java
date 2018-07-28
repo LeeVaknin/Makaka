@@ -1,22 +1,21 @@
 package Searchable;
-import Models.MatrixBoard;
-import Models.State;
+import State.State;
 
 import java.util.ArrayList;
 
 
 public interface Searchable<T> {
 
-    State<T> getCurrentState();
-    void setCurrentState(State<T> currentState);
+    T getCurrentState();
+    void setCurrentState(T currentState);
 
-    State<T> getInitialState();
-    void setInitialState(State<T> initialState);
+    T getInitialState();
+    void setInitialState(T initialState);
 
-    State<T> getGoalState();
-    void setGoalState(State<T> goalState);
+    T getGoalState();
+    void setGoalState(T goalState);
 
     // -*** Returns all the possible states in the current state (possible moves) ***-
-    ArrayList<State<T>> getAllPossibleStates();
+    ArrayList<T> getAllPossibleStates();
 
 }

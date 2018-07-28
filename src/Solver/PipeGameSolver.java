@@ -1,32 +1,31 @@
 package Solver;
 import Models.*;
-import Searchable.Searchable;
 import Searchable.PipeSearchable;
-import Searcher.Searcher;
+import Searcher.PipeGameSearcher;
+import State.PipeGameState;
 
 
 // common solver for the pipe game
-public class PipeGameSolver implements Solver<MatrixBoard, Step>{
+public class PipeGameSolver implements Solver<PipeSearchable, Step>{
 
     // This searcher is injected into the common solver and solves the given problem
-    private Searcher<MatrixBoard, Step>  searcher;
+    private PipeGameSearcher searcher;
 
     // C-TOR
-    public PipeGameSolver(Searcher<MatrixBoard, Step> searcher) {
+    public PipeGameSolver(PipeGameSearcher searcher) {
         this.searcher = searcher;
     }
 
     @Override
-    public Solution<Step> solve(Searchable<MatrixBoard> searchable) {
+    public Solution<Step> solve(PipeSearchable searchable) {
         return this.searcher.search(searchable);
     }
 
     @Override
     public Solution<Step> solve(String problem) {
         MatrixBoard board = new MatrixBoard(problem);
-        State<MatrixBoard> state = new State<>(board);
+        PipeGameState state = new PipeGameState(board);
         PipeSearchable searchable = new PipeSearchable(state);
         return this.solve(searchable);
     }
-
 }

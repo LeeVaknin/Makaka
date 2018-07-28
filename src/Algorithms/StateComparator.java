@@ -1,6 +1,6 @@
 package Algorithms;
 
-import Models.State;
+import State.State;
 
 import java.util.Comparator;
 

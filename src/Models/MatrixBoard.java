@@ -256,7 +256,6 @@ public class MatrixBoard extends Board<Pipe[][]> {
         return null;
     }
 
-
     public boolean equals(Pipe[][] pipes) {
         boolean isEqual = false;
         int row = pipes.length;

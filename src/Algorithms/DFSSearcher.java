@@ -1,12 +1,11 @@
 package Algorithms;
 
 import Models.Solution;
-import Models.State;
+import State.State;
 import Searchable.Searchable;
 import Searcher.Searcher;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Stack;
 
 public class DFSSearcher <T,S> implements Searcher<T,S> {

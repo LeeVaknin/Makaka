@@ -1,7 +1,7 @@
 package Algorithms;
 
 import Models.Solution;
-import Models.State;
+import State.State;
 import Searchable.Searchable;
 import Searcher.Searcher;
 import java.util.ArrayList;

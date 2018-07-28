@@ -1,14 +1,12 @@
 package Searcher;
 
-import Models.State;
 import Searchable.Searchable;
 import Models.Solution;
 
-import java.util.ArrayList;
-
+// T is the searchable, S is the steps to the solution of the problem
 public interface Searcher<T, S> {
 
-    public Solution<S> search(Searchable<T> s);
+    public Solution<S> search(T s);
 
     // get how many nodes were evaluated by the algorithm
     public int getNumberOfNodesEvaluated();
