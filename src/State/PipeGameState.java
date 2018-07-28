@@ -2,7 +2,7 @@ package State;
 import Board.MatrixBoard;
 import Models.Position;
 import Models.Step;
-
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -47,15 +47,17 @@ public class PipeGameState extends State<MatrixBoard, Step> {
         return this.state.equals(state.state);
     }
 
-    /*
-    Returns a backTrace of the states for the algorithms
-     */
+
+//  Returns a backTrace of the states for the algorithms
     public ArrayList<State<MatrixBoard, Step>> backTrace() {
-        ArrayList<State<MatrixBoard, Step>> returnBackTrace = new ArrayList<>();
-        State<MatrixBoard, Step> temp = this.getCameFrom();
-        while (temp != null) {
-            returnBackTrace.add(temp);
-            temp = temp.getCameFrom();
+        ArrayList<State<MatrixBoard, Step>>returnBackTrace = new ArrayList<>();
+        State<MatrixBoard, Step> tmp = this.getCameFrom();
+        Character pipeVal = ' ';
+        // TODO : Do we need the first protection at the while loop ?
+        while (!pipeVal.equals('s') || tmp != null) {
+            returnBackTrace.add(tmp);
+            tmp = tmp.getCameFrom();
+            pipeVal = tmp.getState().getPipe(tmp.getFrom());
         }
         Collections.reverse(returnBackTrace);
         return returnBackTrace;
@@ -83,13 +85,14 @@ public class PipeGameState extends State<MatrixBoard, Step> {
     }
 
     @Override
-    public int generateCost() {
-        int cost = 0;
+    public double generateCost() {
+        double cost = 0;
         try {
             Position endPosition = ((MatrixBoard) this.getState()).findEndPosition();
             Position currentPosition = this.getFrom();
             // Calculate the absolute value of the way from current position to the goal
-            cost = Math.abs(currentPosition.getRow() - endPosition.getRow()) + Math.abs(currentPosition.getCol() - endPosition.getCol());
+//            cost = Math.abs(currentPosition.getRow() - endPosition.getRow()) + Math.abs(currentPosition.getCol() - endPosition.getCol());
+            cost = Math.abs(Point.distance(currentPosition.getRow(),currentPosition.getCol(),endPosition.getRow(),endPosition.getCol()));
         } catch (Exception ex) {
             System.out.println(String.join(": ", "PipeGameState.generateCost(): Error details" , ex.getMessage()));
         }

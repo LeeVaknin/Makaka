@@ -30,7 +30,6 @@ public abstract class Board<T> {
     }
 
     // Setters and Getters
-
     abstract void setPermitted();
 
     public T getBoard() {

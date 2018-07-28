@@ -88,7 +88,7 @@ public class MatrixBoard extends Board<Pipe[][]> {
     }
 
     public void setStart(Position start) {
-        this.start = start;
+        this.start = new Position(start);
     }
 
     public Position getEnd() {
@@ -96,7 +96,7 @@ public class MatrixBoard extends Board<Pipe[][]> {
     }
 
     public void setEnd(Position end) {
-        this.end = end;
+        this.end = new Position(end);
     }
 
     @Override
@@ -117,19 +117,22 @@ public class MatrixBoard extends Board<Pipe[][]> {
 
     @Override
     public boolean isValidMove(Position from, Position to) {
-
-        // First verify all the parameters are valid
-        if (this.isValidBoard() && this.isValidPosition(from) && this.isValidPosition(to)) {
-            // Check what is the direction of the given move, verify it's legal and return result.
-            String direction = this.classifyMoveDirection(from, to);
-            if (direction != null) {
-                // Get the permitted steps in the taken direction
-                String permittedStep = this.permittedSteps.get(direction).get(getPipe(from));
-                if (permittedStep != null) {
-                    // Validate that the 'to' position is allowed by the mapping
-                    return permittedStep.contains(getPipe(to).toString());
+        try {
+            // First verify all the parameters are valid
+            if (this.isValidBoard() && this.isValidPosition(from) && this.isValidPosition(to)) {
+                // Check what is the direction of the given move, verify it's legal and return result.
+                String direction = this.classifyMoveDirection(from, to);
+                if (direction != null) {
+                    // Get the permitted steps in the taken direction
+                    String permittedStep = this.permittedSteps.get(direction).get(getPipe(from));
+                    if (permittedStep != null) {
+                        // Validate that the 'to' position is allowed by the mapping
+                        return permittedStep.contains(getPipe(to).toString());
+                    }
                 }
             }
+        } catch (Exception ex) {
+            System.out.println(String.join(": ", "MatrixBoard.isValidMove(): Error details", ex.getMessage()));
         }
         return false;
     }
@@ -224,34 +227,34 @@ public class MatrixBoard extends Board<Pipe[][]> {
 
     public Position findStartPosition() {
         try {
-            if(this.getBoard() == null)
+            if (this.getBoard() == null)
                 throw new Exception("Board is NULL");
             // Look for the pipe with the end sign
             for (Pipe[] pipes : this.getBoard()) {
                 for (Pipe pipe : pipes) {
-                    if(pipe.getPipeVal().equals("s"))
+                    if (pipe.getPipeVal().equals("s"))
                         return new Position(pipe.getPosition());
                 }
             }
         } catch (Exception ex) {
-            System.out.println(String.join(": ", "Position.findStartPosition(): Error details" , ex.getMessage()));
+            System.out.println(String.join(": ", "Position.findStartPosition(): Error details", ex.getMessage()));
         }
         return null;
     }
 
     public Position findEndPosition() {
         try {
-            if(this.getBoard() == null)
+            if (this.getBoard() == null)
                 throw new Exception("Board is NULL");
             // Look for the pipe with the end sign
             for (Pipe[] pipes : this.getBoard()) {
                 for (Pipe pipe : pipes) {
-                    if(pipe.getPipeVal().equals("g"))
+                    if (pipe.getPipeVal().equals("g"))
                         return new Position(pipe.getPosition());
                 }
             }
         } catch (Exception ex) {
-            System.out.println(String.join(": ", "Position.findEndPosition(): Error details" , ex.getMessage()));
+            System.out.println(String.join(": ", "Position.findEndPosition(): Error details", ex.getMessage()));
         }
         return null;
     }
