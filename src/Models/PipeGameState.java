@@ -1,5 +1,6 @@
 package Models;
 
+import javax.xml.stream.Location;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -22,9 +23,7 @@ public class PipeGameState<T> {
         this.cameFrom = cameFrom;
     }
 
-
     // Methods
-
     public void setState(T state) {
         this.state = state;
     }
@@ -81,5 +80,18 @@ public class PipeGameState<T> {
         }
 
         return null;
+    }
+
+    public int generateCost() {
+        int cost = 0;
+        try {
+            Position endPosition = ((MatrixBoard) this.getState()).findEndPosition();
+            Position currentPosition = this.getFrom();
+            // Calculate the absolute value of the way from current position to the goal
+            cost = Math.abs(currentPosition.getRow() - endPosition.getRow()) + Math.abs(endPosition.getCol() - endPosition.getCol());
+        } catch (Exception ex) {
+            System.out.println(String.join(": ", "PipeGameState.generateCost(): Error details" , ex.getMessage()));
+        }
+        return cost;
     }
 }
