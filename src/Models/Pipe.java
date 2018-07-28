@@ -6,8 +6,6 @@ import java.util.HashMap;
 
 public class Pipe {
 
-    //TODO: add iterator
-
     // variables
     private Character pipeVal;
     private HashMap<Character, Character> rotationMapping;
@@ -16,7 +14,6 @@ public class Pipe {
     private Character up;
     private Character down;
     private Position position;
-
 
     // Setters and Getters
     public Character getPipeVal() {
@@ -95,5 +92,10 @@ public class Pipe {
              System.out.println("Pipe.equals(): Error details: " + ex.getMessage());
         }
         return isEqual;
+    }
+
+    @Override
+    public String toString() {
+        return this.getPipeVal().toString();
     }
 }

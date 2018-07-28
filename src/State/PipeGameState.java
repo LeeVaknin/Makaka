@@ -9,8 +9,6 @@ import java.util.Collections;
 
 public class PipeGameState extends State<MatrixBoard, Step> {
 
-    private int maxRotations = 3;
-
     // C-TOR
 
     public PipeGameState(MatrixBoard state) {
@@ -74,7 +72,7 @@ public class PipeGameState extends State<MatrixBoard, Step> {
         while (!pipeVal.equals('s') || tmp != null) {
             returnBackTrace.add(tmp);
             tmp = tmp.getCameFrom();
-            pipeVal = tmp.getState().getPipe(tmp.getFrom());
+            pipeVal = tmp.getState().getPipe(tmp.getFrom()).getPipeVal();
         }
         Collections.reverse(returnBackTrace);
         return returnBackTrace;
@@ -86,13 +84,21 @@ public class PipeGameState extends State<MatrixBoard, Step> {
             allNeighbors = new ArrayList<>();
             // Check what are my options of moves up, down, left and right
             Position currentLocation = this.getFrom();
+            MatrixBoard tmpBoard = new MatrixBoard(this.state);
 
             // Creating all the possible move directions
             ArrayList<Position> directions = this.initializeFromDirections();
             // For each direction check if you can reach
             for (Position direction: directions) {
-                for (int rotations = 0; rotations < this.maxRotations ; rotations++ ) {
-                    if (this.state.isValidMove(currentLocation, direction)) {
+                // After 3 rotations everything comes back to the initial state
+                int maxRotations = 3;
+                for (int rotations = 0; rotations < maxRotations; rotations++ ) {
+                    if (rotations > 0) {
+                        // with each iteration rotate the pipe in the location of the direction
+                        tmpBoard.getPipe(direction).rotate();
+                    }
+                    // Check if the move is valid, if so, no need to rotate anything, add this direction to the list.
+                    if (tmpBoard.isValidMove(currentLocation, direction)) {
                         allNeighbors.add(new Step(currentLocation, direction, rotations));
                         break;
                     }

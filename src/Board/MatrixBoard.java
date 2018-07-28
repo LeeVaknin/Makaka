@@ -32,10 +32,10 @@ public class MatrixBoard extends Board<Pipe[][]> {
     // Methods
 
     // Returns the value of the pipe in the given position
-    public Character getPipe(Position position) {
+    public Pipe getPipe(Position position) {
         int col = position.getCol();
         int row = position.getRow();
-        return this.board[row][col].getPipeVal();
+        return this.board[row][col];
     }
 
     @Override
@@ -125,7 +125,7 @@ public class MatrixBoard extends Board<Pipe[][]> {
                 String direction = this.classifyMoveDirection(from, to);
                 if (direction != null) {
                     // Get the permitted steps in the taken direction
-                    String permittedStep = this.permittedSteps.get(direction).get(getPipe(from));
+                    String permittedStep = this.permittedSteps.get(direction).get(getPipe(from).getPipeVal());
                     if (permittedStep != null) {
                         // Validate that the 'to' position is allowed by the mapping
                         return permittedStep.contains(getPipe(to).toString());
