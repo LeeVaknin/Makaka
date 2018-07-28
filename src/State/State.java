@@ -1,4 +1,6 @@
 package State;
+import Models.Position;
+
 import java.util.ArrayList;
 
 // T is the board, S is the child of the state
@@ -6,10 +8,28 @@ public abstract class State<T> {
 
     // Variables
     protected T state;
-    protected double cost; // cost to reach this state
-    protected State<T> cameFrom;
+    private double cost; // cost to reach this state
+    private State<T> cameFrom;
+    private Position from;
+    private Position to;
 
     // Methods
+
+    public Position getFrom() {
+        return from;
+    }
+
+    public void setFrom(Position from) {
+        this.from = new Position(from);
+    }
+
+    public Position getTo() {
+        return to;
+    }
+
+    public void setTo(Position to) {
+        this.to = new Position(to);
+    }
 
     public void setCost(double cost) {
         this.cost = cost;
