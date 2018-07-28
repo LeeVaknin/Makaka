@@ -81,6 +81,7 @@ public class PipeGameState extends State<MatrixBoard, Step> {
     public ArrayList<Step> getAllNeighbors() {
         ArrayList<Step> allNeighbors = null;
         try {
+
             allNeighbors = new ArrayList<>();
             // Check what are my options of moves up, down, left and right
             Position currentLocation = this.getFrom();

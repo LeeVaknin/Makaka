@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 
-public class MyCHandler<T> implements ClientHandler{
+public class MyCHandler<T> implements ClientHandler {
 
     private Solver<Board<T>, Step> solver;
     private CacheManager<Step> cacheManager;

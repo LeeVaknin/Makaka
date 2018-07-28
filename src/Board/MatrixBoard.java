@@ -140,22 +140,26 @@ public class MatrixBoard extends Board<Pipe[][]> {
 
     @Nullable
     private String classifyMoveDirection(@NotNull Position from, @NotNull Position to) {
-        // In case we move up or down
-        if (from.getCol().equals(to.getCol())) {
-            if (from.getRow() + 1 == to.getRow()) {
-                return "bottom";
+        try {
+            // In case we move up or down
+            if (from.getCol().equals(to.getCol())) {
+                if (from.getRow() + 1 == to.getRow()) {
+                    return "bottom";
+                }
+                if (from.getRow() - 1 == to.getRow()) {
+                    return "top";
+                }
+                // In case we move right or left
+            } else if (from.getRow().equals(to.getRow())) {
+                if (from.getCol() + 1 == to.getCol()) {
+                    return "right";
+                }
+                if (from.getCol() - 1 == to.getCol()) {
+                    return "left";
+                }
             }
-            if (from.getRow() - 1 == to.getRow()) {
-                return "top";
-            }
-            // In case we move right or left
-        } else if (from.getRow().equals(to.getRow())) {
-            if (from.getCol() + 1 == to.getCol()) {
-                return "right";
-            }
-            if (from.getCol() - 1 == to.getCol()) {
-                return "left";
-            }
+        } catch (Exception ex) {
+            System.out.println(String.join(": ", "MatrixBoard.classifyMoveDirection(): Error details", ex.getMessage()));
         }
         return null;
     }
@@ -233,7 +237,7 @@ public class MatrixBoard extends Board<Pipe[][]> {
             // Look for the pipe with the end sign
             for (Pipe[] pipes : this.getBoard()) {
                 for (Pipe pipe : pipes) {
-                    if (pipe.getPipeVal().equals("s"))
+                    if (pipe.getPipeVal().equals('s'))
                         return new Position(pipe.getPosition());
                 }
             }
@@ -250,7 +254,7 @@ public class MatrixBoard extends Board<Pipe[][]> {
             // Look for the pipe with the end sign
             for (Pipe[] pipes : this.getBoard()) {
                 for (Pipe pipe : pipes) {
-                    if (pipe.getPipeVal().equals("g"))
+                    if (pipe.getPipeVal().equals('g'))
                         return new Position(pipe.getPosition());
                 }
             }

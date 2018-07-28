@@ -1,4 +1,5 @@
 package Models;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -36,17 +37,17 @@ public class Pipe {
 
     public Pipe(Character pipe) {
         try {
-        this.rotationMapping =  new HashMap<Character, Character>() {{
-            put('F', '7');
-            put('7', 'J');
-            put('J', 'L');
-            put('L', 'F');
-            put('-', '|');
-            put('|', '-');
-        }};
-        this.setPipeVal(pipe);
+            this.rotationMapping = new HashMap<Character, Character>() {{
+                put('F', '7');
+                put('7', 'J');
+                put('J', 'L');
+                put('L', 'F');
+                put('-', '|');
+                put('|', '-');
+            }};
+            this.setPipeVal(pipe);
         } catch (Exception ex) {
-           System.out.println("Pipe.Pipe(): Error details: " + ex.getMessage());
+            System.out.println("Pipe.Pipe(): Error details: " + ex.getMessage());
         }
     }
 
@@ -59,11 +60,10 @@ public class Pipe {
     }
 
     public Pipe(Integer row, Integer col) {
-        this.setPosition(new Position(row,col));
+        this.setPosition(new Position(row, col));
     }
 
     // Methods
-
     public Character rotate() {
         try {
             switch (pipeVal) {
@@ -74,11 +74,11 @@ public class Pipe {
                 default:
                     try {
                         setPipeVal(this.rotationMapping.get(pipeVal));
+                    } catch (NullPointerException exception) {
+                        System.out.println("Null pipe value, can't rotate.");
                     }
-                    catch (NullPointerException exception) {
-                        System.out.println( "Null pipe value, can't rotate.");
-                    }
-        }  } catch (Exception ex) {
+            }
+        } catch (Exception ex) {
             System.out.println("Pipe.rotate(): Error details: " + ex.getMessage());
         }
         return getPipeVal();
@@ -89,7 +89,7 @@ public class Pipe {
         try {
             isEqual = this.getPipeVal().equals(pipe.getPipeVal());
         } catch (Exception ex) {
-             System.out.println("Pipe.equals(): Error details: " + ex.getMessage());
+            System.out.println("Pipe.equals(): Error details: " + ex.getMessage());
         }
         return isEqual;
     }
