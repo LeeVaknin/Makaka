@@ -16,12 +16,12 @@ public class PipeSearchable implements Searchable<MatrixBoard> {
     private PipeGameState  goalState;
 
     // C-TOR
-    public PipeSearchable(PipeGameState currentState,
-                          PipeGameState initialState,
-                          PipeGameState goalState) {
-        this.currentState = currentState;
-        this.initialState = initialState;
-        this.goalState = goalState;
+    public PipeSearchable(State<MatrixBoard> currentState,
+                          State<MatrixBoard> initialState,
+                          State<MatrixBoard> goalState) {
+        this.currentState = new PipeGameState(currentState);
+        this.initialState = new PipeGameState(initialState);
+        this.goalState = new PipeGameState(goalState);
     }
 
     public PipeSearchable(PipeGameState initialState) {
