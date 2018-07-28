@@ -2,12 +2,12 @@ package State;
 import java.util.ArrayList;
 
 // T is the board, S is the child of the state
-public abstract class State<T, S> {
+public abstract class State<T> {
 
     // Variables
     protected T state;
     protected double cost; // cost to reach this state
-    protected S cameFrom;
+    protected State<T> cameFrom;
 
     // Methods
 
@@ -15,7 +15,7 @@ public abstract class State<T, S> {
         this.cost = cost;
     }
 
-    public void setCameFrom(S cameFrom) {
+    public void setCameFrom(State<T> cameFrom) {
         this.cameFrom = cameFrom;
     }
 
@@ -29,7 +29,7 @@ public abstract class State<T, S> {
         return cost;
     }
 
-    public S getCameFrom() {
+    public State<T> getCameFrom() {
         return cameFrom;
     }
 
@@ -38,5 +38,7 @@ public abstract class State<T, S> {
    /*
    Returns a backTrace of the states for the algorithms
     */
-    public abstract ArrayList<S> backTrace();
+    public abstract ArrayList<State<T>> backTrace();
+
+    public abstract ArrayList<State<T>> getAllNeighbors();
 }

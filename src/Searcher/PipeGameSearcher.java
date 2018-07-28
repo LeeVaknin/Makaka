@@ -1,31 +1,32 @@
 package Searcher;
+import Board.MatrixBoard;
 import Models.Step;
-import Searchable.PipeSearchable;
 import Models.Solution;
-import State.PipeGameState;
+import Searchable.Searchable;
+import State.State;
 
 import java.util.PriorityQueue;
 
-public class PipeGameSearcher implements Searcher<PipeSearchable, Step> {
+public class PipeGameSearcher implements Searcher<MatrixBoard, Step> {
 
     // Variables
-    protected PriorityQueue<PipeGameState> openList;
+    protected PriorityQueue<State<MatrixBoard>> openList;
     private int evaluatedNodes;
 
     // C-TOR
     public PipeGameSearcher() {
-        openList = new PriorityQueue<PipeGameState>();
+        openList = new PriorityQueue<State<MatrixBoard>>();
         evaluatedNodes = 0;
     }
 
     // Methods
-    protected PipeGameState popOpenList() {
+    protected State<MatrixBoard> popOpenList() {
         evaluatedNodes++;
         return openList.poll();
     }
 
     @Override
-    public Solution<Step> search(PipeSearchable searchable) {
+    public Solution<Step> search(Searchable<MatrixBoard> searchable) {
         return null;
     }
 

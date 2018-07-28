@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class PipeGameState extends State<MatrixBoard, PipeGameState> {
+public class PipeGameState extends State<MatrixBoard> {
 
     private Position from;
     private Position to;
@@ -32,17 +32,17 @@ public class PipeGameState extends State<MatrixBoard, PipeGameState> {
         this.state = state;
     }
 
-    public PipeGameState(MatrixBoard state, double cost, PipeGameState cameFrom) {
+    public PipeGameState(MatrixBoard state, double cost, State<MatrixBoard> cameFrom) {
         this.setState(state);
         this.setCost(cost);
         this.setCameFrom(cameFrom);
     }
 
-    public PipeGameState(PipeGameState pipeGameState) {
+    public PipeGameState(State<MatrixBoard> pipeGameState) {
         if (pipeGameState != null) {
             this.setState(pipeGameState.getState());
-            this.setFrom(pipeGameState.getFrom());
-            this.setTo(pipeGameState.getTo());
+//            this.setFrom(pipeGameState.getFrom());
+//            this.setTo(pipeGameState.getTo());
             this.setCameFrom(pipeGameState.getCameFrom());
             this.setCost(pipeGameState.getCost());
         }
@@ -53,16 +53,16 @@ public class PipeGameState extends State<MatrixBoard, PipeGameState> {
         this.state = new MatrixBoard(state);
     }
 
-    public boolean equals(PipeGameState state) {
+    public boolean equals(State<MatrixBoard> state) {
          return this.state.equals(state.state);
     }
 
     /*
     Returns a backTrace of the states for the algorithms
      */
-    public ArrayList<PipeGameState> backTrace() {
-        ArrayList<PipeGameState> returnBackTrace = new ArrayList<>();
-        PipeGameState temp = this.getCameFrom();
+    public ArrayList<State<MatrixBoard>> backTrace() {
+        ArrayList<State<MatrixBoard>> returnBackTrace = new ArrayList<>();
+        State<MatrixBoard> temp = this.getCameFrom();
         while (temp != null) {
             returnBackTrace.add(temp);
             temp = temp.getCameFrom();
@@ -71,18 +71,19 @@ public class PipeGameState extends State<MatrixBoard, PipeGameState> {
         return returnBackTrace;
     }
 
-    public ArrayList<PipeGameState> getAllNeighbors() {
-        ArrayList<PipeGameState> allNeighbors = null;
+    public ArrayList<State<MatrixBoard>> getAllNeighbors() {
+        ArrayList<State<MatrixBoard>> allNeighbors = null;
 
         try {
             allNeighbors = new ArrayList<>();
-            PipeGameState myState = this.getCameFrom();
+            State<MatrixBoard> myState = this.getCameFrom();
         } catch (Exception ex) {
             System.out.println(String.join(": ", "PipeGameState.getAllNeighbors(): Error details" , ex.getMessage()));
         }
 
         return null;
     }
+
     @Override
     public int generateCost() {
         int cost = 0;
