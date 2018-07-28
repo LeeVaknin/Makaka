@@ -25,16 +25,9 @@ public class PipeSearchable implements Searchable<MatrixBoard, Step> {
         this.goalState = new PipeGameState(goalState);
     }
 
-    public PipeSearchable(PipeGameState initialState) {
-        this.initialState = initialState;
-        this.currentState = initialState;
-        this.goalState = null;
-    }
-
-    public PipeSearchable(PipeGameState initialState,
-                          PipeGameState currentState) {
-        this.initialState = initialState;
-        this.currentState = currentState;
+    public PipeSearchable(State<MatrixBoard, Step> initialState) {
+        this.initialState = new PipeGameState(initialState);
+        this.currentState = new PipeGameState(initialState);
         this.goalState = null;
     }
 
@@ -63,51 +56,8 @@ public class PipeSearchable implements Searchable<MatrixBoard, Step> {
     }
 
     @Override
-    public ArrayList<State<MatrixBoard, Step>> getAllPossibleStates() {
-        Position startPosition = null;
-        ArrayList<State<MatrixBoard, Step>> stateArrayList = null;
-        int row = this.currentState.getState().rows();
-        int col = this.currentState.getState().columns();
-
-        MatrixBoard tmpBoard2 = new MatrixBoard(this.currentState.getState());
-        startPosition = tmpBoard2.findStartPosition();
-
-        try {
-            stateArrayList = new ArrayList<>();
-           State<MatrixBoard, Step> tmpBoard = new PipeGameState(this.currentState.getState());
-            stateArrayList = tmpBoard.getAllNeighbors();
-
-            for (State<MatrixBoard, Step> state : stateArrayList) {
-                // Add validation of is legal move
-
-            }
-
-        } catch (Exception ex) {
-            System.out.println("PipeSearchable.getAllPossibleStates(): Error details: " + ex.getMessage());
-        }
-        return stateArrayList;
-
-
-//        ArrayList<State<MatrixBoard>> stateArrayList = null;
-//        int row = this.currentState.getState().rows();
-//        int col = this.currentState.getState().columns();
-////        int rows = this.currentState.getCurrentState().rows();
-//        try {
-//            stateArrayList = new ArrayList<>();
-//            for (int i = 0; i < row; i++) {
-//                for (int j = 0; j < col; j++) {
-//                    MatrixBoard tmpBoard = new MatrixBoard(this.currentState.getState());
-//                    tmpBoard.getBoard()[i][j].rotate();
-//                    double tmpCost = this.currentState.getCost() + 1;
-//                    State<MatrixBoard> tmpState = new State<>(tmpBoard, tmpCost, this.getCurrentState());
-//
-//                    stateArrayList.add(tmpState);
-//                }
-//            }
-//        } catch (Exception ex) {
-//            System.out.println("PipeSearchable.getAllPossibleStates(): Error details: " + ex.getMessage());
-//        }
-//        return stateArrayList;
+    public ArrayList<Step> getAllPossibleStates() {
+        return this.currentState.getAllNeighbors();
     }
 
     @Override

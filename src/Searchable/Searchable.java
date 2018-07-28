@@ -17,7 +17,7 @@ public interface Searchable<T, S> {
     void setGoalState(State<T, S> goalState);
 
     // -*** Returns all the possible states in the current state (possible moves) ***-
-    ArrayList<State<T, S>> getAllPossibleStates();
+    ArrayList<S> getAllPossibleStates();
 
     Comparator<State<T, S>> getComperator();
 }
