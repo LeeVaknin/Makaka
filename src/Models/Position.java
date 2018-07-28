@@ -15,8 +15,12 @@ public class Position {
     }
 
     public Position(Position position) {
-        this.row = position.getRow();
-        this.col = position.getCol();
+        if (position != null) {
+            this.row = position.getRow();
+            this.col = position.getCol();
+        }
+        this.row = 0;
+        this.col = 0;
     }
 
     // Setters and Getters
@@ -36,4 +40,17 @@ public class Position {
         this.col = col;
     }
 
+    public Position getPositionUp() {
+        return new Position(this.col, (this.row - 1));
+    }
+    public Position getPositionRight() {
+        return new Position((this.col + 1) , this.row);
+    }
+    public Position getPositionLeft() {
+        return new Position((this.col - 1) , this.row);
+
+    }
+    public Position getPositionDown() {
+        return new Position(this.col, (this.row + 1));
+    }
 }
