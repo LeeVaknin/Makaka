@@ -7,14 +7,11 @@ import java.util.Collections;
 
 public class PipeGameState extends State<MatrixBoard> {
 
-
-
-
-
     // C-TOR
 
     public PipeGameState(MatrixBoard state) {
         this.setState(state);
+        this.setFrom(null);
     }
 
     public PipeGameState(State<MatrixBoard> pipeGameState) {
@@ -28,12 +25,24 @@ public class PipeGameState extends State<MatrixBoard> {
     }
 
     // Methods
+    // Added method which sets the default from to be the start of the board.
+    @Override
+    public void setFrom(Position from) {
+        super.setFrom(from);
+        if (this.getFrom() == null) {
+            this.from = this.state.getStart();
+        }
+    }
+
     public void setState(MatrixBoard state) {
-        this.state = new MatrixBoard(state);
+        if (state != null) {
+            this.state = new MatrixBoard(state);
+        }
     }
 
     public boolean equals(State<MatrixBoard> state) {
-         return this.state.equals(state.state);
+        if (state == null) { return false; }
+        return this.state.equals(state.state);
     }
 
     /*
@@ -54,6 +63,13 @@ public class PipeGameState extends State<MatrixBoard> {
         ArrayList<State<MatrixBoard>> allNeighbors = null;
         try {
             allNeighbors = new ArrayList<>();
+            // Check what are my options of moves up, down, left and right
+            Position currentLocation = this.getFrom();
+            // Creating all the possible move directions
+            Position up = new Position(currentLocation.getPositionUp());
+            Position down = new Position(currentLocation.getPositionDown());
+            Position left = new Position(currentLocation.getPositionLeft());
+            Position right = new Position(currentLocation.getPositionRight());
 
         } catch (Exception ex) {
             System.out.println(String.join(": ", "PipeGameState.getAllNeighbors(): Error details" , ex.getMessage()));

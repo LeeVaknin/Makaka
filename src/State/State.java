@@ -10,7 +10,7 @@ public abstract class State<T> {
     protected T state;
     private double cost; // cost to reach this state
     private State<T> cameFrom;
-    private Position from;
+    protected Position from;
     private Position to;
 
     // Methods
@@ -20,7 +20,11 @@ public abstract class State<T> {
     }
 
     public void setFrom(Position from) {
-        this.from = new Position(from);
+        if (from != null) {
+            this.from = new Position(from);
+            return;
+        }
+        this.from = null;
     }
 
     public Position getTo() {
@@ -28,7 +32,9 @@ public abstract class State<T> {
     }
 
     public void setTo(Position to) {
-        this.to = new Position(to);
+        if (to != null) {
+            this.to = new Position(to);
+        }
     }
 
     public void setCost(double cost) {
@@ -36,7 +42,9 @@ public abstract class State<T> {
     }
 
     public void setCameFrom(State<T> cameFrom) {
-        this.cameFrom = cameFrom;
+        if (cameFrom != null) {
+            this.cameFrom = cameFrom;
+        }
     }
 
     public abstract void setState(T state);
