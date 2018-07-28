@@ -1,5 +1,5 @@
 package State;
-import Models.MatrixBoard;
+import Board.MatrixBoard;
 import Models.Position;
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,5 +1,4 @@
 package Searcher;
-import Models.MatrixBoard;
 import Models.Step;
 import Searchable.PipeSearchable;
 import Models.Solution;

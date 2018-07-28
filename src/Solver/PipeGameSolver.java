@@ -1,4 +1,5 @@
 package Solver;
+import Board.MatrixBoard;
 import Models.*;
 import Searchable.PipeSearchable;
 import Searcher.PipeGameSearcher;

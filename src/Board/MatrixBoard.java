@@ -1,5 +1,7 @@
-package Models;
+package Board;
 
+import Models.Pipe;
+import Models.Position;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -1,16 +1,13 @@
 package ClientHandler;
 
+import Board.Board;
 import CacheManager.CacheManager;
 import Models.*;
-import Searchable.PipeSearchable;
-import Searchable.Searchable;
 import Solver.Solver;
 import Utils.HashManager;
 import org.jetbrains.annotations.Nullable;
-import sun.nio.ch.IOUtil;
 
 import java.io.*;
-import java.util.ArrayList;
 
 public class MyCHandler<T> implements ClientHandler{
 

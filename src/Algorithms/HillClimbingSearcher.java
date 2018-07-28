@@ -6,13 +6,12 @@ import Searchable.Searchable;
 import Searcher.Searcher;
 
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Stack;
 
 
 public class HillClimbingSearcher<T, S> implements Searcher<T, S> {
-
-
 
     Stack<State> open;
     HashSet<String> visitedStates; // states that already evaluated
@@ -23,6 +22,7 @@ public class HillClimbingSearcher<T, S> implements Searcher<T, S> {
         visitedStates = new HashSet<String>();
         open = new Stack<State>();
         open.push(searchable.getInitialState());
+
 
         while(!open.isEmpty())
         {

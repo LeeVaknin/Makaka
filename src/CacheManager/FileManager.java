@@ -1,6 +1,5 @@
 package CacheManager;
 
-import Models.Board;
 import Models.Position;
 import Models.Solution;
 import Models.Step;

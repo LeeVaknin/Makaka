@@ -5,22 +5,22 @@ package Models;
 public class Step {
 
     // variables
-    private Integer rotations;
+    private Integer numOfRotations;
     private Position position;
 
     // C-TOR
-    public Step(Position position, int rotations) {
+    public Step(Position position, int numOfRotations) {
         this.position = position;
-        this.rotations = rotations;
+        this.numOfRotations = numOfRotations;
     }
 
     // Setters and getters
-    public int getRotations() {
-        return rotations;
+    public int getNumOfRotations() {
+        return numOfRotations;
     }
 
-    public void setRotations(int rotations) {
-        this.rotations = rotations;
+    public void setNumOfRotations(int numOfRotations) {
+        this.numOfRotations = numOfRotations;
     }
 
     public Position getPosition() {
@@ -32,11 +32,10 @@ public class Step {
     }
 
 
-
     @Override
     public String toString() {
         return String.join(" ",
-                this.rotations.toString(),
+                this.numOfRotations.toString(),
                 this.position.getCol().toString(),
                 this.position.getRow().toString());
     }

@@ -1,6 +1,6 @@
 package Searchable;
 
-import Models.MatrixBoard;
+import Board.MatrixBoard;
 import State.PipeGameState;
 import Models.Position;
 
@@ -103,6 +103,22 @@ public class PipeSearchable implements Searchable<PipeGameState> {
 //            System.out.println("PipeSearchable.getAllPossibleStates(): Error details: " + ex.getMessage());
 //        }
 //        return stateArrayList;
+    }
+
+    /**
+     * This function will calculate which of the given states are closer to the goal
+     *
+     * @param state1
+     * @param state2
+     * @return : case state2 is closer return -1. case state1 is closer return 1. case of no difference return 0.
+     */
+    @Override
+    public int compare(PipeGameState state1, PipeGameState state2) {
+            if (state1.generateCost() > state2.generateCost())
+                return -1;
+            if (state1.generateCost() < state2.generateCost())
+                return 1;
+            return 0;
     }
 
     @Override

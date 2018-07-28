@@ -12,7 +12,7 @@ public class DFSSearcher <T,S> implements Searcher<T,S> {
 
     public Solution<S> search(Searchable<T> s)
     {
-        ArrayList<T> visitedStates = new ArrayList<T>();
+        ArrayList<T> visitedStates = new ArrayList<>();
         Stack<State<T>> stack = new Stack<>();
         State<T> rootSolution = s.getInitialState();
         visitedStates.add(rootSolution.getState());
@@ -21,7 +21,7 @@ public class DFSSearcher <T,S> implements Searcher<T,S> {
         {
             State<T> currentState;
             currentState = stack.pop();
-            if (currentState.getState() == s.getGoalState().getState())
+            if (currentState.getState().equals(s.getGoalState().getState()))
             {
                 //TODO:need to change when Solution is finalize
                 //  return currentState;

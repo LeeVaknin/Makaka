@@ -1,8 +1,6 @@
 package CacheManager;
 
-import Models.Board;
 import Models.Solution;
-import Models.Step;
 
 import java.io.IOException;
 

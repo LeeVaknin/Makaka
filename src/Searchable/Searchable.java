@@ -2,6 +2,7 @@ package Searchable;
 import State.State;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 
 public interface Searchable<T> {
@@ -17,5 +18,7 @@ public interface Searchable<T> {
 
     // -*** Returns all the possible states in the current state (possible moves) ***-
     ArrayList<T> getAllPossibleStates();
+
+    public int compare(T state1, T state2);
 
 }
