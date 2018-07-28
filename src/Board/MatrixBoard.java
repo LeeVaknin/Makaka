@@ -40,47 +40,48 @@ public class MatrixBoard extends Board<Pipe[][]> {
 
     @Override
     void setPermitted() {
-        HashMap<Character, String> top = new HashMap<>();
-        HashMap<Character, String> bottom = new HashMap<>();
-        HashMap<Character, String> right = new HashMap<>();
-        HashMap<Character, String> left = new HashMap<>();
 
         // Map the from - to allowed steps
-        top.put('|', "|g");
-        top.put('L', "JFg");
-        top.put('F', "7");
-        top.put('J', "FgL");
-        top.put('7', "F");
-        top.put('s', "7F|g");
+        HashMap<Character, String> top = new HashMap<Character, String>() {{
+            put('|', "|g");
+            put('L', "JFg");
+            put('F', "7");
+            put('J', "FgL");
+            put('7', "F");
+            put('s', "7F|g");
+        }};
+        HashMap<Character, String> bottom = new HashMap<Character, String>() {{
+            put('|', "|g");
+            put('L', "J");
+            put('F', "7gL");
+            put('J', "L");
+            put('7', "FJg");
+            put('s', "LJ|g");
+        }};
+        HashMap<Character, String> right = new HashMap<Character, String> () {{
+            put('L', "JFg");
+            put('F', "7Lg");
+            put('J', "7");
+            put('7', "J");
+            put('-', "-g");
+            put('s', "7J-g");
 
-        left.put('-', "-g");
-        left.put('L', "F");
-        left.put('F', "L");
-        left.put('J', "FLg");
-        left.put('7', "JFg");
-        left.put('s', "7F|g");
-
-        right.put('-', "-g");
-        right.put('L', "JFg");
-        right.put('F', "7Lg");
-        right.put('J', "7");
-        right.put('7', "J");
-        right.put('s', "7J-g");
-
-        bottom.put('|', "|g");
-        bottom.put('L', "J");
-        bottom.put('F', "7gL");
-        bottom.put('J', "L");
-        bottom.put('7', "FJg");
-        bottom.put('s', "LJ|g");
-
-        this.permittedSteps = new HashMap<>();
-
+        }};
+        HashMap<Character, String> left = new HashMap<Character, String>() {{
+            put('-', "-g");
+            put('L', "F");
+            put('F', "L");
+            put('J', "FLg");
+            put('7', "JFg");
+            put('s', "7F|g");
+        }};
         // Save the allowed steps by direction
-        this.permittedSteps.put("top", top);
-        this.permittedSteps.put("bottom", bottom);
-        this.permittedSteps.put("left", left);
-        this.permittedSteps.put("right", right);
+        this.permittedSteps = new HashMap<String, HashMap<Character, String >>() {{
+            put("top", top);
+            put("bottom", bottom);
+            put("left", left);
+            put("right", right);
+        }};
     }
 
     public Position getStart() {
