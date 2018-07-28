@@ -65,7 +65,7 @@ public class PipeGameState extends State<MatrixBoard, Step> {
 
 //  Returns a backTrace of the states for the algorithms
     public ArrayList<State<MatrixBoard, Step>> backTrace() {
-        ArrayList<State<MatrixBoard, Step>>returnBackTrace = new ArrayList<>();
+        ArrayList<State<MatrixBoard, Step>> returnBackTrace = new ArrayList<>();
         State<MatrixBoard, Step> tmp = this.getCameFrom();
         Character pipeVal = ' ';
         // TODO : Do we need the first protection at the while loop ?
@@ -111,6 +111,11 @@ public class PipeGameState extends State<MatrixBoard, Step> {
         }
 
         return allNeighbors;
+    }
+
+    @Override
+    public void updateState(Step step) {
+        this.state.setPipe(step.getTo(), state.getPipe(step.getFrom()).rotate(step.getNumOfRotations()));
     }
 
     @Override

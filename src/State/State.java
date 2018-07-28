@@ -69,4 +69,6 @@ public abstract class State<T, S> {
     public abstract ArrayList<State<T, S>> backTrace();
 
     public abstract ArrayList<S> getAllNeighbors();
+
+    public abstract void updateState(S step);
 }

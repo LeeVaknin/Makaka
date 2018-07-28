@@ -94,6 +94,14 @@ public class Pipe {
         return isEqual;
     }
 
+    public Character rotate(int numOfRotation) {
+        Character newVal = ' ';
+        for (int i = 0; i < numOfRotation; i++) {
+            newVal = this.rotate();
+        }
+        return newVal;
+    }
+
     @Override
     public String toString() {
         return this.getPipeVal().toString();

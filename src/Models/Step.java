@@ -26,7 +26,17 @@ public class Step {
         this.numOfRotations = numOfRotations;
     }
 
+    public void setTo(Position to) {
+        this.to = to;
+    }
+
+    public Position getTo() {
+        return to;
+
+    }
+
     public Position getFrom() {
+
         return from;
     }
 
