@@ -18,11 +18,13 @@ public class MatrixBoard extends Board<Pipe[][]> {
     public MatrixBoard(MatrixBoard tmpBoard) {
         setBoard(tmpBoard.getBoard());
         setId(tmpBoard);
+        setStart(tmpBoard.findStartPosition());
+        setEnd(tmpBoard.findEndPosition());
     }
 
     public MatrixBoard(String board) {
         // super(board);
-        this.toBoard(board);
+        setBoard(this.toBoard(board));
     }
 
     // Methods
@@ -102,9 +104,6 @@ public class MatrixBoard extends Board<Pipe[][]> {
                     board[i][j] = new Pipe(tmpBoard[i][j]);
                 }
             }
-            setStart(findStartPosition(tmpBoard));
-            setEnd(findEndPosition(tmpBoard));
-
         } catch (Exception ex) {
             System.out.println("MatrixBoard.toBoard(): Error details: " + ex.getMessage());
         }
@@ -202,10 +201,6 @@ public class MatrixBoard extends Board<Pipe[][]> {
                     tmpBoard[i][j] = new Pipe(tmpLine.charAt(j));
                 }
             }
-
-            setStart(findStartPosition(tmpBoard));
-            setEnd(findEndPosition(tmpBoard));
-
         } catch (Exception ex) {
             System.out.println("MatrixBoard.toBoard(): Error details: " + ex.getMessage());
         }
@@ -222,14 +217,14 @@ public class MatrixBoard extends Board<Pipe[][]> {
         return (position != null && position.getRow() < this.rows() && position.getCol() < this.columns());
     }
 
-    public Position findStartPosition(Pipe[][] board) {
+    public Position findStartPosition() {
         try {
-            if(board == null)
+            if(this.getBoard() == null)
                 throw new Exception("Board is NULL");
             // Look for the pipe with the end sign
-            for (Pipe[] pipes : board) {
+            for (Pipe[] pipes : this.getBoard()) {
                 for (Pipe pipe : pipes) {
-                    if(pipe.equals("s"))
+                    if(pipe.getPipeVal().equals("s"))
                         return new Position(pipe.getPosition());
                 }
             }
@@ -239,14 +234,14 @@ public class MatrixBoard extends Board<Pipe[][]> {
         return null;
     }
 
-    public Position findEndPosition(Pipe[][] board) {
+    public Position findEndPosition() {
         try {
-            if(board == null)
+            if(this.getBoard() == null)
                 throw new Exception("Board is NULL");
             // Look for the pipe with the end sign
-            for (Pipe[] pipes : board) {
+            for (Pipe[] pipes : this.getBoard()) {
                 for (Pipe pipe : pipes) {
-                    if(pipe.equals("g"))
+                    if(pipe.getPipeVal().equals("g"))
                         return new Position(pipe.getPosition());
                 }
             }
