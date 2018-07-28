@@ -9,6 +9,8 @@ import java.util.Collections;
 
 public class PipeGameState extends State<MatrixBoard, Step> {
 
+    private int maxRotations = 3;
+
     // C-TOR
 
     public PipeGameState(MatrixBoard state) {
@@ -47,6 +49,21 @@ public class PipeGameState extends State<MatrixBoard, Step> {
         return this.state.equals(state.state);
     }
 
+    private ArrayList<Position> initializeFromDirections() {
+        Position currentLocation = this.getFrom();
+        Position up = new Position(currentLocation.getPositionUp());
+        Position down = new Position(currentLocation.getPositionDown());
+        Position left = new Position(currentLocation.getPositionLeft());
+        Position right = new Position(currentLocation.getPositionRight());
+
+        ArrayList<Position> directions = new ArrayList<Position>() {{
+            add(up);
+            add(down);
+            add(right);
+            add(left);
+        }};
+        return directions;
+    }
 
 //  Returns a backTrace of the states for the algorithms
     public ArrayList<State<MatrixBoard, Step>> backTrace() {
@@ -69,19 +86,24 @@ public class PipeGameState extends State<MatrixBoard, Step> {
             allNeighbors = new ArrayList<>();
             // Check what are my options of moves up, down, left and right
             Position currentLocation = this.getFrom();
+
             // Creating all the possible move directions
-            Position up = new Position(currentLocation.getPositionUp());
-            Position down = new Position(currentLocation.getPositionDown());
-            Position left = new Position(currentLocation.getPositionLeft());
-            Position right = new Position(currentLocation.getPositionRight());
-
-
+            ArrayList<Position> directions = this.initializeFromDirections();
+            // For each direction check if you can reach
+            for (Position direction: directions) {
+                for (int rotations = 0; rotations < this.maxRotations ; rotations++ ) {
+                    if (this.state.isValidMove(currentLocation, direction)) {
+                        allNeighbors.add(new Step(currentLocation, direction, rotations));
+                        break;
+                    }
+                }
+            }
 
         } catch (Exception ex) {
             System.out.println(String.join(": ", "PipeGameState.getAllNeighbors(): Error details" , ex.getMessage()));
         }
 
-        return null;
+        return allNeighbors;
     }
 
     @Override
