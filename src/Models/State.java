@@ -15,6 +15,8 @@ public abstract class State<T> {
 
     // Methods
 
+
+
     public void setCost(double cost) {
         this.cost = cost;
     }
@@ -39,16 +41,18 @@ public abstract class State<T> {
          return this.state.equals(state.state);
     }
 
-   /*
-   Returns a backTrace of the states for the algorithms
-    */
+
+  //Returns a backTrace of the states for the algorithms
     public ArrayList<State> backTrace() {
         ArrayList<State> returnBackTrace = new ArrayList<>();
-        State temp = this;
-        while (temp != null){
+        State temp = this.getCameFrom();
+        while (temp != null) {
             returnBackTrace.add(temp);
+            temp = temp.getCameFrom();
         }
         Collections.reverse(returnBackTrace);
         return returnBackTrace;
     }
+
+
 }
