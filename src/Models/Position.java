@@ -29,7 +29,9 @@ public class Position {
     }
 
     public void setRow(Integer row) {
-        this.row = row;
+        if (row >= 0)
+            this.row = row;
+        else this.row = 0;
     }
 
     public Integer getCol() {
@@ -37,19 +39,24 @@ public class Position {
     }
 
     public void setCol(Integer col) {
-        this.col = col;
+        if (col >= 0)
+            this.col = col;
+        else this.col = 0;
     }
 
     public Position getPositionUp() {
         return new Position(this.col, (this.row - 1));
     }
+
     public Position getPositionRight() {
-        return new Position((this.col + 1) , this.row);
+        return new Position((this.col + 1), this.row);
     }
+
     public Position getPositionLeft() {
-        return new Position((this.col - 1) , this.row);
+        return new Position((this.col - 1), this.row);
 
     }
+
     public Position getPositionDown() {
         return new Position(this.col, (this.row + 1));
     }

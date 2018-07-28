@@ -24,7 +24,7 @@ public class FileManager implements CacheManager<Step> {
      * @return the saved solution of the saved board
      */
     @Override
-    public String saveSolution(String id, Solution<Step> solution)  {
+    public String saveSolution(String id, Solution<Step> solution) {
 
         try (FileWriter fileWriter = new FileWriter(solutionsFileName); BufferedWriter writer = new BufferedWriter(fileWriter)) {
             // saves rotations, col and row as string.
@@ -47,7 +47,7 @@ public class FileManager implements CacheManager<Step> {
      * @return - The requested board or NULL if id doesn't exist.
      * @throws IOException Thrown only if something is going wrong during closing the file reader and buffer reader.
      */
-    public String loadSolution(String id) throws IOException {
+    public String loadSolution(String id) {
         try {
             String[] requestedLine = Files.lines(Paths.get(solutionsFileName))
                     .filter(line -> line.startsWith(id))
@@ -58,7 +58,6 @@ public class FileManager implements CacheManager<Step> {
                 return requestedLine[1];
 //                return this.extractSolution(requestedLine[1]);
             }
-
         } catch (IOException exception) {
             System.out.println(String.join(": ", "Couldn't loadSolution file error", exception.toString()));
         }
