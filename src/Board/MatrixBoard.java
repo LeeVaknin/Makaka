@@ -114,6 +114,7 @@ public class MatrixBoard extends Board<Pipe[][]> {
     @Override
     public boolean isValidMove(Board<Pipe[][]> board, Position from, Position to) {
 
+        // TODO : first if should be and
         // First verify all the parameters are valid
         if (board.isValidBoard() || this.isValidPosition(from) || this.isValidPosition(to)) {
             // Check what is the direction of the given move, verify it's legal and return result.
@@ -127,7 +128,6 @@ public class MatrixBoard extends Board<Pipe[][]> {
                 }
             }
         }
-
         return false;
     }
 
