@@ -30,7 +30,6 @@ public abstract class Board<T> {
     }
 
     // Setters and Getters
-
     abstract void setPermitted();
 
     public T getBoard() {
@@ -53,7 +52,6 @@ public abstract class Board<T> {
 
     // Returns whether a move can be done from position x, to position y
     abstract boolean isValidMove(Board<T> board, Position from, Position to);
-
 
 
     // Converts string to board

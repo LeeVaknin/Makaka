@@ -32,7 +32,7 @@ public class Pipe {
     }
 
     public void setPosition(Position position) {
-        this.position = position;
+        this.position = new Position(position);
     }
 
     // C-TOR
@@ -58,7 +58,11 @@ public class Pipe {
     }
 
     public Pipe(Position position) {
-        this.position = position;
+        this.setPosition(position);
+    }
+
+    public Pipe(Integer row, Integer col) {
+        this.setPosition(new Position(row,col));
     }
 
     // Methods
