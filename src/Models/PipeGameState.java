@@ -10,6 +10,7 @@ public class PipeGameState<T> {
     private double cost; // cost to reach this state
     private PipeGameState<T> cameFrom;
 
+
     // C-TOR
     public PipeGameState(T state) {
         this.state = state;
@@ -23,6 +24,7 @@ public class PipeGameState<T> {
 
 
     // Methods
+
     public void setState(T state) {
         this.state = state;
     }
@@ -56,11 +58,28 @@ public class PipeGameState<T> {
     */
     public ArrayList<PipeGameState> backTrace() {
         ArrayList<PipeGameState> returnBackTrace = new ArrayList<>();
-        PipeGameState temp = this;
-        while (temp != null){
+        PipeGameState temp = this.getCameFrom();
+        while (temp != null) {
             returnBackTrace.add(temp);
+            temp = temp.getCameFrom();
         }
         Collections.reverse(returnBackTrace);
         return returnBackTrace;
+    }
+
+    public ArrayList<State<MatrixBoard>> getAllNeighbors() {
+        ArrayList<PipeGameState<T>> allNeighbors = null;
+
+        try {
+            allNeighbors = new ArrayList<>();
+            PipeGameState<T> myState = this.getCameFrom();
+
+
+
+        } catch (Exception ex) {
+            System.out.println(String.join(": ", "PipeGameState.getAllNeighbors(): Error details" , ex.getMessage()));
+        }
+
+        return null;
     }
 }

@@ -1,7 +1,10 @@
 package Searchable;
 
 import Models.MatrixBoard;
+import Models.PipeGameState;
+import Models.Position;
 import Models.State;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -21,13 +24,17 @@ public class PipeSearchable implements Searchable<MatrixBoard> {
 
     public PipeSearchable(State<MatrixBoard> initialState) {
         this.initialState = initialState;
+        this.currentState = initialState;
+        this.goalState = null;
     }
 
     public PipeSearchable(State<MatrixBoard> initialState, State<MatrixBoard> currentState) {
         this.initialState = initialState;
         this.currentState = currentState;
+        this.goalState = null;
     }
 
+    // Methods
     public boolean isGoal() {
         return this.currentState.equals(goalState);
     }
@@ -53,26 +60,51 @@ public class PipeSearchable implements Searchable<MatrixBoard> {
 
     @Override
     public ArrayList<State<MatrixBoard>> getAllPossibleStates() {
+        Position startPosition = null;
         ArrayList<State<MatrixBoard>> stateArrayList = null;
         int row = this.currentState.getState().rows();
         int col = this.currentState.getState().columns();
-//        int rows = this.currentState.getCurrentState().rows();
+
+        MatrixBoard tmpBoard2 = new MatrixBoard(this.currentState.getState());
+        startPosition = tmpBoard2.findStartPosition(tmpBoard2.getBoard());
+
+
         try {
             stateArrayList = new ArrayList<>();
-            for (int i = 0; i < row; i++) {
-                for (int j = 0; j < col; j++) {
-                    MatrixBoard tmpBoard = new MatrixBoard(this.currentState.getState());
-                    tmpBoard.getBoard()[i][j].rotate();
-                    double tmpCost = this.currentState.getCost() + 1;
-                    State<MatrixBoard> tmpState = new State<>(tmpBoard, tmpCost, this.getCurrentState());
+            PipeGameState tmpBoard = new PipeGameState(this.currentState.getState());
+            stateArrayList = tmpBoard.getAllNeighbors();
 
-                    stateArrayList.add(tmpState);
-                }
+            for (State<MatrixBoard> state : stateArrayList) {
+                // Add validation of is legal move
+
             }
+
         } catch (Exception ex) {
             System.out.println("PipeSearchable.getAllPossibleStates(): Error details: " + ex.getMessage());
         }
         return stateArrayList;
+
+
+//        ArrayList<State<MatrixBoard>> stateArrayList = null;
+//        int row = this.currentState.getState().rows();
+//        int col = this.currentState.getState().columns();
+////        int rows = this.currentState.getCurrentState().rows();
+//        try {
+//            stateArrayList = new ArrayList<>();
+//            for (int i = 0; i < row; i++) {
+//                for (int j = 0; j < col; j++) {
+//                    MatrixBoard tmpBoard = new MatrixBoard(this.currentState.getState());
+//                    tmpBoard.getBoard()[i][j].rotate();
+//                    double tmpCost = this.currentState.getCost() + 1;
+//                    State<MatrixBoard> tmpState = new State<>(tmpBoard, tmpCost, this.getCurrentState());
+//
+//                    stateArrayList.add(tmpState);
+//                }
+//            }
+//        } catch (Exception ex) {
+//            System.out.println("PipeSearchable.getAllPossibleStates(): Error details: " + ex.getMessage());
+//        }
+//        return stateArrayList;
     }
 
     @Override
