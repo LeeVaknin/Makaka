@@ -8,38 +8,39 @@ import Searcher.Searcher;
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class DFSSearcher <T,S> implements Searcher<T,S> {
+public class DFSSearcher <T> implements Searcher<T> {
 
-    public Solution<S> search(Searchable<T> s)
-    {
+    public Solution<State<T>> search(Searchable<T> searchable) {
+
+        // Array list with all the states we visited at
         ArrayList<T> visitedStates = new ArrayList<>();
+        // Stack to manage which of the state we need to work on
         Stack<State<T>> stack = new Stack<>();
-        State<T> rootSolution = s.getInitialState();
+        // States that will be part of our solution
+        State<T> rootSolution = searchable.getInitialState();
+        // Add the
         visitedStates.add(rootSolution.getState());
         stack.push(rootSolution);
-        while(!stack.empty())
-        {
+        while(!stack.empty()) {
             State<T> currentState;
             currentState = stack.pop();
-            if (currentState.getState().equals(s.getGoalState().getState()))
-            {
-                //TODO:need to change when Solution is finalize
-                //  return currentState;
-                return null;
+
+            if (currentState.isGoal()) {
+                return currentState.backTrace();
             }
-            ArrayList<State<T>> possibleStates = s.getAllPossibleStates();
-            for (State<T> state : possibleStates)
-            {
+            ArrayList<State<T>> possibleStates = searchable.getAllPossibleStates();
+
+            for (State<T> state : possibleStates) {
                 state.setCameFrom(currentState);
-                if(!visitedStates.contains(state.getState()))
-                {
+
+                if(!visitedStates.contains(state.getState())) {
                     visitedStates.add(state.getState());
                     stack.push(state);
 
                 }
             }
         }
-        return new Solution<S>();
+        return null;
     }
 
     //TODO: fix this and understand if needed
