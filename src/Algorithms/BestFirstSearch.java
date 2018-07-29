@@ -18,19 +18,20 @@ public class BestFirstSearch<T, P> implements Searcher<T, P> {
         //Define the Queue with the priorityQueue and use the comparator
         PriorityQueue<State<T, P>> queue = new PriorityQueue<State<T, P>>(10, comparator);
         //Add the State to the queue
-        queue.add(searchable.getInitialState());
+        State<T, P> rootSolution = searchable.getInitialState();
+        queue.add(rootSolution);
+        visitedStates.add(rootSolution);
         while (!queue.isEmpty())
         {
             State<T, P> currentState;
             //Take the first State from the queue
             currentState = queue.poll();
             //Add the currentState to the visitedState list
-            visitedStates.add(currentState);
             //Check if the current State is the Goal
             if (currentState.isGoal())
             {
                 //return the backTrace of the current State
-                return new Solution<P>(currentState);
+                return new Solution<>(currentState);
             }
             //Create array list to the possible States
             ArrayList<State<T, P>> possibleStates = searchable.getAllPossibleStates();
@@ -40,8 +41,9 @@ public class BestFirstSearch<T, P> implements Searcher<T, P> {
                 if(!visitedStates.contains(state) && !queue.contains(state))
                 {
                     state.setCameFrom(currentState);
-                    queue.add(state);
-                    visitedStates.add(state);
+                    searchable.setCurrentState(state);
+                    queue.add(searchable.getCurrentState());
+                    visitedStates.add(searchable.getCurrentState());
                 }
 
                 //TODO:Check if need to do extra checks here (like the example in the presentation)

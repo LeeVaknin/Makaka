@@ -35,6 +35,32 @@ public class Pipe {
 
     public Pipe(Character pipe) {
         try {
+            this.initialize();
+            this.setPipeVal(pipe);
+        } catch (Exception ex) {
+            System.out.println("Pipe.Pipe(): Error details: " + ex.getMessage());
+        }
+    }
+
+    public Pipe(@NotNull Pipe pipe) {
+        this.initialize();
+        this.setPipeVal(pipe.getPipeVal());
+    }
+
+    public Pipe(Position position) {
+        this.initialize();
+        this.setPosition(position);
+    }
+
+    public Pipe(Integer row, Integer col) {
+        this.initialize();
+        this.setPosition(new Position(row, col));
+    }
+
+    // Methods
+
+    public void initialize() {
+        if (this.rotationMapping == null) {
             this.rotationMapping = new HashMap<Character, Character>() {{
                 put('F', '7');
                 put('7', 'J');
@@ -43,25 +69,9 @@ public class Pipe {
                 put('-', '|');
                 put('|', '-');
             }};
-            this.setPipeVal(pipe);
-        } catch (Exception ex) {
-            System.out.println("Pipe.Pipe(): Error details: " + ex.getMessage());
         }
     }
 
-    public Pipe(@NotNull Pipe pipe) {
-        this.setPipeVal(pipe.getPipeVal());
-    }
-
-    public Pipe(Position position) {
-        this.setPosition(position);
-    }
-
-    public Pipe(Integer row, Integer col) {
-        this.setPosition(new Position(row, col));
-    }
-
-    // Methods
     public Character rotate() {
         try {
             switch (pipeVal) {

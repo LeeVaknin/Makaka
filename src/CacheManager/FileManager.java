@@ -25,7 +25,7 @@ public class FileManager<P> implements CacheManager<P> {
         try {
             if (!this.isDirCreated) {this.createDirIfNeeded(); }
             File filePath = new File(this.repository, id);
-            if (!filePath.exists()) {
+            if (solution != null && !filePath.exists()) {
                 filePath.createNewFile();
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(
                         new BufferedOutputStream(

@@ -1,41 +1,56 @@
 package ClientHandler;
+
+import Algorithms.BestFirstSearch;
+import Board.MatrixBoard;
+import Board.Position;
 import Board.Solution;
 import Board.Step;
 import CacheManager.CacheManager;
+import CacheManager.FileManager;
+import Solver.PipeGameSolver;
 import Solver.Solver;
 import State.State;
 import Utils.HashManager;
 import org.jetbrains.annotations.Nullable;
+
 import java.io.*;
 
 // T is the board type, P is the position type
-public class MyCHandler<T, P> implements ClientHandler {
+public class MyCHandler implements ClientHandler {
 
-    private Solver<T, P> solver;
-    private CacheManager<P> cacheManager;
+    private Solver<MatrixBoard, Position> solver;
+    private CacheManager<Position> cacheManager;
 
-    public MyCHandler(Solver<T, P> solver, CacheManager<P> cacheManager) {
-        this.solver = solver;
-        this.cacheManager = cacheManager;
+    //    public MyCHandler(Solver<T, P> solver, CacheManager<P> cacheManager) {
+//        this.solver = solver;
+//        this.cacheManager = cacheManager;
+//    }
+//
+    public MyCHandler() {
+        this.solver = new PipeGameSolver(new BestFirstSearch<>());
+        this.cacheManager = new FileManager<>();
     }
 
     @Override
     public void handle(InputStream inFromClient, OutputStream outToClient) {
-        try {
-            String response;
-            String request = this.readRequest(inFromClient);
-            String problemId = HashManager.getId(request);
-            response = cacheManager.loadSolution(problemId);
-            // Check if we have saved solution to our problem
-            if (response == null) {
-                Solution<P> solution  = this.solver.solve(request);
-                this.cacheManager.saveSolution(problemId, solution);
+        String response;
+        String request = this.readRequest(inFromClient);
+        if (request != null) {
+            String problemId = String.valueOf(request.hashCode());
+            try {
+                response = cacheManager.loadSolution(problemId);
+                if (response == null) {
+                    Solution<Position> solution = this.solver.solve(request);
+                    this.cacheManager.saveSolution(problemId, solution);
+                }
+                this.writeResponse(response, outToClient);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            this.writeResponse(response, outToClient);
-
-        } catch (IOException exception) {
-            System.out.println(String.join("; ", "ERROR: Failed to close connection", exception.toString()));
         }
+        // Check if we have saved solution to our problem
+
+
     }
 
     @Nullable
@@ -60,10 +75,9 @@ public class MyCHandler<T, P> implements ClientHandler {
     }
 
     private void writeResponse(String response, OutputStream outFromClient) {
-        try (OutputStreamWriter writer = new OutputStreamWriter(outFromClient)) {
-            writer.write(response);
-        } catch (IOException exception) {
-            System.out.println(String.join("; ", "Failed to write response to client", exception.toString()));
+        try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(outFromClient))) {
+            writer.println(response);
+            writer.println("done");
         }
     }
 }

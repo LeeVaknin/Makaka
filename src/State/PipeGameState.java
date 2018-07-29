@@ -1,8 +1,6 @@
 package State;
-import Board.MatrixBoard;
-import Board.PipeGameStep;
-import Board.Position;
-import Board.Step;
+import Board.*;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -66,13 +64,12 @@ public class PipeGameState extends State<MatrixBoard, Position> {
         Position left = new Position(currentLocation.getPositionLeft());
         Position right = new Position(currentLocation.getPositionRight());
 
-        ArrayList<Position> directions = new ArrayList<Position>() {{
+        return new ArrayList<Position>() {{
             add(up);
             add(down);
             add(right);
             add(left);
         }};
-        return directions;
     }
 
 //  Returns a backTrace of the states for the algorithms
@@ -108,18 +105,25 @@ public class PipeGameState extends State<MatrixBoard, Position> {
             for (Position direction: directions) {
                 // After 3 rotations everything comes back to the initial state
                 Integer maxRotations = 3;
-                for (Integer rotations = 0; rotations < maxRotations; rotations++ ) {
-                    if (rotations > 0) {
-                        // with each iteration rotate the pipe in the location of the direction
-                        tmpBoard.getPipe(direction).rotate();
+                if (!direction.equals(currentLocation) && tmpBoard.getPipe(direction) != null) {
+                    for (Integer rotations = 0; rotations < maxRotations; rotations++ ) {
+                        if (rotations > 0) {
+                            // with each iteration rotate the pipe in the location of the direction
+                            Pipe pipe = tmpBoard.getPipe(direction);
+                            if (pipe!= null){
+                                pipe.rotate();
+                            }
+
+                        }
+                        // Check if the move is valid, if so, no need to rotate anything, add this direction to the list.
+                        if (tmpBoard.isValidMove(currentLocation, direction)) {
+                            State<MatrixBoard, Position> neighbor = new PipeGameState(this);
+                            neighbor.updateState(new PipeGameStep(direction, rotations));
+                            allNeighbors.add(neighbor);
+                            break;
+                        }
                     }
-                    // Check if the move is valid, if so, no need to rotate anything, add this direction to the list.
-                    if (tmpBoard.isValidMove(currentLocation, direction)) {
-                        State<MatrixBoard, Position> neighbor = new PipeGameState(this);
-                        neighbor.updateState(new PipeGameStep(direction, rotations));
-                        allNeighbors.add(neighbor);
-                        break;
-                    }
+
                 }
             }
 
@@ -150,7 +154,7 @@ public class PipeGameState extends State<MatrixBoard, Position> {
         if (this.state != null) {
             State<MatrixBoard, Position> newCameFrom = new PipeGameState(this.state);
             this.state.getPipe(step.getPosition()).rotate(((PipeGameStep) step).getRotations());
-            this.setCameFrom(newCameFrom);
+//            this.setCameFrom(newCameFrom);
             this.setCurrentPosition(step.getPosition());
             this.setStep(step);
         }

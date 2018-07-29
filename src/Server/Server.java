@@ -5,13 +5,13 @@ import ClientHandler.ClientHandler;
 import java.io.IOException;
 
 // T - client handler
-public interface Server <T> {
+public interface Server {
 
     /////////
     //Methods
     /////////
 
-    void start();
+    void start(ClientHandler clientHandler);
     void stop();
 
 

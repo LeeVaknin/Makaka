@@ -2,7 +2,11 @@ package Board;
 
 //TODO : Consider of having interface for this class
 
-public class Position {
+import java.io.Serializable;
+
+public class Position implements Serializable{
+
+    private static final long serialVersionUID = 42L;
 
     // Variables
     private Integer row;
@@ -23,6 +27,7 @@ public class Position {
         if (position != null) {
             this.setCol(position.getCol());
             this.setRow(position.getRow());
+            return;
         }
         this.setCol(0);
         this.setRow(0);
@@ -50,24 +55,32 @@ public class Position {
     }
 
     public Position getPositionUp() {
-        return new Position(this.col, (this.row - 1));
+        Integer newRow = this.getRow() - 1;
+        return new Position(this.col, newRow);
     }
 
     public Position getPositionRight() {
-        return new Position((this.col + 1), this.row);
+        Integer newCol = this.col + 1;
+        return new Position(newCol, this.row);
     }
 
     public Position getPositionLeft() {
-        return new Position((this.col - 1), this.row);
+        Integer newCol = this.getCol() - 1;
+        return new Position(newCol, this.row);
 
     }
 
     public Position getPositionDown() {
-        return new Position(this.col, (this.row + 1));
+        Integer newRow = this.getRow() + 1;
+        return new Position(this.col, newRow);
     }
 
     @Override
     public String toString() {
         return String.join(",", this.getRow().toString(), this.getCol().toString());
+    }
+
+    public boolean equals(Position obj) {
+        return (obj.getRow().equals(this.getRow()) && obj.getCol().equals(this.getCol()));
     }
 }

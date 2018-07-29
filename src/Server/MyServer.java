@@ -1,7 +1,9 @@
 package Server;
 
+import CacheManager.CacheManager;
 import ClientHandler.ClientHandler;
 import ClientHandler.MyCHandler;
+import Solver.PipeGameSolver;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -11,27 +13,26 @@ import java.net.SocketTimeoutException;
 public class MyServer implements Server {
 
     private int port;
-    private ClientHandler myCHandler;
     private volatile boolean stop;
 
     // C-TOR
-    public MyServer(int port, ClientHandler myCHandler) {
+    public MyServer(int port) {
         this.port = port;
-        this.myCHandler = myCHandler;
         stop = false;
     }
 
     // Methods
 
-    public void Activate() throws IOException {
-
+    public void Activate(ClientHandler clientHandler) throws IOException {
+        System.out.println("Starting server");
         ServerSocket server = new ServerSocket(port);
         server.setSoTimeout(1000);
         while (!stop) {
             try {
                 Socket aClient = server.accept(); // blocking call
                 try {
-                    myCHandler.handle(aClient.getInputStream(), aClient.getOutputStream());
+                    System.out.println(aClient.toString());
+                    clientHandler.handle(aClient.getInputStream(), aClient.getOutputStream());
                     aClient.getInputStream().close();
                     aClient.getOutputStream().close();
                 } catch (IOException e) {
@@ -52,10 +53,11 @@ public class MyServer implements Server {
         }
     }
 
-    public void start() {
+    @Override
+    public void start(ClientHandler clientHandler) {
         new Thread(() -> {
             try {
-                Activate();
+                Activate(clientHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -42,7 +42,7 @@ public abstract class Board<T> {
     }
 
     void setId(String board) {
-        this.id = HashManager.getId(board);
+        this.id = String.valueOf(board.hashCode());
     }
 
     void setId(Board<T> board) {

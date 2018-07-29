@@ -22,15 +22,17 @@ public class MatrixBoard extends Board<Pipe[][]> {
     }
 
     public MatrixBoard(String board) {
-        // super(board);
         setBoard(this.toBoard(board));
+        setId(board);
+        setStart(this.findStartPosition());
+        setEnd(this.findEndPosition());
     }
 
     // Methods
 
     // Returns the value of the pipe in the given position
     public Pipe getPipe(Position position) {
-        if (position != null) {
+        if (position != null && isValidPosition(position)) {
             Integer col = position.getCol();
             Integer row = position.getRow();
             return this.board[row][col];
