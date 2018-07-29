@@ -27,7 +27,7 @@ public class Step {
     }
 
     public void setTo(Position to) {
-        this.to = to;
+        this.to = new Position(to);
     }
 
     public Position getTo() {
@@ -36,12 +36,11 @@ public class Step {
     }
 
     public Position getFrom() {
-
         return from;
     }
 
     public void setFrom(Position position) {
-        this.from = position;
+        this.from = new Position(position);
     }
 
 
