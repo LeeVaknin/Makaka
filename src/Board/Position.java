@@ -9,6 +9,11 @@ public class Position {
     private Integer col;
 
     // C-TOR
+    public Position() {
+        this.setCol(0);
+        this.setRow(0);
+    }
+
     public Position(Integer col, Integer row) {
         this.setCol(col);
         this.setRow(row);
