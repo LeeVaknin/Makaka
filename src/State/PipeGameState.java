@@ -2,16 +2,12 @@ package State;
 import Board.MatrixBoard;
 import Models.Position;
 import Models.Solution;
-import Models.Step;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class PipeGameState extends State<MatrixBoard> {
-
-    private Step stepToState;
-    protected Position currentPosition;
+public class PipeGameState extends State<MatrixBoard, Position> {
 
     // C-TOR
 
@@ -20,7 +16,7 @@ public class PipeGameState extends State<MatrixBoard> {
         this.setCurrentPosition(null);
     }
 
-    public PipeGameState(State<MatrixBoard> pipeGameState) {
+    public PipeGameState(State<MatrixBoard, Position> pipeGameState) {
         if (pipeGameState != null) {
             this.setState(pipeGameState.getState());
             this.setCameFrom(pipeGameState.getCameFrom());
@@ -34,6 +30,7 @@ public class PipeGameState extends State<MatrixBoard> {
         return currentPosition;
     }
 
+    @Override
     public void setCurrentPosition(Position currentPosition) {
         if (currentPosition != null) {
             this.currentPosition = new Position(currentPosition);
@@ -48,7 +45,7 @@ public class PipeGameState extends State<MatrixBoard> {
         }
     }
 
-    public boolean equals(State<MatrixBoard> state) {
+    public boolean equals(State<MatrixBoard, Position> state) {
         if (state == null) { return false; }
         return this.state.equals(state.state);
     }
@@ -70,9 +67,9 @@ public class PipeGameState extends State<MatrixBoard> {
     }
 
 //  Returns a backTrace of the states for the algorithms
-    public Solution<State<MatrixBoard>> backTrace() {
-        Solution<State<MatrixBoard>> returnBackTrace = new Solution<>();
-        State<MatrixBoard> tmp = this.getCameFrom();
+    public Solution<State<MatrixBoard, Position>> backTrace() {
+        Solution<State<MatrixBoard, Position>> returnBackTrace = new Solution<>();
+        State<MatrixBoard, Position> tmp = this.getCameFrom();
         Character pipeVal = ' ';
         // TODO : Do we need the first protection at the while loop ?
         while (!pipeVal.equals('s') || tmp != null) {
@@ -85,8 +82,8 @@ public class PipeGameState extends State<MatrixBoard> {
         return returnBackTrace;
     }
 
-    public ArrayList<State<MatrixBoard>> getAllNeighbors() {
-        ArrayList<State<MatrixBoard>> allNeighbors = null;
+    public ArrayList<State<MatrixBoard, Position>> getAllNeighbors() {
+        ArrayList<State<MatrixBoard, Position>> allNeighbors = null;
         try {
 
             allNeighbors = new ArrayList<>();
@@ -107,7 +104,7 @@ public class PipeGameState extends State<MatrixBoard> {
                     }
                     // Check if the move is valid, if so, no need to rotate anything, add this direction to the list.
                     if (tmpBoard.isValidMove(currentLocation, direction)) {
-                        State<MatrixBoard> neighbor = new PipeGameState(this);
+                        State<MatrixBoard, Position> neighbor = new PipeGameState(this);
                         ((PipeGameState) neighbor).updateState(direction, rotations);
                         allNeighbors.add(neighbor);
                         break;
@@ -129,7 +126,7 @@ public class PipeGameState extends State<MatrixBoard> {
 
     public void updateState(Position to, int rotations) {
         if (this.state != null) {
-            State<MatrixBoard> newCameFrom = new PipeGameState(this.state);
+            State<MatrixBoard, Position> newCameFrom = new PipeGameState(this.state);
             this.state.getPipe(to).rotate(rotations);
             this.setCameFrom(newCameFrom);
             this.setCurrentPosition(to);
@@ -149,13 +146,5 @@ public class PipeGameState extends State<MatrixBoard> {
             System.out.println(String.join(": ", "PipeGameState.generateCost(): Error details" , ex.getMessage()));
         }
         return cost;
-    }
-
-    public Step getStepToState() {
-        return stepToState;
-    }
-
-    public void setStepToState(Step step) {
-        this.stepToState = step;
     }
 }

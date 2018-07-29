@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class FileManager<T> implements CacheManager<Solution<T>> {
+public class FileManager<T> implements CacheManager<T> {
 
     private String idDelimiter = ", ";
     private String stepsDelimiter = ";";
@@ -98,14 +98,14 @@ public class FileManager<T> implements CacheManager<Solution<T>> {
     public static <T> T parse(String strObject, Class<T> objectClass) {
         try {
             // Create a Constructor
-            Constructor constructor = objectClass.getConstructor(new Class[] {String.class});
+            Constructor constructor = objectClass.getConstructor(new Class[]{String.class});
             // create an instance
-            return ((T)constructor.newInstance(strObject));
+            T parsedObject = ((T) constructor.newInstance(strObject));
             return parsedObject;
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException ex) {
             System.out.println("Couldn't parse ");
         }
-
+        return null;
     }
 
 }

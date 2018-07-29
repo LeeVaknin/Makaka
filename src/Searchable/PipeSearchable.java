@@ -1,15 +1,14 @@
 package Searchable;
 
 import Board.MatrixBoard;
-import Models.Step;
-import State.PipeGameState;
 import Models.Position;
+import State.PipeGameState;
 import State.State;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 
-public class PipeSearchable implements Searchable<MatrixBoard> {
+public class PipeSearchable implements Searchable<MatrixBoard, Position> {
 
     // variables
     private PipeGameState currentState;
@@ -17,15 +16,15 @@ public class PipeSearchable implements Searchable<MatrixBoard> {
     private PipeGameState  goalState;
 
     // C-TOR
-    public PipeSearchable(State<MatrixBoard> currentState,
-                          State<MatrixBoard> initialState,
-                          State<MatrixBoard> goalState) {
+    public PipeSearchable(State<MatrixBoard, Position> currentState,
+                          State<MatrixBoard, Position> initialState,
+                          State<MatrixBoard, Position> goalState) {
         this.currentState = new PipeGameState(currentState);
         this.initialState = new PipeGameState(initialState);
         this.goalState = new PipeGameState(goalState);
     }
 
-    public PipeSearchable(State<MatrixBoard> initialState) {
+    public PipeSearchable(State<MatrixBoard, Position> initialState) {
         this.initialState = new PipeGameState(initialState);
         this.currentState = new PipeGameState(initialState);
         this.goalState = null;
@@ -37,31 +36,31 @@ public class PipeSearchable implements Searchable<MatrixBoard> {
     }
 
     @Override
-    public State<MatrixBoard> getCurrentState() {
+    public State<MatrixBoard, Position> getCurrentState() {
         return this.currentState;
     }
 
     @Override
-    public State<MatrixBoard> getInitialState() {
+    public State<MatrixBoard, Position> getInitialState() {
         return this.initialState;
     }
 
     @Override
-    public State<MatrixBoard> getGoalState() {
+    public State<MatrixBoard, Position> getGoalState() {
         return this.goalState;
     }
 
     @Override
-    public ArrayList<State<MatrixBoard>> getAllPossibleStates() {
+    public ArrayList<State<MatrixBoard, Position>> getAllPossibleStates() {
         return this.currentState.getAllNeighbors();
     }
 
     @Override
-    public Comparator<State<MatrixBoard>> getComperator() {
+    public Comparator<State<MatrixBoard, Position>> getComperator() {
         return new StateComperator();
     }
 
-    class StateComperator implements Comparator<State<MatrixBoard>> {
+    class StateComperator implements Comparator<State<MatrixBoard, Position>> {
         /**
          * This function will calculate which of the given states are closer to the goal
          *
@@ -70,7 +69,7 @@ public class PipeSearchable implements Searchable<MatrixBoard> {
          * @return : case state2 is closer return -1. case state1 is closer return 1. case of no difference return 0.
          */
         @Override
-        public int compare(State<MatrixBoard> state1, State<MatrixBoard> state2) {
+        public int compare(State<MatrixBoard, Position> state1, State<MatrixBoard, Position> state2) {
             if (state1.generateCost() > state2.generateCost())
                 return -1;
             if (state1.generateCost() < state2.generateCost())
@@ -80,17 +79,17 @@ public class PipeSearchable implements Searchable<MatrixBoard> {
     }
 
     @Override
-    public void setCurrentState(State<MatrixBoard> currentState) {
+    public void setCurrentState(State<MatrixBoard, Position> currentState) {
 //        this.currentState = new PipeGameState(currentState);
     }
 
     @Override
-    public void setInitialState(State<MatrixBoard> initialState) {
+    public void setInitialState(State<MatrixBoard, Position> initialState) {
         this.initialState = new PipeGameState(initialState);
     }
 
     @Override
-    public void setGoalState(State<MatrixBoard> goalState) {
+    public void setGoalState(State<MatrixBoard, Position> goalState) {
         this.goalState = new PipeGameState(goalState);
     }
 }

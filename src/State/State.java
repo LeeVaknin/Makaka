@@ -1,20 +1,25 @@
 package State;
-import Board.MatrixBoard;
-import Models.Position;
 import Models.Solution;
-
 import java.util.ArrayList;
 
-// T is the board, S is the child of the state
-public abstract class State<T> {
+
+// T is the board, P is the position type
+public abstract class State<T, P> {
 
     // Variables
     protected T state;
-    private State<T> cameFrom;
+    private State<T, P> cameFrom;
+    protected P currentPosition;
+
+    public P getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public abstract void setCurrentPosition(P currentPosition);
 
     // Methods
 
-    public void setCameFrom(State<T> cameFrom) {
+    public void setCameFrom(State<T, P> cameFrom) {
         if (cameFrom != null) {
             this.cameFrom = cameFrom;
         }
@@ -26,7 +31,7 @@ public abstract class State<T> {
         return state;
     }
 
-    public State<T> getCameFrom() {
+    public State<T, P> getCameFrom() {
         return cameFrom;
     }
 
@@ -35,9 +40,9 @@ public abstract class State<T> {
    /*
    Returns a backTrace of the states for the algorithms
     */
-    public abstract Solution<State<T>> backTrace();
+    public abstract Solution<State<T, P>> backTrace();
 
-    public abstract ArrayList<State<T>> getAllNeighbors();
+    public abstract ArrayList<State<T, P>> getAllNeighbors();
 
     public abstract  boolean isGoal();
 }

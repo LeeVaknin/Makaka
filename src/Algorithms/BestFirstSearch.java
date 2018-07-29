@@ -11,20 +11,20 @@ import java.util.PriorityQueue;
 
 
 // T is the searchable and S is the step, K is the state
-public class BestFirstSearch<T> implements Searcher<T> {
+public class BestFirstSearch<T, P> implements Searcher<T, P> {
 
-    public Solution<State<T>> search(Searchable<T> searchable) {
+    public Solution<State<T, P>> search(Searchable<T, P> searchable) {
         //Define Array list of all the visited States
-        ArrayList<State<T>> visitedStates = new ArrayList<>();
+        ArrayList<State<T, P>> visitedStates = new ArrayList<>();
         //Define the Comparator for the
-        Comparator<State<T>> comparator = searchable.getComperator();
+        Comparator<State<T, P>> comparator = searchable.getComperator();
         //Define the Queue with the priorityQueue and use the comparator
-        PriorityQueue<State<T>> queue = new PriorityQueue<State<T>>(10, comparator);
+        PriorityQueue<State<T, P>> queue = new PriorityQueue<State<T, P>>(10, comparator);
         //Add the State to the queue
         queue.add(searchable.getInitialState());
         while (!queue.isEmpty())
         {
-            State<T> currentState;
+            State<T, P> currentState;
             //Take the first State from the queue
             currentState = queue.poll();
             //Add the currentState to the visitedState list
@@ -36,8 +36,8 @@ public class BestFirstSearch<T> implements Searcher<T> {
                 return currentState.backTrace();
             }
             //Create array list to the possible States
-            ArrayList<State<T>> possibleStates = searchable.getAllPossibleStates();
-            for (State<T> state : possibleStates)
+            ArrayList<State<T, P>> possibleStates = searchable.getAllPossibleStates();
+            for (State<T, P> state : possibleStates)
             {
                 //Check if the State Neighbor is already in visitedState and in the queue
                 if(!queue.contains(state) || !visitedStates.contains(state))

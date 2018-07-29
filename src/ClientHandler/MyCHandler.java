@@ -4,17 +4,18 @@ import Board.Board;
 import CacheManager.CacheManager;
 import Models.*;
 import Solver.Solver;
+import State.State;
 import Utils.HashManager;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 
-public class MyCHandler<T> implements ClientHandler {
+public class MyCHandler<T, P> implements ClientHandler {
 
-    private Solver<Board<T>, Step> solver;
-    private CacheManager<Step> cacheManager;
+    private Solver<T, P> solver;
+    private CacheManager<State<T,P>> cacheManager;
 
-    public MyCHandler(Solver<Board<T>, Step> solver, CacheManager<Step> cacheManager) {
+    public MyCHandler(Solver<T, P> solver, CacheManager<State<T,P>> cacheManager) {
         this.solver = solver;
         this.cacheManager = cacheManager;
     }
@@ -28,7 +29,7 @@ public class MyCHandler<T> implements ClientHandler {
             response = cacheManager.loadSolution(problemId);
             // Check if we have saved solution to our problem
             if (response == null) {
-                Solution<Step> solution  = this.solver.solve(request);
+                Solution<State<T, P>> solution  = this.solver.solve(request);
                 response = this.cacheManager.saveSolution(problemId, solution);
             }
             this.writeResponse(response, outToClient);
@@ -60,7 +61,6 @@ public class MyCHandler<T> implements ClientHandler {
     }
 
     private void writeResponse(String response, OutputStream outFromClient) {
-
         try (OutputStreamWriter writer = new OutputStreamWriter(outFromClient)) {
             writer.write(response);
         } catch (IOException exception) {

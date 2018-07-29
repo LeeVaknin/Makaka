@@ -9,23 +9,23 @@ import State.State;
 
 
 // common solver for the pipe game
-public class PipeGameSolver implements Solver<MatrixBoard>{
+public class PipeGameSolver implements Solver<MatrixBoard, Position>{
 
     // This searcher is injected into the common solver and solves the given problem
-    private Searcher<MatrixBoard> searcher;
+    private Searcher<MatrixBoard, Position> searcher;
 
     // C-TOR
-    public PipeGameSolver(Searcher<MatrixBoard> searcher) {
+    public PipeGameSolver(Searcher<MatrixBoard, Position> searcher) {
         this.searcher = searcher;
     }
 
     @Override
-    public Solution<State<MatrixBoard>> solve(Searchable<MatrixBoard> searchable) {
+    public Solution<State<MatrixBoard, Position>> solve(Searchable<MatrixBoard, Position> searchable) {
         return this.searcher.search(searchable);
     }
 
     @Override
-    public Solution<State<MatrixBoard>> solve(String problem) {
+    public Solution<State<MatrixBoard, Position>> solve(String problem) {
         MatrixBoard board = new MatrixBoard(problem);
         PipeGameState state = new PipeGameState(board);
         PipeSearchable searchable = new PipeSearchable(state);
