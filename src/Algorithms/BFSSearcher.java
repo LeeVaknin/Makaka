@@ -19,8 +19,6 @@ public class BFSSearcher<T, P> implements Searcher<T, P> {
         LinkedList<State<T, P>> queue = new LinkedList<State<T, P>>();
         //The first state -Initial state
         State<T, P> rootSolution = searchable.getInitialState();
-        //Add the first state to the visited States
-        visitedStates.add(rootSolution);
         //Add the first State to the queue
         queue.add(rootSolution);
         //Run the algorithm while the queue is not empty
@@ -29,6 +27,7 @@ public class BFSSearcher<T, P> implements Searcher<T, P> {
             State<T, P> currentState;
             //get the first one in queue
             currentState = queue.poll();
+            visitedStates.add(currentState);
             searchable.setCurrentState(currentState);
             //check if the current state is the goal
             if (currentState.isGoal())
@@ -42,15 +41,12 @@ public class BFSSearcher<T, P> implements Searcher<T, P> {
             {
                 //to have all the states that I came from them.
                 state.setCameFrom(currentState);
-                //check if the possible state is already in the queue
-                if(!queue.contains(state))
+                //check if the possible state is already in the queue and visited state
+                if(!queue.contains(state) && !visitedStates.contains(state))
                 {
                     queue.add(state);
-                }
-                //Check if the State Neighbor is already in the visited
-                if (!visitedStates.contains(state))
-                {
                     visitedStates.add(state);
+
                 }
             }
         }

@@ -37,7 +37,7 @@ public class DFSSearcher <T, P> implements Searcher<T, P> {
                 if(!visitedStates.contains(state) && !stack.contains(state)) {
                     visitedStates.add(state);
                     stack.push(state);
-
+                    state.setCameFrom(currentState);
                 }
             }
         }
