@@ -1,7 +1,7 @@
 package Algorithms;
 
+import Board.Solution;
 import State.State;
-import Models.Solution;
 import Searchable.Searchable;
 import Searcher.Searcher;
 
@@ -11,7 +11,7 @@ import java.util.LinkedList;
 
 public class BFSSearcher<T, P> implements Searcher<T, P> {
 
-    public Solution<State<T,P>> search(Searchable<T, P> searchable)
+    public Solution<P> search(Searchable<T, P> searchable)
     {
         //Define Array list of all the visited States
         ArrayList<State<T, P>> visitedStates = new ArrayList<>();
@@ -33,7 +33,7 @@ public class BFSSearcher<T, P> implements Searcher<T, P> {
             if (currentState.isGoal())
             {
                 //return the backTrace of the current State
-                return currentState.backTrace();
+                return new Solution<P>(currentState);
             }
             //Create array list to the possible States
             ArrayList<State<T, P>> possibleStates = searchable.getAllPossibleStates();

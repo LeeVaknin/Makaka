@@ -1,11 +1,8 @@
 package Board;
-
-import Models.Pipe;
-import Models.Position;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.HashMap;
+
 
 public class MatrixBoard extends Board<Pipe[][]> {
 

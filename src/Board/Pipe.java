@@ -1,4 +1,4 @@
-package Models;
+package Board;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -1,10 +1,11 @@
 package State;
 import Board.MatrixBoard;
-import Models.Position;
-import Models.Solution;
+import Board.PipeGameStep;
+import Board.Position;
+import Board.Step;
+
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
 
 
 public class PipeGameState extends State<MatrixBoard, Position> {
@@ -14,29 +15,38 @@ public class PipeGameState extends State<MatrixBoard, Position> {
     public PipeGameState(MatrixBoard state) {
         this.setState(state);
         this.setCurrentPosition(null);
+        this.setStep(null);
     }
 
     public PipeGameState(State<MatrixBoard, Position> pipeGameState) {
         if (pipeGameState != null) {
             this.setState(pipeGameState.getState());
             this.setCameFrom(pipeGameState.getCameFrom());
-            this.setCurrentPosition(((PipeGameState)pipeGameState).getCurrentPosition());
+            this.setCurrentPosition(pipeGameState.getCurrentPosition());
+            this.setStep(pipeGameState.getStep());
         }
     }
 
     // Methods
-    // Added method which sets the default currentPosition to be the start of the board.
-    public Position getCurrentPosition() {
-        return currentPosition;
+
+    @Override
+    public void setStep(Step<Position> step){
+        if (step == null ) {
+            this.setStep(new PipeGameStep(this.getCurrentPosition(), 0));
+            return;
+        }
+        super.setStep(step);
     }
+    // Added method which sets the default currentPosition to be the start of the board.
 
     @Override
     public void setCurrentPosition(Position currentPosition) {
-        if (currentPosition != null) {
-            this.currentPosition = new Position(currentPosition);
+        if (currentPosition == null) {
+            this.setCurrentPosition(this.state.getStart());
             return;
         }
-        this.currentPosition = this.state.getStart();
+        super.setCurrentPosition(currentPosition);
+
     }
 
     public void setState(MatrixBoard state) {
@@ -67,20 +77,22 @@ public class PipeGameState extends State<MatrixBoard, Position> {
     }
 
 //  Returns a backTrace of the states for the algorithms
-    public Solution<State<MatrixBoard, Position>> backTrace() {
-        Solution<State<MatrixBoard, Position>> returnBackTrace = new Solution<>();
-        State<MatrixBoard, Position> tmp = this.getCameFrom();
-        Character pipeVal = ' ';
-        // TODO : Do we need the first protection at the while loop ?
-        while (!pipeVal.equals('s') || tmp != null) {
-            returnBackTrace.add(tmp);
-            tmp = tmp.getCameFrom();
-            Position currentPosition = ((PipeGameState)tmp).getCurrentPosition();
-            pipeVal = currentPosition != null ? tmp.getState().getPipe(currentPosition).getPipeVal() : null;
-        }
-        Collections.reverse(returnBackTrace);
-        return returnBackTrace;
-    }
+//    public Solution<MatrixBoard> backTrace() {
+//        Solution<MatrixBoard> returnBackTrace = new Solution<>();
+//        State<MatrixBoard, Position> cameFromState =this.getCameFrom();
+//        MatrixBoard tmp = cameFromState.getState();
+//        Character pipeVal = ' ';
+//        // TODO : Do we need the first protection at the while loop ?
+//        while (!pipeVal.equals('s') || tmp != null) {
+//            returnBackTrace.add(tmp);
+//            cameFromState = cameFromState.getCameFrom();
+//            tmp = cameFromState.getState();
+//            Position currentPosition = cameFromState.getCurrentPosition();
+//            pipeVal = currentPosition != null ? tmp.getPipe(currentPosition).getPipeVal() : null;
+//        }
+//        Collections.reverse(returnBackTrace);
+//        return returnBackTrace;
+//    }
 
     public ArrayList<State<MatrixBoard, Position>> getAllNeighbors() {
         ArrayList<State<MatrixBoard, Position>> allNeighbors = null;
@@ -105,7 +117,7 @@ public class PipeGameState extends State<MatrixBoard, Position> {
                     // Check if the move is valid, if so, no need to rotate anything, add this direction to the list.
                     if (tmpBoard.isValidMove(currentLocation, direction)) {
                         State<MatrixBoard, Position> neighbor = new PipeGameState(this);
-                        ((PipeGameState) neighbor).updateState(direction, rotations);
+                        neighbor.updateState(new PipeGameStep(direction, rotations));
                         allNeighbors.add(neighbor);
                         break;
                     }
@@ -121,15 +133,27 @@ public class PipeGameState extends State<MatrixBoard, Position> {
 
     @Override
     public boolean isGoal() {
-        return this.state.getPipe(this.getCurrentPosition()).getPipeVal().equals('g');
+        try {
+            return this.state.getPipe(this.getCurrentPosition()).getPipeVal().equals('g');
+        } catch (NullPointerException ex) {
+            return false;
+        }
+
     }
 
-    public void updateState(Position to, int rotations) {
+    @Override
+    public String toString() {
+        return null;
+    }
+
+    @Override
+    protected void updateState(Step<Position> step) {
         if (this.state != null) {
             State<MatrixBoard, Position> newCameFrom = new PipeGameState(this.state);
-            this.state.getPipe(to).rotate(rotations);
+            this.state.getPipe(step.getPosition()).rotate(((PipeGameStep) step).getRotations());
             this.setCameFrom(newCameFrom);
-            this.setCurrentPosition(to);
+            this.setCurrentPosition(step.getPosition());
+            this.setStep(step);
         }
     }
 

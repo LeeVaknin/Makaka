@@ -1,7 +1,7 @@
 package Searchable;
 
 import Board.MatrixBoard;
-import Models.Position;
+import Board.Position;
 import State.PipeGameState;
 import State.State;
 import java.util.ArrayList;
@@ -16,13 +16,6 @@ public class PipeSearchable implements Searchable<MatrixBoard, Position> {
     private PipeGameState  goalState;
 
     // C-TOR
-    public PipeSearchable(State<MatrixBoard, Position> currentState,
-                          State<MatrixBoard, Position> initialState,
-                          State<MatrixBoard, Position> goalState) {
-        this.currentState = new PipeGameState(currentState);
-        this.initialState = new PipeGameState(initialState);
-        this.goalState = new PipeGameState(goalState);
-    }
 
     public PipeSearchable(State<MatrixBoard, Position> initialState) {
         this.initialState = new PipeGameState(initialState);
@@ -31,9 +24,6 @@ public class PipeSearchable implements Searchable<MatrixBoard, Position> {
     }
 
     // Methods
-    public boolean isGoal() {
-        return this.currentState.equals(goalState);
-    }
 
     @Override
     public State<MatrixBoard, Position> getCurrentState() {
@@ -56,31 +46,27 @@ public class PipeSearchable implements Searchable<MatrixBoard, Position> {
     }
 
     @Override
-    public Comparator<State<MatrixBoard, Position>> getComperator() {
-        return new StateComperator();
+    public Comparator<State<MatrixBoard, Position>> getComparator() {
+        return new Searchable.PipeSearchable.StateComparator();
     }
 
-    class StateComperator implements Comparator<State<MatrixBoard, Position>> {
+    class StateComparator implements Comparator<State<MatrixBoard, Position>> {
         /**
          * This function will calculate which of the given states are closer to the goal
          *
-         * @param state1
-         * @param state2
+         * @param state1: the first state to compare
+         * @param state2: the second state to compare
          * @return : case state2 is closer return -1. case state1 is closer return 1. case of no difference return 0.
          */
         @Override
         public int compare(State<MatrixBoard, Position> state1, State<MatrixBoard, Position> state2) {
-            if (state1.generateCost() > state2.generateCost())
-                return -1;
-            if (state1.generateCost() < state2.generateCost())
-                return 1;
-            return 0;
+            return Double.compare(state2.generateCost(), state1.generateCost());
         }
     }
 
     @Override
     public void setCurrentState(State<MatrixBoard, Position> currentState) {
-//        this.currentState = new PipeGameState(currentState);
+        this.currentState = new PipeGameState(currentState);
     }
 
     @Override

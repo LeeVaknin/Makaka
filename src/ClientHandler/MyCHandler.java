@@ -1,21 +1,20 @@
 package ClientHandler;
-
-import Board.Board;
+import Board.Solution;
+import Board.Step;
 import CacheManager.CacheManager;
-import Models.*;
 import Solver.Solver;
 import State.State;
 import Utils.HashManager;
 import org.jetbrains.annotations.Nullable;
-
 import java.io.*;
 
+// T is the board type, P is the position type
 public class MyCHandler<T, P> implements ClientHandler {
 
     private Solver<T, P> solver;
-    private CacheManager<State<T,P>> cacheManager;
+    private CacheManager<P> cacheManager;
 
-    public MyCHandler(Solver<T, P> solver, CacheManager<State<T,P>> cacheManager) {
+    public MyCHandler(Solver<T, P> solver, CacheManager<P> cacheManager) {
         this.solver = solver;
         this.cacheManager = cacheManager;
     }
@@ -29,8 +28,8 @@ public class MyCHandler<T, P> implements ClientHandler {
             response = cacheManager.loadSolution(problemId);
             // Check if we have saved solution to our problem
             if (response == null) {
-                Solution<State<T, P>> solution  = this.solver.solve(request);
-                response = this.cacheManager.saveSolution(problemId, solution);
+                Solution<P> solution  = this.solver.solve(request);
+                this.cacheManager.saveSolution(problemId, solution);
             }
             this.writeResponse(response, outToClient);
 

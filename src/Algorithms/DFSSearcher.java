@@ -1,16 +1,14 @@
 package Algorithms;
-
-import Models.Solution;
+import Board.Solution;
 import State.State;
 import Searchable.Searchable;
 import Searcher.Searcher;
-
 import java.util.ArrayList;
 import java.util.Stack;
 
 public class DFSSearcher<T, P> implements Searcher<T, P> {
 
-    public Solution<State<T, P>> search(Searchable<T, P> searchable) {
+    public Solution<P> search(Searchable<T, P> searchable) {
 
         // Array list with all the states we visited at
         ArrayList<State<T, P>> visitedStates = new ArrayList<>();
@@ -27,7 +25,7 @@ public class DFSSearcher<T, P> implements Searcher<T, P> {
 
             if (currentState.isGoal()) {
                 // Found the goal, return the back track from solution
-                return currentState.backTrace();
+                return new Solution<P>(currentState);
             }
             ArrayList<State<T, P>> possibleStates = currentState.getAllNeighbors();
 

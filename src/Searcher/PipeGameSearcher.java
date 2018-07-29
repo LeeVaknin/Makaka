@@ -1,6 +1,6 @@
 package Searcher;
 import Board.MatrixBoard;
-import Models.Position;
+import Board.Position;
 import Models.Solution;
 import Searchable.Searchable;
 import State.State;

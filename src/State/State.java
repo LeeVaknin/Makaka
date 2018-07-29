@@ -1,5 +1,6 @@
 package State;
-import Models.Solution;
+import Board.Position;
+import Board.Step;
 import java.util.ArrayList;
 
 
@@ -9,15 +10,33 @@ public abstract class State<T, P> {
     // Variables
     protected T state;
     private State<T, P> cameFrom;
-    protected P currentPosition;
+    private  P currentPosition;
+    private  Step<P> step;
 
     public P getCurrentPosition() {
         return currentPosition;
     }
 
-    public abstract void setCurrentPosition(P currentPosition);
+    public void setCurrentPosition(P currentPosition) {
+        if (currentPosition != null) {
+            this.currentPosition = currentPosition;
+            return;
+        }
+    }
 
     // Methods
+
+    public Step<P> getStep() {
+        return step;
+    }
+
+    public void setStep(Step<P> step) {
+        if (step != null) {
+            this.step = step;
+            return;
+        }
+        this.step = null;
+    }
 
     public void setCameFrom(State<T, P> cameFrom) {
         if (cameFrom != null) {
@@ -40,9 +59,14 @@ public abstract class State<T, P> {
    /*
    Returns a backTrace of the states for the algorithms
     */
-    public abstract Solution<State<T, P>> backTrace();
+//    public abstract Solution<P> backTrace();
 
     public abstract ArrayList<State<T, P>> getAllNeighbors();
 
-    public abstract  boolean isGoal();
+    // this method is required to update the state of, in every change we make
+    protected abstract void updateState(Step<P> step);
+
+    public abstract boolean isGoal();
+
+    public abstract String toString();
 }

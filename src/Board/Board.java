@@ -1,5 +1,5 @@
 package Board;
-import Models.Position;
+import Position;
 import Utils.HashManager;
 
 import java.util.HashMap;

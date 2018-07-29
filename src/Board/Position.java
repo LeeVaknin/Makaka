@@ -1,4 +1,4 @@
-package Models;
+package Board;
 
 //TODO : Consider of having interface for this class
 
