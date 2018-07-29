@@ -1,5 +1,4 @@
 package Board;
-import Position;
 import Utils.HashManager;
 
 import java.util.HashMap;

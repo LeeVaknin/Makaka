@@ -1,9 +1,7 @@
 package Algorithms;
-
-import Models.Solution;
+import Board.Solution;
 import State.State;
 import Searchable.Searchable;
-import Searcher.Searcher;
 
 
 import java.util.*;
@@ -11,7 +9,7 @@ import java.util.*;
 // T represent the board. S represent the boars state
 public class HillClimbingSearcher<T, P> implements Searcher<T, P> {
 
-    public Solution<State<T, P>> search(Searchable<T, P> searchable) {
+    public Solution<P> search(Searchable<T, P> searchable) {
 
         // System.out.println("Using HillClimbing Searcher: ");
         State<T, P> currentState = searchable.getInitialState();
@@ -36,7 +34,7 @@ public class HillClimbingSearcher<T, P> implements Searcher<T, P> {
                     bestNeighborState = currentState;
 
                 if (bestNeighborState.isGoal()) {
-                    return bestNeighborState.backTrace();
+                    return new Solution<P>(currentState);
                 }
 
                 if (currentState.generateCost() > bestNeighborState.generateCost()) {

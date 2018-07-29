@@ -2,18 +2,18 @@ package Board;
 
 public class PipeGameStep extends Step<Position> {
 
-    private int rotations;
+    private Integer rotations;
 
-    public PipeGameStep(Position position, int rotations) {
+    public PipeGameStep(Position position, Integer rotations) {
         this.setRotations(rotations);
         this.setPosition(position);
     }
 
-    public int getRotations() {
+    public Integer getRotations() {
         return rotations;
     }
 
-    public void setRotations(int rotations) {
+    public void setRotations(Integer rotations) {
         this.rotations = rotations;
     }
 
@@ -22,5 +22,10 @@ public class PipeGameStep extends Step<Position> {
         if (position != null) {
             this.position = new Position(position);
         }
+    }
+
+    @Override
+    public String toString() {
+        return String.join(",", this.getPosition().toString(), this.getRotations().toString());
     }
 }

@@ -1,7 +1,6 @@
 package Algorithms;
 import Board.Solution;
 import Searchable.Searchable;
-import Searcher.Searcher;
 import State.State;
 import java.util.ArrayList;
 import java.util.Comparator;

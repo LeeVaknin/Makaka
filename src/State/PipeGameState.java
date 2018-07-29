@@ -3,7 +3,6 @@ import Board.MatrixBoard;
 import Board.PipeGameStep;
 import Board.Position;
 import Board.Step;
-
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -108,8 +107,8 @@ public class PipeGameState extends State<MatrixBoard, Position> {
             // For each direction check if you can reach
             for (Position direction: directions) {
                 // After 3 rotations everything comes back to the initial state
-                int maxRotations = 3;
-                for (int rotations = 0; rotations < maxRotations; rotations++ ) {
+                Integer maxRotations = 3;
+                for (Integer rotations = 0; rotations < maxRotations; rotations++ ) {
                     if (rotations > 0) {
                         // with each iteration rotate the pipe in the location of the direction
                         tmpBoard.getPipe(direction).rotate();

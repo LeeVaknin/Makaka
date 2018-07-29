@@ -1,4 +1,4 @@
-package Searcher;
+package Algorithms;
 import Board.Solution;
 import Searchable.Searchable;
 

@@ -4,9 +4,8 @@ import Board.Position;
 import Board.Solution;
 import Searchable.PipeSearchable;
 import Searchable.Searchable;
-import Searcher.Searcher;
+import Algorithms.Searcher;
 import State.PipeGameState;
-import State.State;
 
 
 // common solver for the pipe game

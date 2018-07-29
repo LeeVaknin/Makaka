@@ -1,7 +1,9 @@
 
+import Algorithms.BestFirstSearch;
+import Board.MatrixBoard;
+import Board.Position;
 import CacheManager.FileManager;
 import ClientHandler.MyCHandler;
-import Searcher.PipeGameSearcher;
 import Server.MyServer;
 import Solver.PipeGameSolver;
 
@@ -12,7 +14,7 @@ public class Main {
     public static void main(String[] args) {
 
         int port = 1993;
-        PipeGameSearcher searcher = new PipeGameSearcher();
+        BestFirstSearch<MatrixBoard, Position> searcher = new BestFirstSearch<>();
         PipeGameSolver solver = new PipeGameSolver(searcher);
         FileManager cacheManager = new FileManager();
         MyCHandler myClientHandler = new MyCHandler(solver, cacheManager);
@@ -20,11 +22,7 @@ public class Main {
 
 
         Thread serverThread = new Thread(()-> {
-            try {
-                server.start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            server.start();
         });
 
     }

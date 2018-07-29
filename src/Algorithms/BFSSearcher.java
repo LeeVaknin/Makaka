@@ -3,7 +3,6 @@ package Algorithms;
 import Board.Solution;
 import State.State;
 import Searchable.Searchable;
-import Searcher.Searcher;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

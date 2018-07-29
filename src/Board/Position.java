@@ -65,4 +65,9 @@ public class Position {
     public Position getPositionDown() {
         return new Position(this.col, (this.row + 1));
     }
+
+    @Override
+    public String toString() {
+        return String.join(",", this.getRow().toString(), this.getCol().toString());
+    }
 }

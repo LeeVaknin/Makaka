@@ -26,6 +26,7 @@ public class Solution<P> implements Serializable {
 
     public Solution(Solution<P> solution) {
         this.setSteps(solution.getSteps());
+
     }
 
     public Solution() {
@@ -53,7 +54,15 @@ public class Solution<P> implements Serializable {
         }
     }
 
-
-
-
+    @Override
+    public String toString() {
+        String result = "";
+        for (Step<P> step : this.steps) {
+            result = result.concat(step.toString());
+            if (!step.equals(this.steps.get(this.steps.size()))) {
+                 result = result.concat(",");
+            }
+        }
+        return result;
+    }
 }

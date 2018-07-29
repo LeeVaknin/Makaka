@@ -47,7 +47,7 @@ public class PipeSearchable implements Searchable<MatrixBoard, Position> {
 
     @Override
     public Comparator<State<MatrixBoard, Position>> getComparator() {
-        return new Searchable.PipeSearchable.StateComparator();
+        return new PipeSearchable.StateComparator();
     }
 
     class StateComparator implements Comparator<State<MatrixBoard, Position>> {

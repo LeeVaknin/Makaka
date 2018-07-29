@@ -31,16 +31,16 @@ public class MatrixBoard extends Board<Pipe[][]> {
     // Returns the value of the pipe in the given position
     public Pipe getPipe(Position position) {
         if (position != null) {
-            int col = position.getCol();
-            int row = position.getRow();
+            Integer col = position.getCol();
+            Integer row = position.getRow();
             return this.board[row][col];
         }
         return null;
     }
 
     public void setPipe(Position position, Character pipe) {
-        int col = position.getCol();
-        int row = position.getRow();
+        Integer col = position.getCol();
+        Integer row = position.getRow();
         this.board[row][col].setPipeVal(pipe);
     }
 
@@ -109,11 +109,11 @@ public class MatrixBoard extends Board<Pipe[][]> {
     @Override
     public void setBoard(Pipe[][] tmpBoard) {
         try {
-            int row = tmpBoard.length;
-            int col = tmpBoard[0].length;
+            Integer row = tmpBoard.length;
+            Integer col = tmpBoard[0].length;
             board = new Pipe[row][col];
-            for (int i = 0; i < row; i++) {
-                for (int j = 0; j < col; j++) {
+            for (Integer i = 0; i < row; i++) {
+                for (Integer j = 0; j < col; j++) {
                     board[i][j] = new Pipe(tmpBoard[i][j]);
                 }
             }
@@ -170,11 +170,11 @@ public class MatrixBoard extends Board<Pipe[][]> {
         return null;
     }
 
-    public int rows() {
+    public Integer rows() {
         return board.length;
     }
 
-    public int columns() {
+    public Integer columns() {
         return board[0].length;
     }
 
@@ -185,9 +185,9 @@ public class MatrixBoard extends Board<Pipe[][]> {
             result = "";
             for (Pipe[] pipes : this.board) {
                 for (Pipe pipe : pipes) {
-                    result.concat(pipe.getPipeVal().toString());
+                    result = result.concat(pipe.getPipeVal().toString());
                 }
-                result.concat(System.lineSeparator());
+                result = result.concat(System.lineSeparator());
             }
         } catch (Exception ex) {
             System.out.println("MatrixBoard.toBoard(): Error details: " + ex.getMessage());
@@ -204,8 +204,8 @@ public class MatrixBoard extends Board<Pipe[][]> {
 
             // Get values for col and row according to the given string
             String[] splitterBord = strBoard.split(System.lineSeparator());
-            int row = splitterBord.length;
-            int col = splitterBord[0].length();
+            Integer row = splitterBord.length;
+            Integer col = splitterBord[0].length();
 
             if (row <= 0 || col <= 0)
                 throw new Exception("Invalid length for building matrix bord ");
@@ -216,7 +216,7 @@ public class MatrixBoard extends Board<Pipe[][]> {
                 String tmpLine = splitterBord[i];
                 if (tmpLine == null)
                     throw new Exception(String.join(": ", "The following line is null at the matrix board", i.toString()));
-                for (int j = 0; j < col; j++) {
+                for (Integer j = 0; j < col; j++) {
                     tmpBoard[i][j] = new Pipe(tmpLine.charAt(j));
                 }
             }
@@ -272,13 +272,13 @@ public class MatrixBoard extends Board<Pipe[][]> {
 
     public boolean equals(Pipe[][] pipes) {
         boolean isEqual = false;
-        int row = pipes.length;
-        int col = pipes[0].length;
+        Integer row = pipes.length;
+        Integer col = pipes[0].length;
         try {
             compare:
             {
-                for (int i = 0; i < row; i++) {
-                    for (int j = 0; j < col; j++) {
+                for (Integer i = 0; i < row; i++) {
+                    for (Integer j = 0; j < col; j++) {
                         isEqual = this.board[i][j].equals(pipes[i][j]);
                         if (!isEqual) break compare;
                     }
