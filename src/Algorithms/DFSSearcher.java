@@ -13,13 +13,13 @@ public class DFSSearcher <T> implements Searcher<T> {
     public Solution<State<T>> search(Searchable<T> searchable) {
 
         // Array list with all the states we visited at
-        ArrayList<T> visitedStates = new ArrayList<>();
+        ArrayList<State<T>> visitedStates = new ArrayList<>();
         // Stack to manage which of the state we need to work on
         Stack<State<T>> stack = new Stack<>();
         // States that will be part of our solution
         State<T> rootSolution = searchable.getInitialState();
         // Add the first state to our solution
-        visitedStates.add(rootSolution.getState());
+        visitedStates.add(rootSolution);
         // Add the first state to our stack
         stack.push(rootSolution);
         // As long as we have states that we need to work on
@@ -35,10 +35,9 @@ public class DFSSearcher <T> implements Searcher<T> {
             for (State<T> state : possibleStates) {
                 state.setCameFrom(currentState);
 
-                if(!visitedStates.contains(state.getState())) {
-                    visitedStates.add(state.getState());
+                if(!visitedStates.contains(state) && !stack.contains(state)) {
+                    visitedStates.add(state);
                     stack.push(state);
-
                 }
             }
         }
