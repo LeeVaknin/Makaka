@@ -7,33 +7,38 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class PipeGameState extends State<MatrixBoard, Step> {
+public class PipeGameState extends State<MatrixBoard> {
+
+    private Step stepToState;
+    protected Position currentPosition;
 
     // C-TOR
 
     public PipeGameState(MatrixBoard state) {
         this.setState(state);
-        this.setFrom(null);
+        this.setCurrentPosition(null);
     }
 
-    public PipeGameState(State<MatrixBoard, Step> pipeGameState) {
+    public PipeGameState(State<MatrixBoard> pipeGameState) {
         if (pipeGameState != null) {
             this.setState(pipeGameState.getState());
-            this.setFrom(pipeGameState.getFrom());
-            this.setTo(pipeGameState.getTo());
             this.setCameFrom(pipeGameState.getCameFrom());
-            this.setCost(pipeGameState.getCost());
+            this.setCurrentPosition(((PipeGameState)pipeGameState).getCurrentPosition());
         }
     }
 
     // Methods
-    // Added method which sets the default from to be the start of the board.
-    @Override
-    public void setFrom(Position from) {
-        super.setFrom(from);
-        if (this.getFrom() == null) {
-            this.from = this.state.getStart();
+    // Added method which sets the default currentPosition to be the start of the board.
+    public Position getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public void setCurrentPosition(Position currentPosition) {
+        if (currentPosition != null) {
+            this.currentPosition = new Position(currentPosition);
+            return;
         }
+        this.currentPosition = this.state.getStart();
     }
 
     public void setState(MatrixBoard state) {
@@ -42,13 +47,13 @@ public class PipeGameState extends State<MatrixBoard, Step> {
         }
     }
 
-    public boolean equals(State<MatrixBoard, Step> state) {
+    public boolean equals(State<MatrixBoard> state) {
         if (state == null) { return false; }
         return this.state.equals(state.state);
     }
 
     private ArrayList<Position> initializeFromDirections() {
-        Position currentLocation = this.getFrom();
+        Position currentLocation = this.getCurrentPosition();
         Position up = new Position(currentLocation.getPositionUp());
         Position down = new Position(currentLocation.getPositionDown());
         Position left = new Position(currentLocation.getPositionLeft());
@@ -64,27 +69,28 @@ public class PipeGameState extends State<MatrixBoard, Step> {
     }
 
 //  Returns a backTrace of the states for the algorithms
-    public ArrayList<State<MatrixBoard, Step>> backTrace() {
-        ArrayList<State<MatrixBoard, Step>> returnBackTrace = new ArrayList<>();
-        State<MatrixBoard, Step> tmp = this.getCameFrom();
+    public ArrayList<State<MatrixBoard>> backTrace() {
+        ArrayList<State<MatrixBoard>> returnBackTrace = new ArrayList<>();
+        State<MatrixBoard> tmp = this.getCameFrom();
         Character pipeVal = ' ';
         // TODO : Do we need the first protection at the while loop ?
         while (!pipeVal.equals('s') || tmp != null) {
             returnBackTrace.add(tmp);
             tmp = tmp.getCameFrom();
-            pipeVal = tmp.getState().getPipe(tmp.getFrom()).getPipeVal();
+            Position currentPosition = ((PipeGameState)tmp).getCurrentPosition();
+            pipeVal = currentPosition != null ? tmp.getState().getPipe(currentPosition).getPipeVal() : null;
         }
         Collections.reverse(returnBackTrace);
         return returnBackTrace;
     }
 
-    public ArrayList<Step> getAllNeighbors() {
-        ArrayList<Step> allNeighbors = null;
+    public ArrayList<State<MatrixBoard>> getAllNeighbors() {
+        ArrayList<State<MatrixBoard>> allNeighbors = null;
         try {
 
             allNeighbors = new ArrayList<>();
             // Check what are my options of moves up, down, left and right
-            Position currentLocation = this.getFrom();
+            Position currentLocation = this.getCurrentPosition();
             MatrixBoard tmpBoard = new MatrixBoard(this.state);
 
             // Creating all the possible move directions
@@ -100,7 +106,9 @@ public class PipeGameState extends State<MatrixBoard, Step> {
                     }
                     // Check if the move is valid, if so, no need to rotate anything, add this direction to the list.
                     if (tmpBoard.isValidMove(currentLocation, direction)) {
-                        allNeighbors.add(new Step(currentLocation, direction, rotations));
+                        State<MatrixBoard> neighbor = new PipeGameState(this);
+                        ((PipeGameState) neighbor).updateState(direction, rotations);
+                        allNeighbors.add(neighbor);
                         break;
                     }
                 }
@@ -113,9 +121,13 @@ public class PipeGameState extends State<MatrixBoard, Step> {
         return allNeighbors;
     }
 
-    @Override
-    public void updateState(Step step) {
-        this.state.setPipe(step.getTo(), state.getPipe(step.getFrom()).rotate(step.getNumOfRotations()));
+    public void updateState(Position to, int rotations) {
+        if (this.state != null) {
+            State<MatrixBoard> newCameFrom = new PipeGameState(this.state);
+            this.state.getPipe(to).rotate(rotations);
+            this.setCameFrom(newCameFrom);
+            this.setCurrentPosition(to);
+        }
     }
 
     @Override
@@ -123,13 +135,21 @@ public class PipeGameState extends State<MatrixBoard, Step> {
         double cost = 0;
         try {
             Position endPosition = ((MatrixBoard) this.getState()).findEndPosition();
-            Position currentPosition = this.getFrom();
-            // Calculate the absolute value of the way from current position to the goal
+            Position currentPosition = this.getCurrentPosition();
+            // Calculate the absolute value of the way currentPosition current position to the goal
 //            cost = Math.abs(currentPosition.getRow() - endPosition.getRow()) + Math.abs(currentPosition.getCol() - endPosition.getCol());
             cost = Math.abs(Point.distance(currentPosition.getRow(),currentPosition.getCol(),endPosition.getRow(),endPosition.getCol()));
         } catch (Exception ex) {
             System.out.println(String.join(": ", "PipeGameState.generateCost(): Error details" , ex.getMessage()));
         }
         return cost;
+    }
+
+    public Step getStepToState() {
+        return stepToState;
+    }
+
+    public void setStepToState(Step step) {
+        this.stepToState = step;
     }
 }

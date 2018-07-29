@@ -5,19 +5,19 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 // T is the board type
-public interface Searchable<T, S> {
+public interface Searchable<T> {
 
-    State<T, S> getCurrentState();
-    void setCurrentState(State<T, S> currentState);
+    State<T> getCurrentState();
+    void setCurrentState(State<T> currentState);
 
-    State<T, S> getInitialState();
-    void setInitialState(State<T, S> initialState);
+    State<T> getInitialState();
+    void setInitialState(State<T> initialState);
 
-    State<T, S> getGoalState();
-    void setGoalState(State<T, S> goalState);
+    State<T> getGoalState();
+    void setGoalState(State<T> goalState);
 
     // -*** Returns all the possible states in the current state (possible moves) ***-
-    ArrayList<S> getAllPossibleStates();
+    ArrayList<State<T>> getAllPossibleStates();
 
-    Comparator<State<T, S>> getComperator();
+    Comparator<State<T>> getComperator();
 }

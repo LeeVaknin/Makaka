@@ -50,7 +50,7 @@ public abstract class Board<T> {
         this.id = board.getId();
     }
 
-    // Returns whether a move can be done from position x, to position y
+    // Returns whether a move can be done currentPosition position x, to position y
     abstract boolean isValidMove(Position from, Position to);
 
     // Converts string to board

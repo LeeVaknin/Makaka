@@ -4,44 +4,15 @@ import Models.Position;
 import java.util.ArrayList;
 
 // T is the board, S is the child of the state
-public abstract class State<T, S> {
+public abstract class State<T> {
 
     // Variables
     protected T state;
-    private double cost; // cost to reach this state
-    private State<T, S> cameFrom;
-    protected Position from;
-    private Position to;
+    private State<T> cameFrom;
 
     // Methods
 
-    public Position getFrom() {
-        return from;
-    }
-
-    public void setFrom(Position from) {
-        if (from != null) {
-            this.from = new Position(from);
-            return;
-        }
-        this.from = null;
-    }
-
-    public Position getTo() {
-        return to;
-    }
-
-    public void setTo(Position to) {
-        if (to != null) {
-            this.to = new Position(to);
-        }
-    }
-
-    public void setCost(double cost) {
-        this.cost = cost;
-    }
-
-    public void setCameFrom(State<T, S> cameFrom) {
+    public void setCameFrom(State<T> cameFrom) {
         if (cameFrom != null) {
             this.cameFrom = cameFrom;
         }
@@ -53,11 +24,7 @@ public abstract class State<T, S> {
         return state;
     }
 
-    public double getCost() {
-        return cost;
-    }
-
-    public State<T, S> getCameFrom() {
+    public State<T> getCameFrom() {
         return cameFrom;
     }
 
@@ -66,9 +33,7 @@ public abstract class State<T, S> {
    /*
    Returns a backTrace of the states for the algorithms
     */
-    public abstract ArrayList<State<T, S>> backTrace();
+    public abstract ArrayList<State<T>> backTrace();
 
-    public abstract ArrayList<S> getAllNeighbors();
-
-    public abstract void updateState(S step);
+    public abstract ArrayList<State<T>> getAllNeighbors();
 }

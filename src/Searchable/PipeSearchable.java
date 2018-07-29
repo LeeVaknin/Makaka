@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 
-public class PipeSearchable implements Searchable<MatrixBoard, Step> {
+public class PipeSearchable implements Searchable<MatrixBoard> {
 
     // variables
     private PipeGameState currentState;
@@ -17,15 +17,15 @@ public class PipeSearchable implements Searchable<MatrixBoard, Step> {
     private PipeGameState  goalState;
 
     // C-TOR
-    public PipeSearchable(State<MatrixBoard, Step> currentState,
-                          State<MatrixBoard, Step> initialState,
-                          State<MatrixBoard, Step> goalState) {
+    public PipeSearchable(State<MatrixBoard> currentState,
+                          State<MatrixBoard> initialState,
+                          State<MatrixBoard> goalState) {
         this.currentState = new PipeGameState(currentState);
         this.initialState = new PipeGameState(initialState);
         this.goalState = new PipeGameState(goalState);
     }
 
-    public PipeSearchable(State<MatrixBoard, Step> initialState) {
+    public PipeSearchable(State<MatrixBoard> initialState) {
         this.initialState = new PipeGameState(initialState);
         this.currentState = new PipeGameState(initialState);
         this.goalState = null;
@@ -36,36 +36,36 @@ public class PipeSearchable implements Searchable<MatrixBoard, Step> {
         return this.currentState.equals(goalState);
     }
 
-    public boolean isGoal(State<MatrixBoard, Step> state) {
+    public boolean isGoal(State<MatrixBoard> state) {
         return state.equals(goalState);
     }
 
     @Override
-    public State<MatrixBoard, Step> getCurrentState() {
+    public State<MatrixBoard> getCurrentState() {
         return this.currentState;
     }
 
     @Override
-    public State<MatrixBoard, Step> getInitialState() {
+    public State<MatrixBoard> getInitialState() {
         return this.initialState;
     }
 
     @Override
-    public State<MatrixBoard, Step> getGoalState() {
+    public State<MatrixBoard> getGoalState() {
         return this.goalState;
     }
 
     @Override
-    public ArrayList<Step> getAllPossibleStates() {
+    public ArrayList<State<MatrixBoard>> getAllPossibleStates() {
         return this.currentState.getAllNeighbors();
     }
 
     @Override
-    public Comparator<State<MatrixBoard, Step>> getComperator() {
+    public Comparator<State<MatrixBoard>> getComperator() {
         return new StateComperator();
     }
 
-    class StateComperator implements Comparator<State<MatrixBoard, Step>> {
+    class StateComperator implements Comparator<State<MatrixBoard>> {
         /**
          * This function will calculate which of the given states are closer to the goal
          *
@@ -74,7 +74,7 @@ public class PipeSearchable implements Searchable<MatrixBoard, Step> {
          * @return : case state2 is closer return -1. case state1 is closer return 1. case of no difference return 0.
          */
         @Override
-        public int compare(State<MatrixBoard, Step> state1, State<MatrixBoard, Step> state2) {
+        public int compare(State<MatrixBoard> state1, State<MatrixBoard> state2) {
             if (state1.generateCost() > state2.generateCost())
                 return -1;
             if (state1.generateCost() < state2.generateCost())
@@ -84,17 +84,17 @@ public class PipeSearchable implements Searchable<MatrixBoard, Step> {
     }
 
     @Override
-    public void setCurrentState(State<MatrixBoard, Step> currentState) {
+    public void setCurrentState(State<MatrixBoard> currentState) {
 //        this.currentState = new PipeGameState(currentState);
     }
 
     @Override
-    public void setInitialState(State<MatrixBoard, Step> initialState) {
+    public void setInitialState(State<MatrixBoard> initialState) {
         this.initialState = new PipeGameState(initialState);
     }
 
     @Override
-    public void setGoalState(State<MatrixBoard, Step> goalState) {
+    public void setGoalState(State<MatrixBoard> goalState) {
         this.goalState = new PipeGameState(goalState);
     }
 }

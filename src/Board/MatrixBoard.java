@@ -33,9 +33,12 @@ public class MatrixBoard extends Board<Pipe[][]> {
 
     // Returns the value of the pipe in the given position
     public Pipe getPipe(Position position) {
-        int col = position.getCol();
-        int row = position.getRow();
-        return this.board[row][col];
+        if (position != null) {
+            int col = position.getCol();
+            int row = position.getRow();
+            return this.board[row][col];
+        }
+        return null;
     }
 
     public void setPipe(Position position, Character pipe) {
@@ -47,7 +50,7 @@ public class MatrixBoard extends Board<Pipe[][]> {
     @Override
     void setPermitted() {
 
-        // Map the from - to allowed steps
+        // Map the currentPosition - to allowed steps
         HashMap<Character, String> top = new HashMap<Character, String>() {{
             put('|', "|g");
             put('L', "JFg");

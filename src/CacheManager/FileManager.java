@@ -1,17 +1,17 @@
 package CacheManager;
-
-import Models.Position;
 import Models.Solution;
-import Models.Step;
+import State.State;
 import org.jetbrains.annotations.NotNull;
-
 import java.io.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FileManager implements CacheManager<Step> {
+
+public class FileManager<T> implements CacheManager<Solution<T>> {
 
     private String idDelimiter = ", ";
     private String stepsDelimiter = ";";
@@ -24,7 +24,7 @@ public class FileManager implements CacheManager<Step> {
      * @return the saved solution of the saved board
      */
     @Override
-    public String saveSolution(String id, Solution<Step> solution) {
+    public String saveSolution(String id, Solution<T> solution) {
 
         try (FileWriter fileWriter = new FileWriter(solutionsFileName); BufferedWriter writer = new BufferedWriter(fileWriter)) {
             // saves rotations, col and row as string.
@@ -65,18 +65,18 @@ public class FileManager implements CacheManager<Step> {
         return null;
     }
 
-    private Solution<Step> extractSolution(@NotNull String strSolution) {
+    private Solution<T> extractSolution(@NotNull String strSolution) {
         String[] strSteps = strSolution.split(this.stepsDelimiter);
-        Solution<Step> solution = new Solution<>();
+        Solution<T> solution = new Solution<>();
         try {
             for (String strStep : strSteps) {
                 String[] splitStep = strStep.split(" ");
-                solution.add(new Step(
-                        new Position(Integer.valueOf(splitStep[1]),
-                                Integer.valueOf(splitStep[2])),
-                        new Position(Integer.valueOf(splitStep[3]),
-                                Integer.valueOf(splitStep[4])),
-                        Integer.valueOf(splitStep[0])));
+//                solution.add(new Step(
+//                        new Position(Integer.valueOf(splitStep[1]),
+//                                Integer.valueOf(splitStep[2])),
+//                        new Position(Integer.valueOf(splitStep[3]),
+//                                Integer.valueOf(splitStep[4])),
+//                        Integer.valueOf(splitStep[0])));
             }
         } catch (Exception ex) {
             System.out.println("FileManager.extractSolution(): Error details: " + ex.getMessage());
@@ -84,7 +84,7 @@ public class FileManager implements CacheManager<Step> {
         return solution;
     }
 
-    private String solutionToString(@NotNull Solution<Step> solution) {
+    private String solutionToString(@NotNull Solution<T> solution) {
         try {
             List<String> strSteps = solution.stream().map(Object::toString).collect(Collectors.toList());
             // saves rotations, col and row as string.
@@ -93,6 +93,19 @@ public class FileManager implements CacheManager<Step> {
             System.out.println("FileManager.solutionToString(): Error details: " + ex.getMessage());
             return null;
         }
+    }
+
+    public static <T> T parse(String strObject, Class<T> objectClass) {
+        try {
+            // Create a Constructor
+            Constructor constructor = objectClass.getConstructor(new Class[] {String.class});
+            // create an instance
+            return ((T)constructor.newInstance(strObject));
+            return parsedObject;
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException ex) {
+            System.out.println("Couldn't parse ");
+        }
+
     }
 
 }
