@@ -1,6 +1,7 @@
 package State;
 import Board.MatrixBoard;
 import Models.Position;
+import Models.Solution;
 import Models.Step;
 import java.awt.*;
 import java.util.ArrayList;
@@ -69,8 +70,8 @@ public class PipeGameState extends State<MatrixBoard> {
     }
 
 //  Returns a backTrace of the states for the algorithms
-    public ArrayList<State<MatrixBoard>> backTrace() {
-        ArrayList<State<MatrixBoard>> returnBackTrace = new ArrayList<>();
+    public Solution<State<MatrixBoard>> backTrace() {
+        Solution<State<MatrixBoard>> returnBackTrace = new Solution<>();
         State<MatrixBoard> tmp = this.getCameFrom();
         Character pipeVal = ' ';
         // TODO : Do we need the first protection at the while loop ?
@@ -121,6 +122,11 @@ public class PipeGameState extends State<MatrixBoard> {
         return allNeighbors;
     }
 
+    @Override
+    public boolean isGoal() {
+        return this.state.getPipe(this.getCurrentPosition()).getPipeVal().equals('g');
+    }
+
     public void updateState(Position to, int rotations) {
         if (this.state != null) {
             State<MatrixBoard> newCameFrom = new PipeGameState(this.state);
@@ -135,7 +141,7 @@ public class PipeGameState extends State<MatrixBoard> {
         double cost = 0;
         try {
             Position endPosition = this.getState().findEndPosition();
-            Position currentPosition = this.getFrom();
+            Position currentPosition = this.getCurrentPosition();
             // Calculate the absolute value of the way from current position to the goal
 //            cost = Math.abs(currentPosition.getRow() - endPosition.getRow()) + Math.abs(currentPosition.getCol() - endPosition.getCol());
             cost = Math.abs(Point.distance(currentPosition.getRow(),currentPosition.getCol(),endPosition.getRow(),endPosition.getCol()));

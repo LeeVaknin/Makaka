@@ -1,5 +1,7 @@
 package State;
+import Board.MatrixBoard;
 import Models.Position;
+import Models.Solution;
 
 import java.util.ArrayList;
 
@@ -33,7 +35,9 @@ public abstract class State<T> {
    /*
    Returns a backTrace of the states for the algorithms
     */
-    public abstract ArrayList<State<T>> backTrace();
+    public abstract Solution<State<T>> backTrace();
 
     public abstract ArrayList<State<T>> getAllNeighbors();
+
+    public abstract  boolean isGoal();
 }

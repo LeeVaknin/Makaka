@@ -8,5 +8,4 @@ public class Solution<S> extends ArrayList<S> {
         super();
     }
 
-
 }
