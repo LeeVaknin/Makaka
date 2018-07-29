@@ -42,14 +42,16 @@ public class BFSSearcher<T, P> implements Searcher<T, P> {
             {
                 //to have all the states that I came from them.
                 state.setCameFrom(currentState);
-                //check if the possible state is already in the visited states
-                if(!queue.contains(state) || !visitedStates.contains(state))
+                //check if the possible state is already in the queue
+                if(!queue.contains(state))
                 {
-                    //add it to the visible state
-                    visitedStates.add(state);
-                    //add it to the queue
                     queue.add(state);
-
+                    visitedStates.add(state);
+                }
+                //Check if the State Neighbor is already in the visited
+                else if (!visitedStates.contains(state))
+                {
+                    visitedStates.add(state);
                 }
             }
         }
