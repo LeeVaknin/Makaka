@@ -8,7 +8,7 @@ import Searcher.Searcher;
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class DFSSearcher <T, P> implements Searcher<T, P> {
+public class DFSSearcher<T, P> implements Searcher<T, P> {
 
     public Solution<State<T, P>> search(Searchable<T, P> searchable) {
 
@@ -18,35 +18,33 @@ public class DFSSearcher <T, P> implements Searcher<T, P> {
         Stack<State<T, P>> stack = new Stack<>();
         // States that will be part of our solution
         State<T, P> rootSolution = searchable.getInitialState();
-        // Add the
-        visitedStates.add(rootSolution);
         stack.push(rootSolution);
         // As long as we have states that we need to work on
         State<T, P> currentState;
-        while(!stack.empty()) {
+        while (!stack.empty()) {
             currentState = stack.pop();
+            visitedStates.add(currentState);
 
             if (currentState.isGoal()) {
+                // Found the goal, return the back track from solution
                 return currentState.backTrace();
             }
             ArrayList<State<T, P>> possibleStates = currentState.getAllNeighbors();
 
             for (State<T, P> state : possibleStates) {
-                state.setCameFrom(currentState);
-
-                if(!visitedStates.contains(state) && !stack.contains(state)) {
+                if (!visitedStates.contains(state) && !stack.contains(state)) {
+                    state.setCameFrom(currentState);
                     visitedStates.add(state);
                     stack.push(state);
-                    state.setCameFrom(currentState);
                 }
+
             }
         }
         return null;
     }
 
     //TODO: fix this and understand if needed
-    public int getNumberOfNodesEvaluated()
-    {
+    public int getNumberOfNodesEvaluated() {
         return 0;
     }
 
