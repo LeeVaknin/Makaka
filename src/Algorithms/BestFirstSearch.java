@@ -44,10 +44,9 @@ public class BestFirstSearch<T, P> implements Searcher<T, P> {
                 {
                     state.setCameFrom(currentState);
                     queue.add(state);
-                    visitedStates.add(state);
                 }
                 //Check if the State Neighbor is already in the visited
-                else if (!visitedStates.contains(state))
+                if (!visitedStates.contains(state))
                 {
                     visitedStates.add(state);
                 }
