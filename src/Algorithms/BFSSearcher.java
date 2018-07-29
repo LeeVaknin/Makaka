@@ -8,9 +8,10 @@ import Searcher.Searcher;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class BFSSearcher<T,S> implements Searcher<T,S> {
 
-    public Solution<S> search(Searchable<T> s)
+public class BFSSearcher<T> implements Searcher<T> {
+
+    public Solution<State<T>> search(Searchable<T> s)
     {
         //Define Array list of all the visited States
         ArrayList<T> visitedStates = new ArrayList<T>();
@@ -22,26 +23,18 @@ public class BFSSearcher<T,S> implements Searcher<T,S> {
         visitedStates.add(rootSolution.getState());
         //Add the first State to the queue
         queue.add(rootSolution);
-        //Run the algorithm while the queue is not ampty
+        //Run the algorithm while the queue is not empty
         while(!queue.isEmpty())
         {
             State<T> currentState;
             //get the first one in queue
             currentState = queue.poll();
             s.setCurrentState(currentState);
+            //check if the current state is the goal
 
-
-            //********************** == is not good here !!! **********************
-
-
-            //chekce if the current state is the goal
-
-            if (currentState.getState() == s.getGoalState().getState())
+            if (currentState.isGoal())
             {
-                //the return - need to add it!!!
-                //TODO:need to change when Solution is finalize
-                //  return currentState;
-                return null;
+                return currentState.backTrace();
             }
             //Create array list to the possible States
             ArrayList<State<T>> possibleStates = s.getAllPossibleStates();
@@ -60,7 +53,7 @@ public class BFSSearcher<T,S> implements Searcher<T,S> {
                 }
             }
         }
-        return new Solution<S>();
+        return null;
     }
 
    //TODO: fix this and understand if needed
