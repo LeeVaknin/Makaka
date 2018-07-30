@@ -53,9 +53,7 @@ public class TestSetter {
 
     public static void runServer(int port) {
         s = new MyServer(port);
-        Solver<MatrixBoard, Position> solver = new PipeGameSolver(new BestFirstSearch<>());
-        CacheManager<Position> cacheManager = new FileManager<Position>();
-        s.start(new MyCHandler<MatrixBoard, Position>(solver, cacheManager));
+        s.start(new MyCHandler());
     }
 
     // stop your server here

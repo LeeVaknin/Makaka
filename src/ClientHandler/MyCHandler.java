@@ -1,27 +1,31 @@
 package ClientHandler;
+import Algorithms.BestFirstSearch;
+import Board.MatrixBoard;
+import Board.Position;
 import Board.Solution;
 import Board.Step;
 import CacheManager.CacheManager;
+import CacheManager.FileManager;
+import Solver.PipeGameSolver;
 import Solver.Solver;
 import java.io.*;
 
 // T is the board type, P is the position type
-public class MyCHandler<T, P> implements ClientHandler {
+public class MyCHandler implements ClientHandler {
 
-    private Solver<T, P> solver;
-    private CacheManager<P> cacheManager;
+    private Solver<MatrixBoard, Position> solver;
+    private CacheManager<Position> cacheManager;
     private BufferedReader reader;
     private PrintWriter writer;
 
-
-    public MyCHandler(Solver<T, P> solver, CacheManager<P> cacheManager) {
-        this.solver = solver;
-        this.cacheManager = cacheManager;
-    }
+//    public MyCHandler(Solver<T, P> solver, CacheManager<P> cacheManager) {
+//        this.solver = solver;
+//        this.cacheManager = cacheManager;
+//    }
 
     public MyCHandler() {
-//        this.solver = new PipeGameSolver(new BestFirstSearch<>());
-//        this.cacheManager = new FileManager<Position>();
+        this.solver = new PipeGameSolver(new BestFirstSearch<>());
+        this.cacheManager = new FileManager<Position>();
     }
 
     @Override
@@ -35,7 +39,7 @@ public class MyCHandler<T, P> implements ClientHandler {
             String problemId = String.valueOf(request.hashCode());
             try {
                 // Check for existing solution
-                Solution<P> solution  = cacheManager.loadSolution(problemId);
+                Solution<Position> solution  = cacheManager.loadSolution(problemId);
                 // If doesn't exist, solve it and return the solution (and save for the next time it is requested)
                 if (solution == null) {
                     solution = this.solver.solve(request);
@@ -87,9 +91,9 @@ public class MyCHandler<T, P> implements ClientHandler {
 
     }
 
-    private void writeResponse(Solution<P> response) {
+    private void writeResponse(Solution<Position> response) {
         if (response != null && this.reader != null) {
-            for (Step<P> step: response.getSteps()) {
+            for (Step<Position> step: response.getSteps()) {
                 writer.println(step.toString());
             }
         }
