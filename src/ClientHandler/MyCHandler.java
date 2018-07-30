@@ -92,7 +92,7 @@ public class MyCHandler implements ClientHandler {
     }
 
     private void writeResponse(Solution<Position> response) {
-        if (response != null && this.reader != null) {
+        if (response != null && this.writer != null) {
             for (Step<Position> step: response.getSteps()) {
                 writer.println(step.toString());
             }

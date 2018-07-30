@@ -21,7 +21,7 @@ public class MyServer implements Server {
     private void Activate(ClientHandler clientHandler) throws IOException {
         System.out.println("Starting server");
         ServerSocket server = new ServerSocket(port);
-        server.setSoTimeout(1000);
+        server.setSoTimeout(3000);
         while (!stop) {
             try {
                 try (Socket aClient = server.accept()) {

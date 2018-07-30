@@ -28,8 +28,8 @@ public class PipeGameState extends State<MatrixBoard, Position> {
 
     @Override
     public void setStep(Step<Position> step){
-        if (step == null ) {
-            this.setStep(new PipeGameStep(this.getCurrentPosition(), 0));
+        if (step == null || ((PipeGameStep)step).getRotations().equals(0)) {
+            super.setStep(null);
             return;
         }
         super.setStep(step);
@@ -121,6 +121,7 @@ public class PipeGameState extends State<MatrixBoard, Position> {
                         // Check if the move is valid, if so, no need to rotate anything, add this direction to the list.
                         if (tmpBoard.isValidMove(currentLocation, direction)) {
                             State<MatrixBoard, Position> neighbor = new PipeGameState(this);
+
                             neighbor.updateState(new PipeGameStep(direction, rotations));
                             allNeighbors.add(neighbor);
                             break;

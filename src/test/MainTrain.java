@@ -20,7 +20,7 @@ public class MainTrain {
         int port=6000+r.nextInt(1000);
         TestSetter.runServer(port);
         try {
-            Thread.sleep(500);
+            Thread.sleep(250);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -48,7 +48,6 @@ public class MainTrain {
         // the following is the solution for the maze above:
         //List<String> answer = Arrays.asList("RIGHT","RIGHT","RIGHT","DOWN","DOWN","LEFT","LEFT","DOWN","DOWN");
         //actions=answer;
-        actions.add("DOWN");
         final Grid p=m.getEntrance();
         actions.forEach(s->{
             if(s.equals("UP")) p.row--;
