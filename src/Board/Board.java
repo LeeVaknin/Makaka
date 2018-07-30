@@ -1,6 +1,4 @@
 package Board;
-import Utils.HashManager;
-
 import java.util.HashMap;
 
 public abstract class Board<T> {
@@ -10,6 +8,7 @@ public abstract class Board<T> {
     protected HashMap<String, HashMap<Character, String>> permittedSteps;
 
     // C-TOR
+
     Board() {
         this.id = null;
         this.board = null;

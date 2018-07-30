@@ -20,7 +20,9 @@ public class Pipe {
     }
 
     public void setPipeVal(Character value) {
-        this.pipeVal = value;
+        if (value != null) {
+            this.pipeVal = value;
+        }
     }
 
     public Position getPosition() {
@@ -58,6 +60,10 @@ public class Pipe {
     }
 
     // Methods
+
+    public boolean isEmpty() {
+        return this.pipeVal.equals(' ');
+    }
 
     public void initialize() {
         if (this.rotationMapping == null) {

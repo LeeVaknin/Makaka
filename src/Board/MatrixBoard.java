@@ -31,6 +31,7 @@ public class MatrixBoard extends Board<Pipe[][]> {
     // Methods
 
     // Returns the value of the pipe in the given position
+
     public Pipe getPipe(Position position) {
         if (position != null && isValidPosition(position)) {
             Integer col = position.getCol();
@@ -51,37 +52,29 @@ public class MatrixBoard extends Board<Pipe[][]> {
 
         // Map the currentPosition - to allowed steps
         HashMap<Character, String> top = new HashMap<Character, String>() {{
-            put('|', "|g");
-            put('L', "JFg");
-            put('F', "7");
-            put('J', "FgL");
-            put('7', "F");
+            put('|', "|gF7");
+            put('L', "F7g|");
+            put('J', "Fg|7");
             put('s', "7F|g");
         }};
         HashMap<Character, String> bottom = new HashMap<Character, String>() {{
-            put('|', "|g");
-            put('L', "J");
-            put('F', "7gL");
-            put('J', "L");
-            put('7', "FJg");
+            put('|', "|gLJ");
+            put('F', "|JgL");
+            put('7', "|JLg");
             put('s', "LJ|g");
         }};
         HashMap<Character, String> right = new HashMap<Character, String> () {{
-            put('L', "JFg");
-            put('F', "7Lg");
-            put('J', "7");
-            put('7', "J");
-            put('-', "-g");
-            put('s', "7J-g");
+            put('L', "J7g-");
+            put('F', "J7g-");
+            put('-', "J7g-");
+            put('s', "J7g-");
 
         }};
         HashMap<Character, String> left = new HashMap<Character, String>() {{
-            put('-', "-g");
-            put('L', "F");
-            put('F', "L");
-            put('J', "FLg");
-            put('7', "JFg");
-            put('s', "7F|g");
+            put('-', "-gFL");
+            put('J', "-gFL");
+            put('7', "-gFL");
+            put('s', "-gFL");
         }};
         // Save the allowed steps by direction
         this.permittedSteps = new HashMap<String, HashMap<Character, String >>() {{
@@ -110,22 +103,6 @@ public class MatrixBoard extends Board<Pipe[][]> {
 
     @Override
     public void setBoard(Pipe[][] tmpBoard) {
-        try {
-            Integer row = tmpBoard.length;
-            Integer col = tmpBoard[0].length;
-            board = new Pipe[row][col];
-            for (Integer i = 0; i < row; i++) {
-                for (Integer j = 0; j < col; j++) {
-                    board[i][j] = new Pipe(tmpBoard[i][j]);
-                }
-            }
-        } catch (Exception ex) {
-            System.out.println("MatrixBoard.toBoard(): Error details: " + ex.getMessage());
-        }
-    }
-
-    //TODO: Do not forget remove this methods
-    public void setBoard(char[][] tmpBoard) {
         try {
             Integer row = tmpBoard.length;
             Integer col = tmpBoard[0].length;
