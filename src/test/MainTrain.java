@@ -1,18 +1,15 @@
 package test;
 
 //import java.util.Arrays;
-
-import java.sql.Time;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Delayed;
 
 public class MainTrain {
 
     public static void main(String[] args) {
         //----------- Question 1 --------------
         // design test (40 points)
-        test.DesignTest dt=new test.DesignTest();
+        DesignTest dt=new DesignTest();
         TestSetter.setClasses(dt);
         dt.testDesign();
 
@@ -21,13 +18,6 @@ public class MainTrain {
         Random r=new Random();
         int port=6000+r.nextInt(1000);
         TestSetter.runServer(port);
-
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         try{
             TestServer.runClient(port);
         }finally{
@@ -51,17 +41,17 @@ public class MainTrain {
         // the following is the solution for the maze above:
         //List<String> answer = Arrays.asList("RIGHT","RIGHT","RIGHT","DOWN","DOWN","LEFT","LEFT","DOWN","DOWN");
         //actions=answer;
-//
-//        final Grid p=m.getEntrance();
-//        actions.forEach(s->{
-//            if(s.equals("UP")) p.row--;
-//            if(s.equals("DOWN")) p.row++;
-//            if(s.equals("RIGHT")) p.col++;
-//            if(s.equals("LEFT")) p.col--;
-//        });
 
-//        if(!p.equals(m.getExit()))
-//            System.out.println("the Maze is not solved (-20)");
+        final Grid p=m.getEntrance();
+        actions.forEach(s->{
+            if(s.equals("UP")) p.row--;
+            if(s.equals("DOWN")) p.row++;
+            if(s.equals("RIGHT")) p.col++;
+            if(s.equals("LEFT")) p.col--;
+        });
+
+        if(!p.equals(m.getExit()))
+            System.out.println("the Maze is not solved (-20)");
 
 
         System.out.println("done");

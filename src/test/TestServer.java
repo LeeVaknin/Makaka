@@ -18,7 +18,7 @@ public class TestServer {
             s.setSoTimeout(3000);
             out=new PrintWriter(s.getOutputStream());
             in=new BufferedReader(new InputStreamReader(s.getInputStream()));
-            out.println("s||g");
+            out.println("s|g");
             out.println("done");
             out.flush();
             String line=in.readLine();
