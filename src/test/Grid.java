@@ -10,6 +10,7 @@ public class Grid {
         this.col = col;
     }
 
+
     public boolean equals(Grid g) {
         return row == g.row && col == g.col;
     }

@@ -36,7 +36,8 @@ public class Maze {
 
     // helper
     private boolean isFree(int i, int j) {
-        return (i >= 0 && i < data.length && j >= 0 && j < data[i].length && data[i][j] == (byte) 0);
+        return (i >= 0 && i < data.length && j >= 0 && j < data[i].length && data[i][j] == (byte) 0)
+    || (i >= 0 && i < data.length && j >= 0 && j < data[i].length && data[i][j] == (byte) 3);
     }
 
     // returns a list of possible grid positions given a grid position in the maze
