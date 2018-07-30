@@ -39,7 +39,7 @@ public class PipeGameState extends State<MatrixBoard, Position> {
     @Override
     public void setCurrentPosition(Position currentPosition) {
         if (currentPosition == null) {
-            this.setCurrentPosition(this.state.getStart());
+            super.setCurrentPosition(this.state.getStart());
             return;
         }
         super.setCurrentPosition(currentPosition);
@@ -155,7 +155,6 @@ public class PipeGameState extends State<MatrixBoard, Position> {
     @Override
     protected void updateState(Step<Position> step) {
         if (this.state != null) {
-            State<MatrixBoard, Position> newCameFrom = new PipeGameState(this.state);
             this.state.getPipe(step.getPosition()).rotate(((PipeGameStep) step).getRotations());
 //            this.setCameFrom(newCameFrom);
             this.setCurrentPosition(step.getPosition());

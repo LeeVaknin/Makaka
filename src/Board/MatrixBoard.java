@@ -41,6 +41,13 @@ public class MatrixBoard extends Board<Pipe[][]> {
         return null;
     }
 
+    public Pipe getPipe(Integer row, Integer col) {
+        if (row < rows() && col < columns() && col >= 0 && row >= 0) {
+            return this.board[row][col];
+        }
+        return null;
+    }
+
     public void setPipe(Position position, Character pipe) {
         Integer col = position.getCol();
         Integer row = position.getRow();
@@ -52,29 +59,29 @@ public class MatrixBoard extends Board<Pipe[][]> {
 
         // Map the currentPosition - to allowed steps
         HashMap<Character, String> top = new HashMap<Character, String>() {{
-            put('|', "|gF7");
-            put('L', "F7g|");
-            put('J', "Fg|7");
-            put('s', "7F|g");
+            put('|', "|gF7fG");
+            put('L', "F7g|fG");
+            put('J', "Fg|7Gf");
+            put('s', "7F|gfG");
         }};
         HashMap<Character, String> bottom = new HashMap<Character, String>() {{
-            put('|', "|gLJ");
-            put('F', "|JgL");
-            put('7', "|JLg");
-            put('s', "LJ|g");
+            put('|', "|gLJGjl");
+            put('F', "|JgLjlG");
+            put('7', "|JLgjlG");
+            put('s', "LJ|gjlG");
         }};
         HashMap<Character, String> right = new HashMap<Character, String> () {{
-            put('L', "J7g-");
-            put('F', "J7g-");
-            put('-', "J7g-");
-            put('s', "J7g-");
+            put('L', "J7g-Gj");
+            put('F', "J7g-Gj");
+            put('-', "J7g-Gj");
+            put('s', "J7g-Gj");
 
         }};
         HashMap<Character, String> left = new HashMap<Character, String>() {{
-            put('-', "-gFL");
-            put('J', "-gFL");
-            put('7', "-gFL");
-            put('s', "-gFL");
+            put('-', "-gFLflG");
+            put('J', "-gFLflG");
+            put('7', "-gFLflG");
+            put('s', "-gFLflG");
         }};
         // Save the allowed steps by direction
         this.permittedSteps = new HashMap<String, HashMap<Character, String >>() {{
@@ -236,10 +243,11 @@ public class MatrixBoard extends Board<Pipe[][]> {
             if (this.getBoard() == null)
                 throw new Exception("Board is NULL");
             // Look for the pipe with the end sign
-            for (Pipe[] pipes : this.getBoard()) {
-                for (Pipe pipe : pipes) {
+            for (int row=0; row< rows(); row++){
+                for (int col=0; col < columns(); col++ ) {
+                    Pipe pipe = getPipe(row, col);
                     if (pipe.getPipeVal().equals('s'))
-                        return new Position(pipe.getPosition());
+                        return new Position(col, row);
                 }
             }
         } catch (Exception ex) {
@@ -253,13 +261,21 @@ public class MatrixBoard extends Board<Pipe[][]> {
             if (this.getBoard() == null)
                 throw new Exception("Board is NULL");
             // Look for the pipe with the end sign
-            for (Pipe[] pipes : this.getBoard()) {
-                for (Pipe pipe : pipes) {
+//            for (Pipe[] pipes : this.getBoard()) {
+//                for (Pipe pipe : pipes) {
+//                    if (pipe.getPipeVal().equals('g'))
+//                        return new Position(pipe.getPosition());
+//                }
+//            }
+            for (int row=0; row< rows(); row++){
+                for (int col=0; col < columns(); col++ ) {
+                    Pipe pipe = getPipe(row, col);
                     if (pipe.getPipeVal().equals('g'))
-                        return new Position(pipe.getPosition());
+                        return new Position(col, row);
                 }
-            }
-        } catch (Exception ex) {
+
+                }
+             } catch (Exception ex) {
             System.out.println(String.join(": ", "Position.findEndPosition(): Error details", ex.getMessage()));
         }
         return null;

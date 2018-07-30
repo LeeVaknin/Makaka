@@ -20,7 +20,6 @@ public abstract class State<T, P> {
     public void setCurrentPosition(P currentPosition) {
         if (currentPosition != null) {
             this.currentPosition = currentPosition;
-            return;
         }
     }
 
