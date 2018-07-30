@@ -124,6 +124,22 @@ public class MatrixBoard extends Board<Pipe[][]> {
         }
     }
 
+    //TODO: Do not forget remove this methods
+    public void setBoard(char[][] tmpBoard) {
+        try {
+            Integer row = tmpBoard.length;
+            Integer col = tmpBoard[0].length;
+            board = new Pipe[row][col];
+            for (Integer i = 0; i < row; i++) {
+                for (Integer j = 0; j < col; j++) {
+                    board[i][j] = new Pipe(tmpBoard[i][j]);
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println("MatrixBoard.toBoard(): Error details: " + ex.getMessage());
+        }
+    }
+
     @Override
     public boolean isValidMove(Position from, Position to) {
         try {
