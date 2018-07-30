@@ -9,9 +9,7 @@ import CacheManager.CacheManager;
 import CacheManager.FileManager;
 import Solver.PipeGameSolver;
 import Solver.Solver;
-import org.jetbrains.annotations.Nullable;
 import java.io.*;
-import java.util.ArrayList;
 
 // T is the board type, P is the position type
 public class MyCHandler implements ClientHandler {
@@ -82,6 +80,7 @@ public class MyCHandler implements ClientHandler {
             if (this.reader != null) {
                 while (!(tmpLine = this.reader.readLine()).equals("done")) {
                     request = request.append(tmpLine);
+                    request = request.append(System.lineSeparator());
                 }
                 return request.toString();
             }

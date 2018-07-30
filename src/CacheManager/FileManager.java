@@ -33,7 +33,7 @@ public class FileManager<P> implements CacheManager<P> {
                             new BufferedOutputStream(
                                     new FileOutputStream(filePath)
                             ));
-                    System.out.println(String.join(" ", "Saving the following solution:\n", solution.toString()));
+                    System.out.println(String.join(" ", "Saving the following solution:", solution.toString()));
                     objectOutputStream.writeObject(solution);
                     objectOutputStream.close();
                 }
@@ -52,9 +52,11 @@ public class FileManager<P> implements CacheManager<P> {
         try {
             File fileToLoad = new File(this.repository, id);
             ObjectInputStream objInput = new ObjectInputStream(new FileInputStream(fileToLoad));
-            return (Solution<P>) objInput.readObject();
+            Solution<P> solution = (Solution<P>) objInput.readObject();
+            System.out.println(String.join(" ", "Loaded solution:\r\n", solution.toString()));
+            return solution;
         } catch (IOException | ClassNotFoundException exception) {
-            System.out.println("Couldn't find the requested id. Please solve first.");
+            System.out.println("This problem wasn't solved yet.");
         }
         return null;
     }
