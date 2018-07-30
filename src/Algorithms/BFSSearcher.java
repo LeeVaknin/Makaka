@@ -1,66 +1,55 @@
 package Algorithms;
 
-import Models.State;
-import Models.Solution;
+import Board.Solution;
+import State.State;
 import Searchable.Searchable;
-import Searcher.Searcher;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class BFSSearcher<T,S> implements Searcher<T,S> {
 
-    public Solution<S> search(Searchable<T> s)
+public class BFSSearcher<T, P> implements Searcher<T, P> {
+
+    public Solution<P> search(Searchable<T, P> searchable)
     {
         //Define Array list of all the visited States
-        ArrayList<T> visitedStates = new ArrayList<T>();
+        ArrayList<State<T, P>> visitedStates = new ArrayList<>();
         //Define the Queue for the discover States
-        LinkedList<State<T>> queue = new LinkedList<State<T>>();
+        LinkedList<State<T, P>> queue = new LinkedList<State<T, P>>();
         //The first state -Initial state
-        State<T> rootSolution = s.getInitialState();
-        //Add the first state to the visited States
-        visitedStates.add(rootSolution.getState());
+        State<T, P> rootSolution = searchable.getInitialState();
         //Add the first State to the queue
         queue.add(rootSolution);
-        //Run the algorithm while the queue is not ampty
+        //Run the algorithm while the queue is not empty
         while(!queue.isEmpty())
         {
-            State<T> currentState;
+            State<T, P> currentState;
             //get the first one in queue
             currentState = queue.poll();
-            s.setCurrentState(currentState);
-
-
-            //********************** == is not good here !!! **********************
-
-
-            //chekce if the current state is the goal
-
-            if (currentState.getState() == s.getGoalState().getState())
+            visitedStates.add(currentState);
+            searchable.setCurrentState(currentState);
+            //check if the current state is the goal
+            if (currentState.isGoal())
             {
-                //the return - need to add it!!!
-                //TODO:need to change when Solution is finalize
-                //  return currentState;
-                return null;
+                //return the backTrace of the current State
+                return new Solution<P>(currentState);
             }
             //Create array list to the possible States
-            ArrayList<State<T>> possibleStates = s.getAllPossibleStates();
-            for (State<T> state : possibleStates)
+            ArrayList<State<T, P>> possibleStates = searchable.getAllPossibleStates();
+            for (State<T, P> state : possibleStates)
             {
                 //to have all the states that I came from them.
                 state.setCameFrom(currentState);
-                //check if the possible state is already in the visited states
-                if(!visitedStates.contains(state.getState()))
+                //check if the possible state is already in the queue and visited state
+                if(!queue.contains(state) && !visitedStates.contains(state))
                 {
-                    //add it to the visible state
-                    visitedStates.add(state.getState());
-                    //add it to the queue
                     queue.add(state);
+                    visitedStates.add(state);
 
                 }
             }
         }
-        return new Solution<S>();
+        return null;
     }
 
    //TODO: fix this and understand if needed

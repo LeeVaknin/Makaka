@@ -1,53 +1,56 @@
 package Server;
-
-import ClientHandler.MyCHandler;
-
+import ClientHandler.ClientHandler;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
+
 
 public class MyServer implements Server {
 
     private int port;
-    private MyCHandler myCHandler;
     private volatile boolean stop;
 
     // C-TOR
-
-    //TODO: should be MyCHandler or ClientHandler as DI?
-    public MyServer(int port, MyCHandler myCHandler) {
+    public MyServer(int port) {
         this.port = port;
-        this.myCHandler = myCHandler;
         stop = false;
     }
 
     // Methods
 
-    @Override
-    public void start() throws IOException {
-
+    private void Activate(ClientHandler clientHandler) throws IOException {
+        System.out.println("Starting server");
         ServerSocket server = new ServerSocket(port);
-        server.setSoTimeout(1000);
+        server.setSoTimeout(3000);
         while (!stop) {
             try {
-                Socket aClient = server.accept(); // blocking call
-                try {
-                    myCHandler.handle(aClient.getInputStream(), aClient.getOutputStream());
+                try (Socket aClient = server.accept()) {
+                    System.out.println(aClient.toString());
+                    clientHandler.handle(aClient.getInputStream(), aClient.getOutputStream());
                     aClient.getInputStream().close();
-                    aClient.getOutputStream().close();
-                    aClient.close();
+                } catch (IOException e) {
+                    System.out.println("Connection was closed (not an error).");
+                }
+            } finally {
+                try {
+                    server.close();
                 } catch (IOException e) {
                     System.out.println(e.toString());
                 }
-            } catch (SocketTimeoutException e) {
-                System.out.println(e.toString());
             }
         }
-        server.close();
     }
 
-
+    @Override
+    public void start(ClientHandler clientHandler) {
+        new Thread(() -> {
+            try {
+                Activate(clientHandler);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
 
     @Override
     public void stop() {

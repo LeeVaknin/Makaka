@@ -1,156 +1,101 @@
 package Algorithms;
-
-import Models.Solution;
-import Models.State;
+import Board.Solution;
+import State.State;
 import Searchable.Searchable;
-import Searcher.Searcher;
 
 
-import java.util.HashSet;
-import java.util.Stack;
+import java.util.*;
 
+// T represent the board. S represent the boars state
+public class HillClimbingSearcher<T, P> implements Searcher<T, P> {
 
-public class HillClimbingSearcher<T, S> implements Searcher<T, S> {
+    public Solution<P> search(Searchable<T, P> searchable) {
 
+        // System.out.println("Using HillClimbing Searcher: ");
+        State<T, P> currentState = searchable.getInitialState();
+        State<T, P> bestNeighborState = null;
 
-
-    Stack<State> open;
-    HashSet<String> visitedStates; // states that already evaluated
-
-    @Override
-    public Solution<S> search(Searchable<T> searchable) {
-
-        visitedStates = new HashSet<String>();
-        open = new Stack<State>();
-        open.push(searchable.getInitialState());
-
-        while(!open.isEmpty())
-        {
-            State tmpState = open.pop();
-            //visitedStates.add(v.toString());
-            //System.out.println("adding to Visited list: " + v.toString());
-
-            //System.out.println("This is V that we poped");
-
-            // Validate we haven't handle this state already
-            if(!visitedStates.contains(tmpState))
-            {
-                if(searchable.isGoal(tmpState))
-                {
-                    //System.out.println("done! goal");
-                    return searchable.backTrack(tmpState);
-                }
-                ArrayList<State> list = new ArrayList<>();
-                list = tmpState.getNeighbors();
-                //System.out.println("Printing list before reorer");
-                printList(list);
-                //System.out.println("Printing list After reorer");
-                list.sort(searchable.getComp());//diffrence between dfs to
-                printList(list);
-                //System.out.println("This is v's neighbors");
-
-                for(State s:list)
-                {
-                    if(!visitedStates.contains(s.toString())){
-                        s.setCameFrom(tmpState);
-                        //System.out.println("p: " + v.getLocation().toString());
-                        open.push(s);
-                        //System.out.println("me:" + s.getLocation().toString());
+        while (true) {
+            List<State<T, P>> neighbors = new ArrayList<>(currentState.getAllNeighbors());
+            for (State<T, P> neighbor : neighbors) {
+                neighbor.setCameFrom(currentState);
+            }
+            double grade = Double.MAX_VALUE;
+            if (Math.random() < 0.7) {
+                for (State<T, P> neighbor : neighbors) {
+                    double g = neighbor.generateCost();
+                    if (g < grade) {
+                        bestNeighborState = neighbor;
+                        grade = g;
                     }
                 }
+
+                if (bestNeighborState == null)
+                    bestNeighborState = currentState;
+
+                if (bestNeighborState.isGoal()) {
+                    return new Solution<P>(currentState);
+                }
+
+                if (currentState.generateCost() > bestNeighborState.generateCost()) {
+                    currentState = bestNeighborState;
+                }
+
+            } else {
+                if (neighbors.isEmpty()) {
+                    break;
+                }
+                Random r = new Random();
+                int randomIndex = r.nextInt(neighbors.size());
+                currentState = neighbors.get(randomIndex);
             }
         }
-
         return null;
     }
-
-
-
-
-
-
-
-
-
-
 
 
     /*
 
-
-
     @Override
-    public Solution<S> search(Searchable<T> searchable) {
+    public Solution<State<T, P>> search(Searchable<T, P> searchable) {
 
+        // Array list with all the states we visited at
+        ArrayList<State<T, P>> visitedStates = new ArrayList<>();
 
-        Solution<S> resultPath = new Solution<>();
+        Comparator<State<T, P>> comparator = searchable.getComperator();
+        // PriorityQueue to manage which of the state we need to work on
+        PriorityQueue<State<T, P>> queue = new PriorityQueue<>(10, comparator);
+        queue.add(searchable.getInitialState());
 
-        State<T> rootSolution = searchable.getInitialState();
-       // resultPath.add(rootSolution);
+        // States that will be part of our solution
+        State<T, P> rootSolution = searchable.getInitialState();
+        // Add the first state to our solution
+        visitedStates.add(rootSolution);
+        // Add the first state to our queue
+        queue.add(rootSolution);
+        // As long as we have states that we need to work on
+        State<T, P> currentState;
+        while(!queue.isEmpty()) {
+            currentState = queue.poll();
+            visitedStates.add(currentState);
 
+            if (currentState.isGoal()) {
+                return currentState.backTrace();
+            }
+            ArrayList<State<T, P>> possibleStates = currentState.getAllNeighbors();
 
-        State currentState = searchable.getCurrentState();
-        boolean noStateFound = false;
+            for (State<T, P> state : possibleStates) {
+                state.setCameFrom(currentState);
 
-        // Run until we find the goal or there is no more states
-        while (!currentState.getState().equals(searchable.getGoalState()) || noStateFound) {
-            noStateFound = true;
-            // Initial list with all possible state from current state
-            ArrayList<State<T>> nextStates = searchable.getAllPossibleStates();
-            if (nextStates.size() > 0) {
-                noStateFound = false;
-                State<T> tmpState = nextStates.get(0);
-                int minNumOfSteps = 0;
-                // For each possible state, look for the best one according to heuristic function
-                for (State<T> state : nextStates) {
-                    if(state.getHeuristicsValue(state.getState()) < minNumOfSteps) {
-                        minNumOfSteps = state.getHeuristicsValue();
-                        state.setCameFrom(currentState); // Not sure if current state gets update
-                        // tmpState will be the best state to go to from all nextStates (our possible states)
-                        tmpState = state;
-                    }
+                if(!visitedStates.contains(state)) {
+                    visitedStates.add(state);
+                    queue.add(state);
                 }
-                // Add the best choose to our result path
-                resultPath.add(tmpState);
             }
         }
-        return resultPath;
-
-
         return null;
     }
-
-    public int getHeuristicsValue(State<T> currentState, State<T> goalStateStack) {
-
-        Integer heuristicValue = 0;
-        heuristicValue = currentState.stream()
-                .mapToInt(stack -> {
-                    return getHeuristicsValueForStack(
-                            stack, currentState, goalStateStack);
-                }).sum();
-
-        return heuristicValue;
-    }
-
-    public int getHeuristicsValueForStack(State<T> state, ArrayList<State<T>> currentState, State<T> goalState) {
-
-        int statekHeuristics = 0;
-        boolean isPositioneCorrect = true;
-        int goalStartIndex = 0;
-
-        for (State<T> currentBlock : currentState) {
-            if (isPositioneCorrect
-                    && currentBlock.equals(goalState)) {
-                statekHeuristics += goalStartIndex;
-            } else {
-                statekHeuristics -= goalStartIndex;
-                isPositioneCorrect = false;
-            }
-            goalStartIndex++;
-        }
-        return statekHeuristics;
-    }
-*/
+    */
     @Override
     public int getNumberOfNodesEvaluated() {
         return 0;

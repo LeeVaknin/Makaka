@@ -1,58 +1,87 @@
 package ClientHandler;
-
+import Algorithms.BestFirstSearch;
+import Board.MatrixBoard;
+import Board.Position;
+import Board.Solution;
+import Board.Step;
 import CacheManager.CacheManager;
-import Models.*;
-import Searchable.PipeSearchable;
-import Searchable.Searchable;
+import CacheManager.FileManager;
+import Solver.PipeGameSolver;
 import Solver.Solver;
-import Utils.HashManager;
-import org.jetbrains.annotations.Nullable;
-import sun.nio.ch.IOUtil;
-
 import java.io.*;
-import java.util.ArrayList;
 
-public class MyCHandler<T> implements ClientHandler{
+// T is the board type, P is the position type
+public class MyCHandler implements ClientHandler {
 
-    private Solver<Board<T>, Step> solver;
-    private CacheManager<Step> cacheManager;
+    private Solver<MatrixBoard, Position> solver;
+    private CacheManager<Position> cacheManager;
+    private BufferedReader reader;
+    private PrintWriter writer;
 
-    public MyCHandler(Solver<Board<T>, Step> solver, CacheManager<Step> cacheManager) {
-        this.solver = solver;
-        this.cacheManager = cacheManager;
+//    public MyCHandler(Solver<T, P> solver, CacheManager<P> cacheManager) {
+//        this.solver = solver;
+//        this.cacheManager = cacheManager;
+//    }
+
+    public MyCHandler() {
+        this.solver = new PipeGameSolver(new BestFirstSearch<>());
+        this.cacheManager = new FileManager<Position>();
     }
 
     @Override
     public void handle(InputStream inFromClient, OutputStream outToClient) {
-        try {
-            String response;
-            String request = this.readRequest(inFromClient);
-            String problemId = HashManager.getId(request);
-            response = cacheManager.loadSolution(problemId);
-            // Check if we have saved solution to our problem
-            if (response == null) {
-                Solution<Step> solution  = this.solver.solve(request);
-                response = this.cacheManager.saveSolution(problemId, solution);
-            }
-            this.writeResponse(response, outToClient);
 
-        } catch (IOException exception) {
-            System.out.println(String.join("; ", "ERROR: Failed to close connection", exception.toString()));
+        this.reader = new BufferedReader(new InputStreamReader(inFromClient));
+        this.writer = new PrintWriter(outToClient);
+        String request = this.readRequest();
+
+        if (request != null) {
+            String problemId = String.valueOf(request.hashCode());
+            try {
+                // Check for existing solution
+                Solution<Position> solution  = cacheManager.loadSolution(problemId);
+                // If doesn't exist, solve it and return the solution (and save for the next time it is requested)
+                if (solution == null) {
+                    solution = this.solver.solve(request);
+                    this.cacheManager.saveSolution(problemId, solution);
+                }
+                this.writeResponse(solution);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        this.cleanUp();
+    }
+
+    // Closes all open streams when finished handle
+    private void cleanUp() {
+        if (this.reader != null) {
+            try {
+                this.reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (this.writer != null) {
+            this.writer.close();
         }
     }
 
-    @Nullable
-    private String readRequest(InputStream inFromClient) {
 
-        String request = "";
+    private String readRequest() {
+
+        StringBuilder request = new StringBuilder();
         String tmpLine;
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inFromClient))) {
-
-            while (!(tmpLine = reader.readLine()).equals("done")) {
-                request = request.concat(tmpLine);
+        try {
+            if (this.reader != null) {
+                while (!(tmpLine = this.reader.readLine()).equals("done")) {
+                    request = request.append(tmpLine);
+                    request = request.append(System.lineSeparator());
+                }
+                return request.toString();
             }
-            return request;
         } catch (IOException exception) {
             System.out.println(exception.toString());
         }
@@ -62,12 +91,13 @@ public class MyCHandler<T> implements ClientHandler{
 
     }
 
-    private void writeResponse(String response, OutputStream outFromClient) {
-
-        try (OutputStreamWriter writer = new OutputStreamWriter(outFromClient)) {
-            writer.write(response);
-        } catch (IOException exception) {
-            System.out.println(String.join("; ", "Failed to write response to client", exception.toString()));
+    private void writeResponse(Solution<Position> response) {
+        if (response != null && this.writer != null) {
+            for (Step<Position> step: response.getSteps()) {
+                writer.println(step.toString());
+            }
         }
+        writer.println("done");
+        writer.flush();
     }
 }

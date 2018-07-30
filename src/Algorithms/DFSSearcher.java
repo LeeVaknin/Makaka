@@ -1,51 +1,48 @@
 package Algorithms;
-
-import Models.Solution;
-import Models.State;
+import Board.Solution;
+import State.State;
 import Searchable.Searchable;
-import Searcher.Searcher;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Stack;
 
-public class DFSSearcher <T,S> implements Searcher<T,S> {
+public class DFSSearcher<T, P> implements Searcher<T, P> {
 
-    public Solution<S> search(Searchable<T> s)
-    {
-        ArrayList<T> visitedStates = new ArrayList<T>();
-        Stack<State<T>> stack = new Stack<>();
-        State<T> rootSolution = s.getInitialState();
-        visitedStates.add(rootSolution.getState());
+    public Solution<P> search(Searchable<T, P> searchable) {
+
+        // Array list with all the states we visited at
+        ArrayList<State<T, P>> visitedStates = new ArrayList<>();
+        // Stack to manage which of the state we need to work on
+        Stack<State<T, P>> stack = new Stack<>();
+        // States that will be part of our solution
+        State<T, P> rootSolution = searchable.getInitialState();
         stack.push(rootSolution);
-        while(!stack.empty())
-        {
-            State<T> currentState;
+        // As long as we have states that we need to work on
+        State<T, P> currentState;
+        while (!stack.empty()) {
             currentState = stack.pop();
-            if (currentState.getState() == s.getGoalState().getState())
-            {
-                //TODO:need to change when Solution is finalize
-                //  return currentState;
-                return null;
-            }
-            ArrayList<State<T>> possibleStates = s.getAllPossibleStates();
-            for (State<T> state : possibleStates)
-            {
-                state.setCameFrom(currentState);
-                if(!visitedStates.contains(state.getState()))
-                {
-                    visitedStates.add(state.getState());
-                    stack.push(state);
+            visitedStates.add(currentState);
 
+            if (currentState.isGoal()) {
+                // Found the goal, return the back track from solution
+                return new Solution<P>(currentState);
+            }
+            ArrayList<State<T, P>> possibleStates = currentState.getAllNeighbors();
+
+            for (State<T, P> state : possibleStates) {
+                if (!visitedStates.contains(state) && !stack.contains(state)) {
+                    state.setCameFrom(currentState);
+                    visitedStates.add(state);
+                    stack.push(state);
                 }
+
             }
         }
-        return new Solution<S>();
+        return null;
     }
 
     //TODO: fix this and understand if needed
-    public int getNumberOfNodesEvaluated()
-    {
+    public int getNumberOfNodesEvaluated() {
         return 0;
     }
 

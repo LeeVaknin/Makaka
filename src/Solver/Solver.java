@@ -1,15 +1,16 @@
 package Solver;
-
+import Board.Solution;
 import Searchable.Searchable;
-import Models.Solution;
+import State.State;
 
-public interface Solver<T, S> {
+// T is the searchable and S is the convention of the steps to the solution of the problem.
+public interface Solver<T, P> {
 
     /////////
     //Methods
     /////////
 
-    Solution<S> solve(Searchable<T> searchable);
+    Solution<P> solve(Searchable<T, P> searchable);
 
-    Solution<S> solve(String searchable);
+    Solution<P> solve(String searchable);
 }

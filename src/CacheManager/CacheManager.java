@@ -1,19 +1,15 @@
 package CacheManager;
-
-import Models.Board;
-import Models.Solution;
-import Models.Step;
-
+import Board.Solution;
 import java.io.IOException;
 
-public interface CacheManager<S> {
+public interface CacheManager<P> {
 
 
     /////////
     //Methods
     /////////
 
-    String saveSolution(String id, Solution<S> solution) throws IOException;
-    String loadSolution(String id) throws IOException;
+    void saveSolution(String id, Solution<P> solution) throws IOException;
+    Solution<P> loadSolution(String id) throws IOException;
 
 }

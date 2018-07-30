@@ -1,10 +1,5 @@
-package Models;
-import Utils.HashManager;
-
-import java.util.ArrayList;
-import java.util.Dictionary;
+package Board;
 import java.util.HashMap;
-import java.util.Map;
 
 public abstract class Board<T> {
 
@@ -13,6 +8,7 @@ public abstract class Board<T> {
     protected HashMap<String, HashMap<Character, String>> permittedSteps;
 
     // C-TOR
+
     Board() {
         this.id = null;
         this.board = null;
@@ -32,7 +28,6 @@ public abstract class Board<T> {
     }
 
     // Setters and Getters
-
     abstract void setPermitted();
 
     public T getBoard() {
@@ -46,17 +41,15 @@ public abstract class Board<T> {
     }
 
     void setId(String board) {
-        this.id = HashManager.getId(board);
+        this.id = String.valueOf(board.hashCode());
     }
 
     void setId(Board<T> board) {
         this.id = board.getId();
     }
 
-    // Returns whether a move can be done from position x, to position y
-    abstract boolean isValidMove(Board<T> board, Position from, Position to);
-
-
+    // Returns whether a move can be done currentPosition position x, to position y
+    abstract boolean isValidMove(Position from, Position to);
 
     // Converts string to board
     abstract T toBoard(String strBoard);

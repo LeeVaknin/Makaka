@@ -1,43 +1,56 @@
 package Algorithms;
-
-import Models.Solution;
-import Models.State;
+import Board.Solution;
 import Searchable.Searchable;
-import Searcher.Searcher;
+import State.State;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
 
-public class BestFirstSearch <T,S> implements Searcher<T,S> {
+// T is the searchable and S is the step, K is the state
+public class BestFirstSearch<T, P> implements Searcher<T, P> {
 
-    public Solution<S> search(Searchable<T> s) {
-        ArrayList<T> visitedStates = new ArrayList<T>();
-        Comparator<State> comparator = new StateComparator();
-        PriorityQueue<State> queue = new PriorityQueue<State>(10, comparator);
-        queue.add(s.getInitialState());
-        while (!queue.isEmpty()) {
-            State<T> currentState;
+    public Solution<P> search(Searchable<T, P> searchable) {
+        //Define Array list of all the visited States
+        ArrayList<State<T, P>> visitedStates = new ArrayList<>();
+        //Define the Comparator for the
+        Comparator<State<T, P>> comparator = searchable.getComparator();
+        //Define the Queue with the priorityQueue and use the comparator
+        PriorityQueue<State<T, P>> queue = new PriorityQueue<State<T, P>>(10, comparator);
+        //Add the State to the queue
+        State<T, P> rootSolution = searchable.getInitialState();
+        queue.add(rootSolution);
+        visitedStates.add(rootSolution);
+        while (!queue.isEmpty())
+        {
+            State<T, P> currentState;
+            //Take the first State from the queue
             currentState = queue.poll();
-            visitedStates.add(currentState.getState());
-            if (currentState.equals(s.getGoalState())) {
-                //TODO:need to change when Solution is finalize
-                return null;
-
-            }
-            ArrayList<State<T>> possibleStates = s.getAllPossibleStates();
-            for (State<T> state : possibleStates)
+            //Add the currentState to the visitedState list
+            //Check if the current State is the Goal
+            if (currentState != null && currentState.isGoal())
             {
-                if(!visitedStates.contains(state.getState()) && !queue.contains(state))
+                //return the backTrace of the current State
+                return new Solution<P>(currentState);
+            }
+            //Create array list to the possible States
+            ArrayList<State<T, P>> possibleStates = currentState != null ?
+                    currentState.getAllNeighbors() :
+                    new ArrayList<>();
+            for (State<T, P> state : possibleStates)
+            {
+                //Check if the State Neighbor is already in the queue and visited state
+                if(!visitedStates.contains(state) && !queue.contains(state))
                 {
                     state.setCameFrom(currentState);
                     queue.add(state);
-
+                    visitedStates.add(state);
                 }
+
                 //TODO:Check if need to do extra checks here (like the example in the presentation)
             }
-
         }
+
         return null;
     }
 
