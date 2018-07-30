@@ -9,17 +9,18 @@ import CacheManager.CacheManager;
 import CacheManager.FileManager;
 import Solver.PipeGameSolver;
 import Solver.Solver;
-import State.State;
-import Utils.HashManager;
 import org.jetbrains.annotations.Nullable;
-
 import java.io.*;
+import java.util.ArrayList;
 
 // T is the board type, P is the position type
 public class MyCHandler implements ClientHandler {
 
     private Solver<MatrixBoard, Position> solver;
     private CacheManager<Position> cacheManager;
+    private BufferedReader reader;
+    private PrintWriter writer;
+
 
     //    public MyCHandler(Solver<T, P> solver, CacheManager<P> cacheManager) {
 //        this.solver = solver;
@@ -28,43 +29,62 @@ public class MyCHandler implements ClientHandler {
 //
     public MyCHandler() {
         this.solver = new PipeGameSolver(new BestFirstSearch<>());
-        this.cacheManager = new FileManager<>();
+        this.cacheManager = new FileManager<Position>();
     }
 
     @Override
     public void handle(InputStream inFromClient, OutputStream outToClient) {
-        String response;
-        String request = this.readRequest(inFromClient);
+
+        this.reader = new BufferedReader(new InputStreamReader(inFromClient));
+        this.writer = new PrintWriter(outToClient);
+        String request = this.readRequest();
+
         if (request != null) {
             String problemId = String.valueOf(request.hashCode());
             try {
-                response = cacheManager.loadSolution(problemId);
-                if (response == null) {
-                    Solution<Position> solution = this.solver.solve(request);
+                // Check for existing solution
+                Solution<Position> solution  = cacheManager.loadSolution(problemId);
+                // If doesn't exist, solve it and return the solution (and save for the next time it is requested)
+                if (solution == null) {
+                    solution = this.solver.solve(request);
                     this.cacheManager.saveSolution(problemId, solution);
                 }
-                this.writeResponse(response, outToClient);
+                this.writeResponse(solution);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        // Check if we have saved solution to our problem
 
-
+        this.cleanUp();
     }
 
-    @Nullable
-    private String readRequest(InputStream inFromClient) {
+    // Closes all open streams when finished handle
+    private void cleanUp() {
+        if (this.reader != null) {
+            try {
+                this.reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (this.writer != null) {
+            this.writer.close();
+        }
+    }
 
-        String request = "";
+
+    private String readRequest() {
+
+        StringBuilder request = new StringBuilder();
         String tmpLine;
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inFromClient))) {
-
-            while (!(tmpLine = reader.readLine()).equals("done")) {
-                request = request.concat(tmpLine);
+        try {
+            if (this.reader != null) {
+                while (!(tmpLine = this.reader.readLine()).equals("done")) {
+                    request = request.append(tmpLine);
+                }
+                return request.toString();
             }
-            return request;
         } catch (IOException exception) {
             System.out.println(exception.toString());
         }
@@ -74,10 +94,13 @@ public class MyCHandler implements ClientHandler {
 
     }
 
-    private void writeResponse(String response, OutputStream outFromClient) {
-        try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(outFromClient))) {
-            writer.println(response);
-            writer.println("done");
+    private void writeResponse(Solution<Position> response) {
+        if (response != null && this.reader != null) {
+            for (Step<Position> step: response.getSteps()) {
+                writer.println(step.toString());
+            }
         }
+        writer.println("done");
+        writer.flush();
     }
 }

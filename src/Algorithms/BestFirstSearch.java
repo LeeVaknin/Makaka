@@ -28,10 +28,10 @@ public class BestFirstSearch<T, P> implements Searcher<T, P> {
             currentState = queue.poll();
             //Add the currentState to the visitedState list
             //Check if the current State is the Goal
-            if (currentState.isGoal())
+            if (currentState != null && currentState.isGoal())
             {
                 //return the backTrace of the current State
-                return new Solution<>(currentState);
+                return new Solution<P>(currentState);
             }
             //Create array list to the possible States
             ArrayList<State<T, P>> possibleStates = searchable.getAllPossibleStates();

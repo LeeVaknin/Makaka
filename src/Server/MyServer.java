@@ -23,26 +23,19 @@ public class MyServer implements Server {
 
     // Methods
 
-    public void Activate(ClientHandler clientHandler) throws IOException {
+    private void Activate(ClientHandler clientHandler) throws IOException {
         System.out.println("Starting server");
         ServerSocket server = new ServerSocket(port);
         server.setSoTimeout(1000);
         while (!stop) {
             try {
-                Socket aClient = server.accept(); // blocking call
-                try {
+                try (Socket aClient = server.accept()) {
                     System.out.println(aClient.toString());
                     clientHandler.handle(aClient.getInputStream(), aClient.getOutputStream());
                     aClient.getInputStream().close();
-                    aClient.getOutputStream().close();
                 } catch (IOException e) {
-                    System.out.println(e.toString());
-                } finally {
-                    if (aClient != null)
-                        aClient.close();
+                    System.out.println("Connection was closed (not an error).");
                 }
-            } catch (SocketTimeoutException e) {
-                System.out.println(e.toString());
             } finally {
                 try {
                     server.close();

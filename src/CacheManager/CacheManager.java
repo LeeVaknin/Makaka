@@ -10,6 +10,6 @@ public interface CacheManager<P> {
     /////////
 
     void saveSolution(String id, Solution<P> solution) throws IOException;
-    String loadSolution(String id) throws IOException;
+    Solution<P> loadSolution(String id) throws IOException;
 
 }

@@ -5,7 +5,8 @@ import java.io.Serializable;
 // P - the position type of the step
 public abstract class Step<P> implements Serializable{
 
-    private static final long serialVersionUID = 43L;
+    // For the class serialization and deserialization!
+    private static final long serialVersionUID = 31L;
 
     protected P position;
 

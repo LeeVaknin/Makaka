@@ -8,22 +8,22 @@ import java.util.Collections;
 // P is the position type of the step
 public class Solution<P> implements Serializable {
 
-    private static final long serialVersionUID = 41L;
+    // For the class serialization and deserialization!
+    private static final long serialVersionUID = 30L;
     // Variables
     private ArrayList<Step<P>> steps;
 
     // C-TORS
     public Solution(State<?, P> goalState) {
-        State<?, P> currentState = goalState;
+        State<?, P> currentState = goalState != null ? goalState.getCameFrom() : null;
         this.steps = new ArrayList<>();
-        if (goalState != null) {
+        if (currentState != null) {
             while(currentState.getCameFrom() != null) {
                 // add step
                 this.addStep(currentState.getStep());
                 currentState = currentState.getCameFrom();
             }
             Collections.reverse(this.steps);
-            this.steps.remove(this.steps.size() - 1);
         }
     }
 
@@ -43,15 +43,14 @@ public class Solution<P> implements Serializable {
         return steps;
     }
 
-    public void setSteps(ArrayList<Step<P>> steps) {
+    private void setSteps(ArrayList<Step<P>> steps) {
         this.steps = new ArrayList<Step<P>>();
         if(steps != null) {
             this.steps.addAll(steps);
-            return;
         }
     }
 
-    public void addStep(Step<P> step) {
+    private void addStep(Step<P> step) {
         if (step != null && this.steps != null) {
            this.steps.add(step);
         }
@@ -66,7 +65,6 @@ public class Solution<P> implements Serializable {
                  result.append("\n");
             }
         }
-        System.out.println(result.toString());
         return result.toString();
     }
 }

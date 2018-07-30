@@ -12,7 +12,8 @@ public class FileManager<P> implements CacheManager<P> {
         // Check it the directory where we store the files was created, if not create it.
         File dir = new File(this.repository);
         if (!(dir.exists())) {
-            dir.mkdir();
+            isDirCreated = dir.mkdir();
+            return;
         }
         isDirCreated = true;
     }
@@ -26,14 +27,16 @@ public class FileManager<P> implements CacheManager<P> {
             if (!this.isDirCreated) {this.createDirIfNeeded(); }
             File filePath = new File(this.repository, id);
             if (solution != null && !filePath.exists()) {
-                filePath.createNewFile();
-                ObjectOutputStream objectOutputStream = new ObjectOutputStream(
-                        new BufferedOutputStream(
-                                new FileOutputStream(filePath)
-                        ));
-                System.out.println(String.join(" ", "Saving the following solution:\n", solution.toString()));
-                objectOutputStream.writeObject(solution);
-                objectOutputStream.close();
+                boolean created = filePath.createNewFile();
+                if (created) {
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+                            new BufferedOutputStream(
+                                    new FileOutputStream(filePath)
+                            ));
+                    System.out.println(String.join(" ", "Saving the following solution:\n", solution.toString()));
+                    objectOutputStream.writeObject(solution);
+                    objectOutputStream.close();
+                }
             }
         } catch (IOException exception) {
             System.out.println(String.join(": ", "Couldn't saveSolution file error", exception.toString()));
@@ -42,21 +45,17 @@ public class FileManager<P> implements CacheManager<P> {
 
     /**
      * This methods loads a problem or a solution according to the given param
-     *
      * @param id - The id of the requested board (level)
      * @return - The requested board or NULL if id doesn't exist.
-     * @throws IOException Thrown only if something is going wrong during closing the file reader and buffer reader.
      */
-    public String loadSolution(String id) {
+    public Solution<P> loadSolution(String id) {
         try {
             File fileToLoad = new File(this.repository, id);
             ObjectInputStream objInput = new ObjectInputStream(new FileInputStream(fileToLoad));
-            Solution<P> solution =  (Solution<P>) objInput.readObject();
-            return solution.toString();
+            return (Solution<P>) objInput.readObject();
         } catch (IOException | ClassNotFoundException exception) {
-            System.out.println(String.join(": ", "Couldn't loadSolution file error", exception.toString()));
+            System.out.println("Couldn't find the requested id. Please solve first.");
         }
-        System.out.println("Couldn't find the requested id.");
         return null;
     }
 }

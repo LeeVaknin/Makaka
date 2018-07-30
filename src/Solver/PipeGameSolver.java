@@ -9,7 +9,7 @@ import State.PipeGameState;
 
 
 // common solver for the pipe game
-public class PipeGameSolver implements Solver<MatrixBoard, Position>{
+public class PipeGameSolver implements Solver<MatrixBoard, Position> {
 
     // This searcher is injected into the common solver and solves the given problem
     private Searcher<MatrixBoard, Position> searcher;

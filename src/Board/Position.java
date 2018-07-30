@@ -6,17 +6,14 @@ import java.io.Serializable;
 
 public class Position implements Serializable{
 
-    private static final long serialVersionUID = 42L;
+    // For the class serialization and deserialization!
+    private static final long serialVersionUID = 32L;
 
     // Variables
     private Integer row;
     private Integer col;
 
     // C-TOR
-    public Position() {
-        this.setCol(0);
-        this.setRow(0);
-    }
 
     public Position(Integer col, Integer row) {
         this.setCol(col);
@@ -38,7 +35,7 @@ public class Position implements Serializable{
         return row;
     }
 
-    public void setRow(Integer row) {
+    private void setRow(Integer row) {
         if (row >= 0)
             this.row = row;
         else this.row = 0;
@@ -48,7 +45,7 @@ public class Position implements Serializable{
         return col;
     }
 
-    public void setCol(Integer col) {
+    private void setCol(Integer col) {
         if (col >= 0)
             this.col = col;
         else this.col = 0;
