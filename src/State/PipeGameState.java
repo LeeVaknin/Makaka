@@ -105,7 +105,11 @@ public class PipeGameState extends State<MatrixBoard, Position> {
             for (Position direction: directions) {
                 // After 3 rotations everything comes back to the initial state
                 Integer maxRotations = 3;
-                if (!direction.equals(currentLocation) && tmpBoard.getPipe(direction) != null) {
+                if (!direction.equals(currentLocation)
+                        && tmpBoard.getPipe(direction) != null
+                        && !tmpBoard.getPipe(direction).isEmpty()
+                        &&( getCameFrom() == null || ( getCameFrom() != null
+                        && !(direction.equals(getCameFrom().getCurrentPosition()))))) {
                     for (Integer rotations = 0; rotations < maxRotations; rotations++ ) {
                         if (rotations > 0) {
                             // with each iteration rotate the pipe in the location of the direction
@@ -113,7 +117,6 @@ public class PipeGameState extends State<MatrixBoard, Position> {
                             if (pipe!= null){
                                 pipe.rotate();
                             }
-
                         }
                         // Check if the move is valid, if so, no need to rotate anything, add this direction to the list.
                         if (tmpBoard.isValidMove(currentLocation, direction)) {
