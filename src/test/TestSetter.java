@@ -1,6 +1,7 @@
 package test;
-
 import Algorithms.BestFirstSearch;
+import Board.MatrixBoard;
+import Board.Position;
 import CacheManager.CacheManager;
 import CacheManager.FileManager;
 import ClientHandler.ClientHandler;
@@ -12,7 +13,6 @@ import Solver.PipeGameSolver;
 import Solver.Solver;
 import Searchable.Searchable;
 import Searchable.PipeSearchable;
-
 import java.util.List;
 
 
@@ -53,7 +53,9 @@ public class TestSetter {
 
     public static void runServer(int port) {
         s = new MyServer(port);
-        s.start(new MyCHandler());
+        Solver<MatrixBoard, Position> solver = new PipeGameSolver(new BestFirstSearch<>());
+        CacheManager<Position> cacheManager = new FileManager<Position>();
+        s.start(new MyCHandler<MatrixBoard, Position>(solver, cacheManager));
     }
 
     // stop your server here
