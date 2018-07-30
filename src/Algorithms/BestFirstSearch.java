@@ -34,16 +34,17 @@ public class BestFirstSearch<T, P> implements Searcher<T, P> {
                 return new Solution<P>(currentState);
             }
             //Create array list to the possible States
-            ArrayList<State<T, P>> possibleStates = searchable.getAllPossibleStates();
+            ArrayList<State<T, P>> possibleStates = currentState != null ?
+                    currentState.getAllNeighbors() :
+                    new ArrayList<>();
             for (State<T, P> state : possibleStates)
             {
                 //Check if the State Neighbor is already in the queue and visited state
                 if(!visitedStates.contains(state) && !queue.contains(state))
                 {
                     state.setCameFrom(currentState);
-                    searchable.setCurrentState(state);
-                    queue.add(searchable.getCurrentState());
-                    visitedStates.add(searchable.getCurrentState());
+                    queue.add(state);
+                    visitedStates.add(state);
                 }
 
                 //TODO:Check if need to do extra checks here (like the example in the presentation)
