@@ -1,7 +1,9 @@
 package test;
+
+import Algorithms.BFSSearcher;
 import Algorithms.BestFirstSearch;
-import Board.MatrixBoard;
-import Board.Position;
+import Board.Solution;
+import Board.Step;
 import CacheManager.CacheManager;
 import CacheManager.FileManager;
 import ClientHandler.ClientHandler;
@@ -13,6 +15,8 @@ import Solver.PipeGameSolver;
 import Solver.Solver;
 import Searchable.Searchable;
 import Searchable.PipeSearchable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -70,8 +74,20 @@ public class TestSetter {
      */
 
     public static List<String> solveMaze(Maze m) {
+        MazeSearchable s = new MazeSearchable(m);
+        BFSSearcher searcher = new BFSSearcher();
+        Solution solution = searcher.search(s);
+        ArrayList<String> ret = new ArrayList<String>();
+        for (Object mazeStep : solution.getSteps())
+        {
+            MazeStep move = (MazeStep)mazeStep;
 
-        return null;
+            for(String step : move.directions) {
+                ret.add(step);
+            }
+
+        }
+        return ret;
     }
 
 }
