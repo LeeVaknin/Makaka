@@ -7,49 +7,41 @@ import java.net.SocketTimeoutException;
 
 
 public class MyServer implements Server {
+    static int port = 32;
+    private ServerSocket serverSocket;
+    private boolean stop = false;
 
-    private int port;
-    private volatile boolean stop;
-
-    // C-TOR
     public MyServer(int port) {
         this.port = port;
-        stop = false;
-    }
-
-    // Methods
-
-    private void Activate(ClientHandler clientHandler) throws IOException {
-        System.out.println("Starting server");
-        ServerSocket server = new ServerSocket(port);
-        server.setSoTimeout(5000);
-        System.out.println("Server started.");
-        while (!stop) {
-            try {
-                Socket aClient = server.accept();
-                System.out.println("Client connected:" + aClient.toString());
-                clientHandler.handle(aClient.getInputStream(), aClient.getOutputStream());
-                aClient.close();
-                System.out.println("Connection was closed.");
-            } catch (IOException e) {
-            }
-            try {
-                server.close();
-            } catch (IOException e) {
-                System.out.println("Failed to close server" + e.toString());
-            }
-        }
     }
 
     @Override
     public void start(ClientHandler clientHandler) {
         new Thread(() -> {
             try {
-                Activate(clientHandler);
+                activate(clientHandler);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();
+
+    }
+
+    private void activate(ClientHandler clientHandler) throws IOException {
+        serverSocket = new ServerSocket(MyServer.port);
+        serverSocket.setSoTimeout(1000);
+        System.out.println("The server is up.");
+
+        while (!this.stop) {
+            try {
+                Socket aClient = serverSocket.accept();
+                System.out.println("Accepted connection.");
+                clientHandler.handle(aClient.getInputStream(), aClient.getOutputStream());
+                aClient.close();
+            } catch (SocketTimeoutException e) {
+            }
+        }
+        serverSocket.close();
     }
 
     @Override
