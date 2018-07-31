@@ -80,7 +80,7 @@ public class MyCHandler implements ClientHandler {
                     request = request.append(tmpLine);
                     request = request.append(System.lineSeparator());
                 }
-//                System.out.println("Problem" + request.toString());
+                System.out.println("Problem" + request.toString());
                 return request.toString();
             }
         } catch (IOException exception) {

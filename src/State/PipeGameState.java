@@ -95,7 +95,7 @@ public class PipeGameState extends State<MatrixBoard, Position> {
                         && !tmpBoard.getPipe(direction).isEmpty()
                         &&( getCameFrom() == null || ( getCameFrom() != null
                         && !(direction.equals(getCameFrom().getCurrentPosition()))))) {
-                    for (Integer rotations = 0; rotations < maxRotations; rotations++ ) {
+                    for (Integer rotations = 0; rotations <= maxRotations; rotations++ ) {
                         if (rotations > 0) {
                             // with each iteration rotate the pipe in the location of the direction
                             Pipe pipe = tmpBoard.getPipe(direction);
@@ -109,7 +109,6 @@ public class PipeGameState extends State<MatrixBoard, Position> {
 
                             neighbor.updateState(new PipeGameStep(direction, rotations));
                             allNeighbors.add(neighbor);
-//                            break;
                         }
                     }
 
