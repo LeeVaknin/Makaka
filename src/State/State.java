@@ -64,11 +64,6 @@ public abstract class State<T, P> {
 
     public abstract double generateCost();
 
-   /*
-   Returns a backTrace of the states for the algorithms
-    */
-//    public abstract Solution<P> backTrace();
-
     public abstract ArrayList<State<T, P>> getAllNeighbors();
 
     // this method is required to update the state of, in every change we make
