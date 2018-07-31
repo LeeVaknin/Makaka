@@ -3,6 +3,7 @@ import ClientHandler.ClientHandler;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 
 public class MyServer implements Server {
@@ -21,22 +22,21 @@ public class MyServer implements Server {
     private void Activate(ClientHandler clientHandler) throws IOException {
         System.out.println("Starting server");
         ServerSocket server = new ServerSocket(port);
-        server.setSoTimeout(3000);
+        server.setSoTimeout(5000);
+        System.out.println("Server started.");
         while (!stop) {
             try {
-                try (Socket aClient = server.accept()) {
-                    System.out.println(aClient.toString());
-                    clientHandler.handle(aClient.getInputStream(), aClient.getOutputStream());
-                    aClient.getInputStream().close();
-                } catch (IOException e) {
-                    System.out.println("Connection was closed (not an error).");
-                }
-            } finally {
-                try {
-                    server.close();
-                } catch (IOException e) {
-                    System.out.println(e.toString());
-                }
+                Socket aClient = server.accept();
+                System.out.println("Client connected:" + aClient.toString());
+                clientHandler.handle(aClient.getInputStream(), aClient.getOutputStream());
+                aClient.close();
+                System.out.println("Connection was closed.");
+            } catch (IOException e) {
+            }
+            try {
+                server.close();
+            } catch (IOException e) {
+                System.out.println("Failed to close server" + e.toString());
             }
         }
     }

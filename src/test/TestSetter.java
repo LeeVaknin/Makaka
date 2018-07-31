@@ -52,11 +52,10 @@ public class TestSetter {
         dt.setBestFSClass(BestFirstSearch.class);
     }
 
-    // run your server here
     static Server s;
 
-    public static void runServer(int port) {
-        s = new MyServer(port);
+    public static void runServer(int port){
+        s=new MyServer(port);
         s.start(new MyCHandler());
     }
 

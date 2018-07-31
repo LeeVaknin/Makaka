@@ -19,12 +19,6 @@ public class MainTrain {
         Random r=new Random();
         int port=6000+r.nextInt(1000);
         TestSetter.runServer(port);
-        try {
-            Thread.sleep(250);
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         try{
             TestServer.runClient(port);
         }finally{
