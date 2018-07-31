@@ -12,24 +12,23 @@ public class HillClimbingSearcher<T, P> implements Searcher<T, P> {
 
     public Solution<P> search(Searchable<T, P> searchable) {
 
-        State<T,P> currentState = searchable.getInitialState();
-        currentState.setCost(searchable.getCurrentState().generateCost());
+        searchable.getCurrentState().setCost(searchable.getCurrentState().generateCost());
 
         while (true) {
 
-            if (currentState.isGoal()) {
-                return new Solution<P>(currentState);
+            if (searchable.getCurrentState().isGoal()) {
+                return new Solution<P>(searchable.getCurrentState());
             }
 
-            List<State<T,P>> states = currentState.getAllNeighbors();
+            List<State<T,P>> states = searchable.getCurrentState().getAllNeighbors();
             for (State<T, P> tmpState : states) {
-                tmpState.setCameFrom(currentState);
+                tmpState.setCameFrom(searchable.getCurrentState());
             }
 
             if (Math.random() > 0.7) {
                 Random r = new Random();
                 int randomIndex = r.nextInt(states.size());
-                currentState = states.get(randomIndex);
+                searchable.setCurrentState(states.get(randomIndex));
                 continue;
             }
 
@@ -38,7 +37,7 @@ public class HillClimbingSearcher<T, P> implements Searcher<T, P> {
                 tmpState.setCost(tmpState.generateCost());
                 if (tmpState.getCost() < grade) {
                     grade = tmpState.getCost();
-                    currentState = tmpState;
+                    searchable.setCurrentState(tmpState);
                 }
             }
         }
