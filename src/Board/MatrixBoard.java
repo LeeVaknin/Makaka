@@ -63,24 +63,27 @@ public class MatrixBoard extends Board<Pipe[][]> {
             put('L', "F7g|fG");
             put('J', "Fg|7Gf");
             put('s', "7F|gfG");
+            put('S', "7F|gfG");
         }};
         HashMap<Character, String> bottom = new HashMap<Character, String>() {{
             put('|', "|gLJGjl");
             put('F', "|JgLjlG");
             put('7', "|JLgjlG");
             put('s', "LJ|gjlG");
+            put('S', "LJ|gjlG");
         }};
         HashMap<Character, String> right = new HashMap<Character, String> () {{
             put('L', "J7g-Gj");
             put('F', "J7g-Gj");
             put('-', "J7g-Gj");
             put('s', "J7g-Gj");
-
+            put('S', "J7g-Gj");
         }};
         HashMap<Character, String> left = new HashMap<Character, String>() {{
             put('-', "-gFLflG");
             put('J', "-gFLflG");
             put('7', "-gFLflG");
+            put('S', "-gFLflG");
             put('s', "-gFLflG");
         }};
         // Save the allowed steps by direction
@@ -246,7 +249,7 @@ public class MatrixBoard extends Board<Pipe[][]> {
             for (int row=0; row< rows(); row++){
                 for (int col=0; col < columns(); col++ ) {
                     Pipe pipe = getPipe(row, col);
-                    if (pipe.getPipeVal().equals('s'))
+                    if (pipe.getPipeVal().equals('s') || pipe.getPipeVal().equals('S'))
                         return new Position(col, row);
                 }
             }
@@ -270,7 +273,7 @@ public class MatrixBoard extends Board<Pipe[][]> {
             for (int row=0; row< rows(); row++){
                 for (int col=0; col < columns(); col++ ) {
                     Pipe pipe = getPipe(row, col);
-                    if (pipe.getPipeVal().equals('g'))
+                    if (pipe.getPipeVal().equals('g') || pipe.getPipeVal().equals('G'))
                         return new Position(col, row);
                 }
 
