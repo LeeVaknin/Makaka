@@ -124,7 +124,7 @@ public class PipeGameState extends State<MatrixBoard, Position> {
 
                             neighbor.updateState(new PipeGameStep(direction, rotations));
                             allNeighbors.add(neighbor);
-                            break;
+//                            break;
                         }
                     }
 
@@ -171,7 +171,12 @@ public class PipeGameState extends State<MatrixBoard, Position> {
             Position currentPosition = this.getCurrentPosition();
             // Calculate the absolute value of the way from current position to the goal
 //            cost = Math.abs(currentPosition.getRow() - endPosition.getRow()) + Math.abs(currentPosition.getCol() - endPosition.getCol());
-            cost = Math.abs(Point.distance(currentPosition.getRow(),currentPosition.getCol(),endPosition.getRow(),endPosition.getCol()));
+//            int rotations = this.getStep() != null ? ((PipeGameStep)this.getStep()).getRotations() : 0;
+            cost = Math.abs(Point.distance(
+                    currentPosition.getRow(),
+                    currentPosition.getCol(),
+                    endPosition.getRow(),
+                    endPosition.getCol()));
         } catch (Exception ex) {
             System.out.println(String.join(": ", "PipeGameState.generateCost(): Error details" , ex.getMessage()));
         }

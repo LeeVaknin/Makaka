@@ -1,6 +1,7 @@
 package Searchable;
 
 import Board.MatrixBoard;
+import Board.PipeGameStep;
 import Board.Position;
 import State.PipeGameState;
 import State.State;
@@ -53,14 +54,20 @@ public class PipeSearchable implements Searchable<MatrixBoard, Position> {
     class StateComparator implements Comparator<State<MatrixBoard, Position>> {
         /**
          * This function will calculate which of the given states are closer to the goal
-         *
          * @param state1: the first state to compare
          * @param state2: the second state to compare
          * @return : case state2 is closer return -1. case state1 is closer return 1. case of no difference return 0.
          */
         @Override
         public int compare(State<MatrixBoard, Position> state1, State<MatrixBoard, Position> state2) {
-            return Double.compare(state2.generateCost(), state1.generateCost());
+            // In case the the current position of the given state is the same, compare by rotations
+            if (state1.getCurrentPosition().equals(state2.getCurrentPosition())) {
+                int rotations1 = state1.getStep() != null ? ((PipeGameStep)state1.getStep()).getRotations() : 0;
+                int rotations2 = state2.getStep() != null ? ((PipeGameStep)state2.getStep()).getRotations() : 0;
+                return Double.compare(rotations2, rotations1);
+            } else {
+                return Double.compare(state2.generateCost(), state1.generateCost());
+            }
         }
     }
 
