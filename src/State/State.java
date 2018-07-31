@@ -12,6 +12,15 @@ public abstract class State<T, P> {
     private State<T, P> cameFrom;
     private  P currentPosition;
     private  Step<P> step;
+    private double cost;
+
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
 
     public P getCurrentPosition() {
         return currentPosition;

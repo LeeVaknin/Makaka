@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 public class PipeGameState extends State<MatrixBoard, Position> {
 
+    private double cost;
+
     // C-TOR
 
     public PipeGameState(MatrixBoard state) {
@@ -181,5 +183,13 @@ public class PipeGameState extends State<MatrixBoard, Position> {
             System.out.println(String.join(": ", "PipeGameState.generateCost(): Error details" , ex.getMessage()));
         }
         return cost;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
     }
 }
