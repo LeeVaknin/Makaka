@@ -35,8 +35,6 @@ public class MyCHandler implements ClientHandler {
         this.writer = new PrintWriter(outToClient);
         String request = this.readRequest();
 
-        System.out.println("request:" + request);
-
         if (request != null) {
             String problemId = String.valueOf(request.hashCode());
             try {
@@ -82,7 +80,7 @@ public class MyCHandler implements ClientHandler {
                     request = request.append(tmpLine);
                     request = request.append(System.lineSeparator());
                 }
-                System.out.println("Problem" + request.toString());
+//                System.out.println("Problem" + request.toString());
                 return request.toString();
             }
         } catch (IOException exception) {
