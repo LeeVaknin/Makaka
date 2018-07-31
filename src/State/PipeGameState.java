@@ -74,23 +74,6 @@ public class PipeGameState extends State<MatrixBoard, Position> {
         }};
     }
 
-//  Returns a backTrace of the states for the algorithms
-//    public Solution<MatrixBoard> backTrace() {
-//        Solution<MatrixBoard> returnBackTrace = new Solution<>();
-//        State<MatrixBoard, Position> cameFromState =this.getCameFrom();
-//        MatrixBoard tmp = cameFromState.getState();
-//        Character pipeVal = ' ';
-//        // TODO : Do we need the first protection at the while loop ?
-//        while (!pipeVal.equals('s') || tmp != null) {
-//            returnBackTrace.add(tmp);
-//            cameFromState = cameFromState.getCameFrom();
-//            tmp = cameFromState.getState();
-//            Position currentPosition = cameFromState.getCurrentPosition();
-//            pipeVal = currentPosition != null ? tmp.getPipe(currentPosition).getPipeVal() : null;
-//        }
-//        Collections.reverse(returnBackTrace);
-//        return returnBackTrace;
-//    }
 
     public ArrayList<State<MatrixBoard, Position>> getAllNeighbors() {
         ArrayList<State<MatrixBoard, Position>> allNeighbors = null;
