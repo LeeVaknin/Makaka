@@ -15,7 +15,7 @@ public class Solution<P> implements Serializable {
 
     // C-TORS
     public Solution(State<?, P> goalState) {
-        State<?, P> currentState = goalState != null ? goalState : null;
+        State<?, P> currentState = goalState;
         this.steps = new ArrayList<>();
         if (currentState != null) {
             while(currentState.getCameFrom() != null) {
