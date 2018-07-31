@@ -23,26 +23,25 @@ public class BestFirstSearch<T, P> implements Searcher<T, P> {
         visitedStates.add(rootSolution);
         while (!queue.isEmpty())
         {
-            State<T, P> currentState;
             //Take the first State from the queue
-            currentState = queue.poll();
+            searchable.setCurrentState(queue.poll());
             //Add the currentState to the visitedState list
             //Check if the current State is the Goal
-            if (currentState != null && currentState.isGoal())
+            if (searchable.getCurrentState() != null && searchable.getCurrentState().isGoal())
             {
                 //return the backTrace of the current State
-                return new Solution<P>(currentState);
+                return new Solution<P>(searchable.getCurrentState());
             }
             //Create array list to the possible States
-            ArrayList<State<T, P>> possibleStates = currentState != null ?
-                    currentState.getAllNeighbors() :
+            ArrayList<State<T, P>> possibleStates = searchable.getCurrentState() != null ?
+                    searchable.getAllPossibleStates() :
                     new ArrayList<>();
             for (State<T, P> state : possibleStates)
             {
                 //Check if the State Neighbor is already in the queue and visited state
                 if(!visitedStates.contains(state) && !queue.contains(state))
                 {
-                    state.setCameFrom(currentState);
+                    state.setCameFrom(searchable.getCurrentState());
                     queue.add(state);
                     visitedStates.add(state);
                 }

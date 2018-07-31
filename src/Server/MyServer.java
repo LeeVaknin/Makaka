@@ -30,12 +30,12 @@ public class MyServer implements Server {
     private void activate(ClientHandler clientHandler) throws IOException {
         serverSocket = new ServerSocket(MyServer.port);
         serverSocket.setSoTimeout(1000);
-        System.out.println("The server is up.");
+//        System.out.println("The server is up.");
 
         while (!this.stop) {
             try {
                 Socket aClient = serverSocket.accept();
-                System.out.println("Accepted connection.");
+//                System.out.println("Accepted connection.");
                 clientHandler.handle(aClient.getInputStream(), aClient.getOutputStream());
                 aClient.close();
             } catch (SocketTimeoutException e) {
