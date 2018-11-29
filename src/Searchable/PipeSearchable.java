@@ -11,13 +11,12 @@ import java.util.Comparator;
 
 public class PipeSearchable implements Searchable<MatrixBoard, Position> {
 
-    // variables
+    // Variables
     private PipeGameState currentState;
     private PipeGameState initialState;
     private PipeGameState  goalState;
 
     // C-TOR
-
     public PipeSearchable(State<MatrixBoard, Position> initialState) {
         this.initialState = new PipeGameState(initialState);
         this.currentState = new PipeGameState(initialState);
