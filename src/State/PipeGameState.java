@@ -90,6 +90,9 @@ public class PipeGameState extends State<MatrixBoard, Position> {
             for (Position direction: directions) {
                 // After 3 rotations everything comes back to the initial state
                 Integer maxRotations = 3;
+                if(tmpBoard.getPipe(direction).getPipeVal().equals('|') || tmpBoard.getPipe(direction).getPipeVal().equals('-')) {
+                    maxRotations = 1;
+                }
                 if (!direction.equals(currentLocation)
                         && tmpBoard.getPipe(direction) != null
                         && !tmpBoard.getPipe(direction).isEmpty()
@@ -116,7 +119,7 @@ public class PipeGameState extends State<MatrixBoard, Position> {
             }
 
         } catch (Exception ex) {
-            System.out.println(String.join(": ", "PipeGameState.getAllNeighbors(): Error details" , ex.getMessage()));
+           // System.out.println(String.join(": ", "PipeGameState.getAllNeighbors(): Error details" , ex.getMessage()));
         }
 
         return allNeighbors;

@@ -6,7 +6,7 @@ public class MainServer {
 
     public static void main(String[] args) {
 
-        Server s =  new MyServer(5555);
-        s.start(new MyCHandler());
+        Server s =  new MyServer(8080);
+        s.start();
     }
 }
